@@ -1,0 +1,334 @@
+---
+import HeroOrchestrator from "./HeroOrchestrator.astro";
+---
+
+<section class="hero" id="top">
+  <div class="hero__bg" aria-hidden="true">
+    <span class="hero__blob hero__blob--a"></span>
+    <span class="hero__blob hero__blob--b"></span>
+    <span class="hero__grid"></span>
+  </div>
+
+  <div class="container hero__inner">
+    <div class="hero__copy">
+      <span class="eyebrow" data-hero="1">
+        <span class="dot-live"></span> Assistente AI proattivo · 24/7
+      </span>
+
+      <h1 data-hero="2" data-hero-title>
+        Risponde, scrive e fissa<br />
+        appuntamenti. <span class="hero__hl">Mentre tu lavori.</span>
+      </h1>
+
+      <p class="lead" data-hero="3">
+        SofIA è l'assistente AI che gestisce <strong>telefono, chat, WhatsApp e
+        agenda</strong> della tua attività. Qualifica i clienti, prenota da sola
+        e ti racconta tutto quello che è successo — con voce naturale, nella
+        lingua di chi ti contatta.
+      </p>
+
+      <div class="hero__actions" data-hero="4">
+        <a href="#prova" class="btn btn--primary btn--lg" data-trial-open>
+          <span class="dot-live"></span> Prova SofIA gratis
+        </a>
+        <a href="#oltre" class="btn btn--outline btn--lg">Scopri cosa fa</a>
+      </div>
+
+      <ul class="hero__trust" data-hero="5">
+        <li>Voce naturale multilingua</li>
+        <li>Nessun setup tecnico</li>
+        <li>3 minuti di prova, subito</li>
+      </ul>
+    </div>
+
+    <div class="hero__demo" data-hero="6">
+      <HeroOrchestrator />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    padding-block: clamp(3rem, 2rem + 5vw, 6rem) var(--section-y);
+    overflow: hidden;
+  }
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .hero__blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: 0.5;
+  }
+  .hero__blob--a {
+    width: 42vw;
+    height: 42vw;
+    top: -14vw;
+    right: -8vw;
+    background: radial-gradient(circle, var(--glow-coral), transparent 68%);
+  }
+  .hero__blob--b {
+    width: 34vw;
+    height: 34vw;
+    bottom: -16vw;
+    left: -10vw;
+    background: radial-gradient(circle, var(--glow-green), transparent 68%);
+  }
+  .hero__grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(36, 31, 29, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(36, 31, 29, 0.04) 1px, transparent 1px);
+    background-size: 46px 46px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000, transparent 75%);
+  }
+
+  .hero__inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(2rem, 1rem + 4vw, 4.5rem);
+    align-items: center;
+  }
+  .hero__inner > * {
+    min-width: 0;
+  }
+  .hero__copy {
+    display: grid;
+    gap: 1.4rem;
+    max-width: 42rem;
+  }
+  .hero h1 {
+    margin-top: 0.4rem;
+    font-size: clamp(1.9rem, 1.2rem + 2.2vw, 2.75rem);
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+  }
+  .hero__hl {
+    color: var(--coral);
+    position: relative;
+  }
+  /* SplitText line masks clip with overflow; the extra bottom padding (offset
+     by negative margin so layout height is unchanged) keeps descenders from
+     being clipped while words rise into view. will-change hints the compositor
+     for the one-shot intro tween. */
+  .hero h1 .hero-line-mask {
+    padding-bottom: 0.14em;
+    margin-bottom: -0.14em;
+  }
+  .hero h1 .hero-line {
+    will-change: transform;
+  }
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 0.4rem;
+  }
+  .hero__trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.4rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+    margin-top: 0.4rem;
+  }
+  .hero__trust li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .hero__trust li::before {
+    content: "✓";
+    color: var(--green);
+    font-weight: 800;
+  }
+
+  /* demo card */
+  .hero__demo {
+    position: relative;
+    display: grid;
+    gap: 1rem;
+    justify-items: center;
+  }
+  .demo-card {
+    width: min(100%, 420px);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+  }
+  .demo-card__head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.2rem;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface-2);
+  }
+  .demo-card__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: linear-gradient(150deg, var(--coral), var(--coral-600));
+    color: #fff;
+    font-family: var(--font-head);
+    font-weight: 800;
+    display: grid;
+    place-items: center;
+    box-shadow: var(--shadow-coral);
+  }
+  .demo-card__name {
+    font-weight: 700;
+    font-family: var(--font-head);
+    line-height: 1.1;
+  }
+  .demo-card__status {
+    font-size: 0.78rem;
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 600;
+  }
+  .demo-card__time {
+    margin-left: auto;
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .demo-feed {
+    padding: 1.2rem;
+    display: grid;
+    gap: 0.7rem;
+  }
+  .ev {
+    --b: var(--surface-2);
+    max-width: 86%;
+    padding: 0.7rem 0.95rem;
+    border-radius: 16px;
+    font-size: 0.92rem;
+    line-height: 1.4;
+    background: var(--b);
+    border: 1px solid var(--line);
+  }
+  .ev p {
+    margin: 0;
+  }
+  .ev--in {
+    justify-self: start;
+    border-bottom-left-radius: 5px;
+  }
+  .ev--out {
+    justify-self: end;
+    background: var(--green);
+    color: #fff;
+    border-color: transparent;
+    border-bottom-right-radius: 5px;
+  }
+  .ev__tag {
+    display: inline-block;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    margin-bottom: 0.4rem;
+  }
+  .ev__tag--tel {
+    background: var(--coral-100);
+    color: var(--coral-700);
+  }
+  .ev__tag--wa {
+    background: var(--green-100);
+    color: var(--green-700);
+  }
+  .ev--booked {
+    max-width: 100%;
+    justify-self: stretch;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: linear-gradient(120deg, var(--coral-050), var(--surface));
+    border: 1.5px solid var(--coral-100);
+    padding: 0.9rem 1rem;
+  }
+  .ev__check {
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--coral);
+    color: #fff;
+    font-weight: 800;
+    display: grid;
+    place-items: center;
+    box-shadow: var(--shadow-coral);
+  }
+  .ev__booked-title {
+    font-weight: 700;
+    font-family: var(--font-head);
+  }
+  .ev__booked-sub {
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  .demo-channels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+  .demo-channels__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-sm);
+  }
+  .demo-channels__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--coral);
+  }
+  .demo-channels__item--chat .demo-channels__dot {
+    background: var(--green);
+  }
+  .demo-channels__item--wa .demo-channels__dot {
+    background: var(--wa-green);
+  }
+  .demo-channels__item--agenda .demo-channels__dot {
+    background: var(--taupe);
+  }
+
+  @media (max-width: 920px) {
+    .hero__inner {
+      grid-template-columns: 1fr;
+    }
+    .hero__copy {
+      max-width: 100%;
+    }
+    .hero__demo {
+      order: 2;
+    }
+  }
+</style>

@@ -1,0 +1,140 @@
+---
+const features = [
+  "Risponde a ogni chiamata con voce naturale, giorno e notte",
+  "Capisce le richieste su orari, prezzi, servizi e disponibilità",
+  "Fissa l'appuntamento e invia subito la conferma",
+  "Riconosce le urgenze e le trasferisce direttamente a te",
+  "Gestisce più chiamate insieme: il telefono non è mai occupato",
+];
+---
+
+<article class="pillar pillar--tel">
+  <div class="pillar__body">
+    <span class="pillar__kicker">
+      <span class="pillar__kicker-ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/>
+        </svg>
+      </span>
+      Centralino AI
+    </span>
+    <h3 class="pillar__title">Risponde a ogni chiamata, anche quando tu non puoi.</h3>
+    <p class="pillar__desc">
+      SofIA solleva la cornetta al posto tuo. Parla con voce naturale e si
+      adatta alla lingua di chi chiama, capisce cosa serve al cliente e chiude
+      la prenotazione — senza farti perdere una chiamata.
+    </p>
+    <ul class="pillar__list">
+      {features.map((f) => <li>{f}</li>)}
+    </ul>
+  </div>
+
+  <div class="pillar__visual">
+    <div class="pillar__card call">
+      <div class="call__top">
+        <span class="call__ring" aria-hidden="true"></span>
+        <div>
+          <p class="call__label">Chiamata in arrivo</p>
+          <p class="call__num">+39 333 8 ·· ·· 41</p>
+        </div>
+        <span class="call__timer">00:18</span>
+      </div>
+      <div class="call__wave" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="call__line"><span class="call__who">Cliente</span>«Avete posto per un taglio domani?»</div>
+      <div class="call__line call__line--sofia"><span class="call__who">SofIA</span>Sì! Domani alle 15:30 con Marco. Confermo?</div>
+    </div>
+  </div>
+</article>
+
+<style>
+  .pillar--tel {
+    --pa: var(--coral);
+    --pa-soft: var(--coral-100);
+    --pa-ink: var(--coral-700);
+  }
+  .call__top {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1.1rem 1.2rem;
+    background: var(--coral-050);
+    border-bottom: 1px solid var(--line);
+  }
+  .call__ring {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--coral);
+    box-shadow: 0 0 0 0 rgba(255, 95, 73, 0.5);
+    animation: pulse 1.6s ease-out infinite;
+  }
+  .call__label {
+    font-weight: 700;
+    font-family: var(--font-head);
+    line-height: 1.1;
+  }
+  .call__num {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .call__timer {
+    margin-left: auto;
+    font-weight: 700;
+    color: var(--coral-700);
+    font-variant-numeric: tabular-nums;
+  }
+  .call__wave {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 4px;
+    height: 46px;
+    padding: 0.6rem 1.2rem;
+  }
+  .call__wave span {
+    width: 4px;
+    border-radius: 4px;
+    background: var(--coral);
+    animation: callWave 1s ease-in-out infinite;
+  }
+  .call__wave span:nth-child(odd) {
+    background: var(--green);
+  }
+  .call__wave span:nth-child(1) { height: 30%; animation-delay: 0s; }
+  .call__wave span:nth-child(2) { height: 70%; animation-delay: 0.1s; }
+  .call__wave span:nth-child(3) { height: 45%; animation-delay: 0.2s; }
+  .call__wave span:nth-child(4) { height: 100%; animation-delay: 0.3s; }
+  .call__wave span:nth-child(5) { height: 55%; animation-delay: 0.4s; }
+  .call__wave span:nth-child(6) { height: 80%; animation-delay: 0.5s; }
+  .call__wave span:nth-child(7) { height: 35%; animation-delay: 0.6s; }
+  @keyframes callWave {
+    0%, 100% { transform: scaleY(0.4); }
+    50% { transform: scaleY(1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .call__wave span, .call__ring { animation: none; }
+  }
+  .call__line {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    line-height: 1.45;
+  }
+  .call__line:last-child {
+    padding-bottom: 1.1rem;
+  }
+  .call__who {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 0.15rem;
+  }
+  .call__line--sofia .call__who {
+    color: var(--coral-700);
+  }
+</style>

@@ -1,0 +1,81 @@
+/* Hallmark · portable design tokens — SofIA "Vivid Narrative"
+ * Source of truth lives in src/styles/global.css; this file is the portable
+ * export for reuse across the Sofia vertical landing pages. Keep in sync. */
+:root {
+  /* brand */
+  --coral: #ff5f49;
+  --coral-600: #ed4a33;
+  --coral-700: #cf3a25;
+  --coral-100: #ffe4dc;
+  --coral-050: #fff1ec;
+
+  --green: #4a5d50;
+  --green-700: #3a4a40;
+  --green-900: #28332c;
+  --green-100: #dde6df;
+  --green-050: #eef2ee;
+
+  --cream: #f9f5e3;
+  --cream-soft: #fdfbf1;
+
+  --taupe: #88726f;
+  --taupe-300: #b6a6a3;
+  --taupe-050: #ece3e1;
+  --taupe-700: #6b5754;
+
+  /* mock-UI accents */
+  --wa-green: #1faa59;
+  --wa-green-ink: #128046;
+  --wa-green-soft: #d8f3e2;
+  --wa-paper: #e6ddd3;
+  --wa-bubble-out: #dcf8c6;
+  --wa-meta: #6b8a72;
+  --mint: #7fe0a3;
+
+  /* glows */
+  --glow-coral: rgba(255, 95, 73, 0.5);
+  --glow-coral-soft: rgba(255, 95, 73, 0.18);
+  --glow-green: rgba(74, 93, 80, 0.4);
+
+  /* semantic */
+  --bg: var(--cream);
+  --surface: #fffefa;
+  --surface-2: var(--cream-soft);
+  --ink: #241f1d;
+  --ink-soft: #4c4441;
+  --muted: var(--taupe);
+  --line: rgba(36, 31, 29, 0.1);
+  --line-strong: rgba(36, 31, 29, 0.16);
+  --accent: var(--coral);
+
+  /* type */
+  --font-head: "Syne", system-ui, -apple-system, sans-serif;
+  --font-body: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+
+  /* type scale */
+  --step--1: clamp(0.83rem, 0.8rem + 0.15vw, 0.92rem);
+  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.12rem);
+  --step-1: clamp(1.2rem, 1.1rem + 0.5vw, 1.5rem);
+  --step-2: clamp(1.5rem, 1.3rem + 1vw, 2.1rem);
+  --step-3: clamp(2rem, 1.6rem + 2vw, 3rem);
+  --step-4: clamp(2.6rem, 1.9rem + 3.4vw, 4.6rem);
+  --step-5: clamp(3.2rem, 2rem + 5.4vw, 6.2rem);
+
+  /* space + shape */
+  --gutter: clamp(1.2rem, 0.8rem + 2vw, 2.4rem);
+  --section-y: clamp(4rem, 2.5rem + 6vw, 8rem);
+  --radius: 18px;
+  --radius-lg: 28px;
+  --radius-sm: 12px;
+  --maxw: 1200px;
+
+  --shadow-sm: 0 2px 8px rgba(36, 31, 29, 0.06);
+  --shadow-md: 0 12px 32px rgba(36, 31, 29, 0.1);
+  --shadow-lg: 0 28px 70px rgba(36, 31, 29, 0.16);
+  --shadow-coral: 0 14px 38px rgba(255, 95, 73, 0.34);
+
+  /* motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-reveal: 0.7s;
+}

@@ -1,0 +1,130 @@
+---
+const features = [
+  "Risponde ai messaggi dei clienti sul canale che usano già",
+  "Invia conferme e promemoria appuntamento automatici",
+  "Recall e follow-up post-visita senza che tu muova un dito",
+  "Campagne outbound programmate: promozioni e richiami periodici",
+  "Riduce i no-show ricordando l'appuntamento al momento giusto",
+];
+---
+
+<article class="pillar pillar--wa">
+  <div class="pillar__body">
+    <span class="pillar__kicker">
+      <span class="pillar__kicker-ico">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2Zm5.8 14.01c-.25.69-1.45 1.32-2 1.36-.55.04-1.06.24-3.55-.74-3-1.18-4.92-4.25-5.07-4.45-.15-.2-1.22-1.62-1.22-3.09 0-1.47.77-2.19 1.05-2.49.28-.3.6-.37.8-.37.2 0 .4 0 .57.01.18.01.43-.07.67.51.25.6.85 2.07.92 2.22.07.15.12.32.02.52-.1.2-.15.32-.3.5-.15.17-.32.39-.45.52-.15.15-.31.31-.13.61.17.3.77 1.27 1.65 2.06 1.13 1.01 2.09 1.32 2.39 1.47.3.15.47.12.65-.07.17-.2.74-.87.94-1.16.2-.3.4-.25.67-.15.27.1 1.72.81 2.01.96.3.15.5.22.57.35.07.12.07.72-.18 1.41Z"/>
+        </svg>
+      </span>
+      WhatsApp Business
+    </span>
+    <h3 class="pillar__title">Conferme, promemoria e follow-up. Direttamente su WhatsApp.</h3>
+    <p class="pillar__desc">
+      I tuoi clienti vivono su WhatsApp. SofIA chatta, conferma e ricorda gli
+      appuntamenti proprio lì — e lancia campagne di richiamo quando vuoi tu.
+    </p>
+    <ul class="pillar__list">
+      {features.map((f) => <li>{f}</li>)}
+    </ul>
+  </div>
+
+  <div class="pillar__visual">
+    <div class="pillar__card wa">
+      <div class="wa__head">
+        <span class="wa__avatar">S</span>
+        <div>
+          <p class="wa__name">SofIA · Studio Rapone</p>
+          <p class="wa__status">online</p>
+        </div>
+      </div>
+      <div class="wa__body">
+        <div class="wa-b wa-b--out">
+          Ciao Eugenio! Ti ricordo l'appuntamento di domani <b>13 gen alle 10:00</b> per la pulizia dentale 🦷
+          <span class="wa-b__time">9:41 ✓✓</span>
+        </div>
+        <div class="wa-b wa-b--in">
+          Grazie! Ci sarò
+          <span class="wa-b__time">9:43</span>
+        </div>
+        <div class="wa-b wa-b--out">
+          Perfetto, a domani! Per spostarlo basta rispondere qui 😊
+          <span class="wa-b__time">9:43 ✓✓</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<style>
+  .pillar--wa {
+    --pa: var(--wa-green);
+    --pa-soft: var(--wa-green-soft);
+    --pa-ink: var(--wa-green-ink);
+  }
+  .wa {
+    background: var(--wa-paper);
+  }
+  .wa__head {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.85rem 1.1rem;
+    background: var(--wa-green);
+    color: #fff;
+  }
+  .wa__avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    display: grid;
+    place-items: center;
+    font-family: var(--font-head);
+    font-weight: 800;
+  }
+  .wa__name {
+    font-weight: 700;
+    line-height: 1.1;
+  }
+  .wa__status {
+    font-size: 0.74rem;
+    opacity: 0.9;
+  }
+  .wa__body {
+    padding: 1.1rem;
+    display: grid;
+    gap: 0.55rem;
+    background:
+      radial-gradient(circle at 20% 10%, rgba(255, 255, 255, 0.4), transparent 30%),
+      var(--wa-paper);
+  }
+  .wa-b {
+    position: relative;
+    max-width: 86%;
+    padding: 0.55rem 0.8rem 1.1rem;
+    border-radius: 12px;
+    font-size: 0.88rem;
+    line-height: 1.4;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
+  }
+  .wa-b--out {
+    justify-self: end;
+    background: var(--wa-bubble-out);
+    border-top-right-radius: 4px;
+  }
+  .wa-b--in {
+    justify-self: start;
+    background: var(--surface);
+    border-top-left-radius: 4px;
+  }
+  .wa-b__time {
+    position: absolute;
+    right: 0.7rem;
+    bottom: 0.35rem;
+    font-size: 0.66rem;
+    color: var(--wa-meta);
+  }
+  .wa-b--in .wa-b__time {
+    color: var(--muted);
+  }
+</style>

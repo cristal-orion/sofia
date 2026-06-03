@@ -1,0 +1,158 @@
+---
+const cards = [
+  {
+    tag: "Report giornaliero",
+    title: "Ogni sera, il riepilogo di cosa è successo",
+    body: "Quante chiamate, quanti appuntamenti fissati, richieste ricorrenti e anomalie. Apri l'app e sai tutto in 30 secondi.",
+    span: true,
+  },
+  {
+    tag: "Knowledge base",
+    title: "Impara ad ogni conversazione",
+    body: "Ogni nuova informazione viene appresa. SofIA diventa più precisa ogni giorno.",
+  },
+  {
+    tag: "Supporto decisioni",
+    title: "Trend e orari di picco",
+    body: "Scopri cosa chiedono davvero i clienti e quando, per decidere meglio.",
+  },
+  {
+    tag: "Contatti",
+    title: "Storico e preferenze",
+    body: "Ogni cliente registrato in automatico, con tutte le conversazioni.",
+  },
+];
+---
+
+<section class="section oltre" id="oltre">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <h2>SofIA non aspetta. <span class="text-coral">Agisce.</span></h2>
+      <p class="lead">
+        Non si limita a rispondere: analizza, ricorda e ti racconta tutto.
+        Come avere una segretaria che lavora 24 ore al giorno e non dimentica
+        mai niente.
+      </p>
+    </div>
+
+    <div class="bento">
+      <article class="bento__card bento__card--wide" data-reveal>
+        <span class="bento__tag">{cards[0].tag}</span>
+        <h3 class="bento__title">{cards[0].title}</h3>
+        <p class="bento__body">{cards[0].body}</p>
+        <div class="report" aria-hidden="true">
+          <div class="report__row">
+            <span class="report__num">23</span><span class="report__lbl">chiamate gestite</span>
+          </div>
+          <div class="report__row">
+            <span class="report__num report__num--coral">12</span><span class="report__lbl">appuntamenti fissati</span>
+          </div>
+          <div class="report__row">
+            <span class="report__num report__num--green">0</span><span class="report__lbl">clienti persi</span>
+          </div>
+        </div>
+      </article>
+
+      {cards.slice(1).map((c) => (
+        <article class="bento__card" data-reveal>
+          <span class="bento__tag">{c.tag}</span>
+          <h3 class="bento__title">{c.title}</h3>
+          <p class="bento__body">{c.body}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(0.8rem, 0.4rem + 1.4vw, 1.4rem);
+  }
+  .bento__card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.4rem, 1rem + 1.5vw, 2rem);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .bento__card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+  }
+  .bento__card--wide {
+    grid-column: span 1;
+    grid-row: span 2;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(160deg, var(--green) 0%, var(--green-900) 100%);
+    color: #fff;
+    border-color: transparent;
+  }
+  .bento__tag {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--coral-700);
+  }
+  .bento__card--wide .bento__tag {
+    color: #ffd9d0;
+  }
+  .bento__title {
+    font-size: var(--step-1);
+    margin: 0.7rem 0 0.5rem;
+    color: inherit;
+  }
+  .bento__body {
+    color: var(--ink-soft);
+    font-size: 0.96rem;
+  }
+  .bento__card--wide .bento__body {
+    color: rgba(255, 255, 255, 0.82);
+  }
+  .report {
+    margin-top: auto;
+    padding-top: 1.4rem;
+    display: grid;
+    gap: 0.7rem;
+  }
+  .report__row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    padding-top: 0.7rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+  }
+  .report__num {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 1.8rem;
+    line-height: 1;
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+  }
+  .report__num--coral { color: var(--coral); }
+  .report__num--green { color: var(--mint); }
+  .report__lbl {
+    font-size: 0.86rem;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  @media (max-width: 860px) {
+    .bento {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .bento__card--wide {
+      grid-column: 1 / -1;
+      grid-row: auto;
+    }
+  }
+  @media (max-width: 520px) {
+    .bento {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,55 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "SofIA — Il gestionale di appuntamenti che lavora al telefono per te",
+  description = "SofIA risponde al telefono, chatta sul sito, scrive su WhatsApp e gestisce la tua agenda. L'assistente AI proattivo che fissa appuntamenti e non perde mai un cliente, 24/7.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="it" class="no-js">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/webp" href="/sofia-logo-mark.webp" />
+    <link rel="apple-touch-icon" href="/sofia-logo-mark.png" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#ff5f49" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:locale" content="it_IT" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script is:inline>
+      // Hide reveal elements from first paint (no flash). If the bundled GSAP
+      // script never runs (load error), the fallback timer reveals everything
+      // so content is never permanently invisible.
+      document.documentElement.classList.remove("no-js");
+      document.documentElement.classList.add("reveal-on");
+      window.__revealFallback = setTimeout(function () {
+        document
+          .querySelectorAll("[data-reveal], [data-hero], [data-ev]")
+          .forEach(function (el) {
+            el.classList.add("is-in");
+          });
+      }, 2000);
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

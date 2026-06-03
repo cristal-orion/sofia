@@ -1,0 +1,94 @@
+---
+const mailto =
+  "mailto:info@affinitylab.it?subject=Richiesta%20demo%20SofIA&body=Ciao%2C%20vorrei%20una%20demo%20di%20SofIA%20per%20la%20mia%20attivit%C3%A0.";
+---
+
+<section class="section cta" id="prova">
+  <div class="container">
+    <div class="cta__box" data-reveal>
+      <span class="cta__grid" aria-hidden="true"></span>
+      <div class="cta__content">
+        <span class="pill"><span class="dot-live"></span> Demo live · 3 minuti gratis</span>
+        <h2 class="cta__title">Parla con SofIA. Adesso.</h2>
+        <p class="cta__lead">
+          Non leggere come funziona: provala. Scegli uno scenario e fai una
+          chiamata vera, direttamente dal browser.
+        </p>
+        <div class="cta__actions">
+          <button class="btn btn--primary btn--lg" data-trial-open>
+            <span class="dot-live"></span> Avvia la prova gratuita
+          </button>
+          <a href={mailto} class="btn btn--inverted btn--lg">Richiedi una demo</a>
+        </div>
+        <p class="cta__note">Nessun impegno · Nessuna carta · Voce naturale multilingua</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta__box {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    padding: clamp(2.5rem, 1.5rem + 5vw, 5.5rem) var(--gutter);
+    background: linear-gradient(150deg, var(--coral) 0%, var(--coral-700) 100%);
+    color: #fff;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+  }
+  .cta__grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(ellipse at center, #000, transparent 72%);
+    -webkit-mask-image: radial-gradient(ellipse at center, #000, transparent 72%);
+  }
+  .cta__content {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 1.1rem;
+    justify-items: center;
+    max-width: 620px;
+    margin-inline: auto;
+  }
+  .cta .pill {
+    background: rgba(255, 255, 255, 0.18);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+  .cta .pill .dot-live {
+    background: #fff;
+  }
+  .cta__title {
+    color: #fff;
+    font-size: var(--step-4);
+  }
+  .cta__lead {
+    font-size: var(--step-1);
+    color: rgba(255, 255, 255, 0.92);
+  }
+  .cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    justify-content: center;
+    margin-top: 0.4rem;
+  }
+  .cta__actions .btn--primary {
+    background: #fff;
+    color: var(--coral-700);
+  }
+  .cta__actions .btn--primary:hover {
+    background: var(--cream);
+  }
+  .cta__note {
+    font-size: 0.86rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 600;
+  }
+</style>

@@ -1,0 +1,66 @@
+---
+const settori = [
+  "Studi medici e dentistici",
+  "Autosaloni e concessionarie",
+  "Centri estetici",
+  "Ristoranti",
+  "Palestre",
+  "Hotel e B&B",
+  "Saloni e parrucchieri",
+  "Studi legali",
+  "Officine",
+  "Centri benessere",
+];
+---
+
+<section class="section settori" id="settori">
+  <div class="container">
+    <div class="section-head section-head--center" data-reveal>
+      <h2>Una configurazione, il tuo settore.</h2>
+      <p class="lead">
+        Dalla dashboard imposti SofIA in pochi minuti per la tua attività. Le
+        regole, i servizi e il tono di voce li scegli tu.
+      </p>
+    </div>
+
+    <ul class="settori__cloud">
+      {settori.map((s) => <li class="settori__chip">{s}</li>)}
+      <li class="settori__chip settori__chip--more">+ il tuo</li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .settori__cloud {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.7rem;
+    max-width: 900px;
+    margin-inline: auto;
+  }
+  .settori__chip {
+    padding: 0.7rem 1.2rem;
+    border-radius: 999px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  }
+  .settori__chip:hover {
+    transform: translateY(-3px);
+    border-color: var(--coral);
+    color: var(--coral-700);
+  }
+  .settori__chip--more {
+    background: var(--green);
+    color: #fff;
+    border-color: transparent;
+  }
+  .settori__chip--more:hover {
+    color: #fff;
+    border-color: transparent;
+  }
+</style>

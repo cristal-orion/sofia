@@ -1,0 +1,167 @@
+---
+const features = [
+  "Prenota, sposta e cancella gli appuntamenti in autonomia",
+  "Promemoria telefonici automatici prima di ogni visita",
+  "Pianificatore di chiamate outbound: richiami e follow-up",
+  "Ogni contatto con storico conversazioni e preferenze",
+  "Si sincronizza con il calendario e gli strumenti che già usi",
+];
+
+const days = [
+  { n: 29, mut: true }, { n: 30, mut: true }, { n: 31, mut: true },
+  { n: 1 }, { n: 2 }, { n: 3 }, { n: 4 },
+  { n: 5 }, { n: 6 }, { n: 7 }, { n: 8 }, { n: 9 }, { n: 10 }, { n: 11 },
+  { n: 12 }, { n: 13, active: true, dot: "coral" }, { n: 14 }, { n: 15 },
+  { n: 16 }, { n: 17 }, { n: 18 },
+  { n: 19 }, { n: 20, dot: "green" }, { n: 21 },
+];
+---
+
+<article class="pillar pillar--agenda">
+  <div class="pillar__body">
+    <span class="pillar__kicker">
+      <span class="pillar__kicker-ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2"/>
+          <path d="M16 2v4M8 2v4M3 10h18"/>
+        </svg>
+      </span>
+      Gestionale agenda
+    </span>
+    <h3 class="pillar__title">L'agenda che si gestisce da sola, e ti tiene aggiornato.</h3>
+    <p class="pillar__desc">
+      Il cuore di SofIA. Tutti gli appuntamenti, i contatti e i promemoria in un
+      unico posto — aggiornati in tempo reale da ogni telefonata, chat e
+      messaggio.
+    </p>
+    <ul class="pillar__list">
+      {features.map((f) => <li>{f}</li>)}
+    </ul>
+  </div>
+
+  <div class="pillar__visual">
+    <div class="pillar__card cal">
+      <div class="cal__head">
+        <span class="cal__title">Gennaio 2026</span>
+        <span class="pill"><span class="dot-live"></span> Sincronizzato</span>
+      </div>
+      <div class="cal__weekdays">
+        <span>L</span><span>M</span><span>M</span><span>G</span><span>V</span><span>S</span><span>D</span>
+      </div>
+      <div class="cal__grid">
+        {days.map((d) => (
+          <span class:list={["cal__day", { "is-mut": d.mut, "is-active": d.active }]}>
+            {d.n}
+            {d.dot && <i class:list={["cal__dot", `cal__dot--${d.dot}`]}></i>}
+          </span>
+        ))}
+      </div>
+      <div class="cal__next">
+        <span class="cal__chip">13 GEN · 10:00</span>
+        <div>
+          <p class="cal__next-name">Eugenio · Pulizia dentale</p>
+          <p class="cal__next-sub">Promemoria telefonico inviato ✓</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+<style>
+  .pillar--agenda {
+    --pa: var(--taupe);
+    --pa-soft: var(--taupe-050);
+    --pa-ink: var(--taupe-700);
+  }
+  .cal {
+    padding: 1.2rem;
+  }
+  .cal__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.9rem;
+  }
+  .cal__title {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+  .cal__weekdays,
+  .cal__grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+  .cal__weekdays {
+    margin-bottom: 4px;
+  }
+  .cal__weekdays span {
+    text-align: center;
+    font-size: 0.66rem;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+  .cal__day {
+    position: relative;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    border-radius: 9px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--surface-2);
+  }
+  .cal__day.is-mut {
+    color: var(--taupe-300);
+    background: transparent;
+  }
+  .cal__day.is-active {
+    background: var(--coral);
+    color: #fff;
+    box-shadow: var(--shadow-coral);
+  }
+  .cal__dot {
+    position: absolute;
+    bottom: 5px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+  }
+  .cal__dot--coral { background: #fff; }
+  .cal__dot--green { background: var(--green); }
+  .cal__next {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: 1rem;
+    padding: 0.8rem;
+    border-radius: 14px;
+    background: var(--coral-050);
+    border: 1px solid var(--coral-100);
+  }
+  .cal__chip {
+    flex-shrink: 0;
+    padding: 0.5rem 0.6rem;
+    border-radius: 10px;
+    background: var(--coral);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-align: center;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+  }
+  .cal__next-name {
+    font-weight: 700;
+    font-family: var(--font-head);
+    font-size: 0.95rem;
+  }
+  .cal__next-sub {
+    font-size: 0.78rem;
+    color: var(--green-700);
+    font-weight: 600;
+  }
+</style>

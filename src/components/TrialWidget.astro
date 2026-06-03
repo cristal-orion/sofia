@@ -1,0 +1,509 @@
+---
+// "Prova SofIA" live demo widget — ported from affinitylab.it.
+// Same Ultravox WebRTC flow + backend endpoint, restyled to Vivid Narrative.
+const scenarios = [
+  { value: "sofia", label: "SofIA — receptionist di Affinity Lab" },
+  { value: "autosalone", label: "Autosalone — info auto e test drive" },
+  { value: "estetica", label: "Centro estetico — prenotazioni" },
+  { value: "ristorante", label: "Ristorante — prenota un tavolo" },
+  { value: "palestra", label: "Palestra — abbonamenti e corsi" },
+  { value: "studio_medico", label: "Studio medico — prenota una visita" },
+  { value: "hotel", label: "Hotel — disponibilità e camere" },
+];
+---
+
+<button id="sofia-trial-fab" type="button" aria-label="Prova SofIA gratis">
+  <span class="sfab__pulse" aria-hidden="true"></span>
+  <span class="sfab__label">
+    <span class="sfab__prefix">Prova</span>
+    <span class="sfab__name">SofIA</span>
+  </span>
+  <span class="sfab__arrow" aria-hidden="true">→</span>
+</button>
+
+<div id="sofia-trial-panel" role="dialog" aria-labelledby="sofia-trial-title" aria-modal="false">
+  <div class="strial__head">
+    <div>
+      <span class="strial__tag">Live demo</span>
+      <h4 id="sofia-trial-title" class="strial__title">Prova SofIA al telefono</h4>
+      <span class="strial__subtitle">Scegli uno scenario · 3 minuti gratis</span>
+    </div>
+    <button type="button" id="sofia-trial-close" aria-label="Chiudi">&times;</button>
+  </div>
+
+  <div class="strial__body">
+    <div class="strial__scenario">
+      <label for="sofia-trial-agent">Con chi vuoi parlare</label>
+      <select id="sofia-trial-agent" aria-label="Scegli lo scenario">
+        {scenarios.map((s) => <option value={s.value}>{s.label}</option>)}
+      </select>
+    </div>
+
+    <div id="sofia-trial-status">
+      <span class="dot"></span>
+      <span class="msg">Pronta a partire</span>
+      <span id="sofia-trial-wave" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+      <span id="sofia-trial-timer"></span>
+    </div>
+
+    <div id="sofia-trial-actions">
+      <button type="button" id="sofia-trial-start" class="sbtn-primary">Avvia chiamata</button>
+      <button type="button" id="sofia-trial-mute" class="sbtn-ghost" disabled>Muto</button>
+      <button type="button" id="sofia-trial-hangup" class="sbtn-danger" disabled>Termina</button>
+    </div>
+
+    <div class="strial__foot">
+      <span>SofIA · v1.0</span>
+      <span><span class="accent">●</span> WebRTC secure</span>
+    </div>
+  </div>
+</div>
+
+<style is:global>
+  #sofia-trial-fab {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 2147483000;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 20px 13px 16px;
+    background: linear-gradient(180deg, var(--coral) 0%, var(--coral-600) 100%);
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    font-family: var(--font-body);
+    cursor: pointer;
+    box-shadow: var(--shadow-coral);
+    transition: transform 0.15s ease, box-shadow 0.25s ease;
+  }
+  #sofia-trial-fab:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 44px rgba(255, 95, 73, 0.5);
+  }
+  #sofia-trial-fab .sfab__pulse {
+    position: relative;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #fff;
+  }
+  #sofia-trial-fab .sfab__pulse::after {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 1.5px solid #fff;
+    opacity: 0.8;
+    animation: sofiaRing 1.8s ease-out infinite;
+  }
+  @keyframes sofiaRing {
+    0% { transform: scale(0.7); opacity: 0.8; }
+    100% { transform: scale(2.1); opacity: 0; }
+  }
+  #sofia-trial-fab .sfab__label {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 5px;
+  }
+  #sofia-trial-fab .sfab__prefix {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
+  #sofia-trial-fab .sfab__name {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 15px;
+  }
+  #sofia-trial-fab .sfab__arrow {
+    font-weight: 700;
+    transition: transform 0.2s ease;
+  }
+  #sofia-trial-fab:hover .sfab__arrow {
+    transform: translateX(3px);
+  }
+
+  #sofia-trial-panel {
+    position: fixed;
+    right: 24px;
+    bottom: 90px;
+    z-index: 2147483000;
+    width: 350px;
+    max-width: calc(100vw - 32px);
+    background: var(--surface);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    box-shadow: var(--shadow-lg);
+    font-family: var(--font-body);
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    pointer-events: none;
+  }
+  #sofia-trial-panel.is-open {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+  #sofia-trial-panel::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--coral) 0%, var(--green) 100%);
+  }
+  .strial__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 18px 18px 14px;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface-2);
+  }
+  .strial__tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--coral-700);
+  }
+  .strial__title {
+    margin: 5px 0 0;
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--ink);
+  }
+  .strial__subtitle {
+    display: block;
+    margin-top: 3px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  #sofia-trial-close {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  #sofia-trial-close:hover {
+    color: var(--ink);
+    border-color: var(--coral);
+  }
+  .strial__body {
+    padding: 16px 18px 18px;
+  }
+  .strial__scenario {
+    margin-bottom: 14px;
+  }
+  .strial__scenario label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  #sofia-trial-agent {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    height: 44px;
+    padding: 0 38px 0 14px;
+    border-radius: 12px;
+    background-color: var(--surface-2);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 13px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23ff5f49' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    transition: border-color 0.15s, box-shadow 0.2s;
+  }
+  #sofia-trial-agent:focus {
+    outline: none;
+    border-color: var(--coral);
+    box-shadow: 0 0 0 3px rgba(255, 95, 73, 0.18);
+  }
+  #sofia-trial-agent:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  #sofia-trial-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 14px;
+    margin-bottom: 14px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    font-size: 12.5px;
+    font-weight: 500;
+  }
+  #sofia-trial-status .dot {
+    flex-shrink: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--taupe-300);
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+  #sofia-trial-status.is-live .dot {
+    background: var(--coral);
+    box-shadow: 0 0 0 0 rgba(255, 95, 73, 0.5);
+    animation: pulse 1.4s ease-out infinite;
+  }
+  #sofia-trial-status.is-error .dot {
+    background: var(--coral-700);
+  }
+  #sofia-trial-status .msg {
+    flex: 1;
+  }
+  #sofia-trial-timer {
+    font-size: 11px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+  }
+  #sofia-trial-wave {
+    display: none;
+    align-items: flex-end;
+    gap: 3px;
+    height: 18px;
+  }
+  #sofia-trial-status.is-live #sofia-trial-wave {
+    display: inline-flex;
+  }
+  #sofia-trial-wave span {
+    width: 2px;
+    background: var(--coral);
+    border-radius: 2px;
+    animation: sofiaWave 1.2s ease-in-out infinite;
+  }
+  #sofia-trial-wave span:nth-child(1) { animation-delay: 0s; height: 30%; }
+  #sofia-trial-wave span:nth-child(2) { animation-delay: 0.15s; height: 70%; }
+  #sofia-trial-wave span:nth-child(3) { animation-delay: 0.3s; height: 50%; }
+  #sofia-trial-wave span:nth-child(4) { animation-delay: 0.45s; height: 90%; }
+  @keyframes sofiaWave {
+    0%, 100% { transform: scaleY(0.4); }
+    50% { transform: scaleY(1); }
+  }
+  #sofia-trial-actions {
+    display: flex;
+    gap: 8px;
+  }
+  #sofia-trial-actions button {
+    flex: 1;
+    cursor: pointer;
+    height: 42px;
+    padding: 0 12px;
+    border-radius: 12px;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 12.5px;
+    border: 1px solid transparent;
+    transition: transform 0.12s ease, opacity 0.12s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s;
+  }
+  #sofia-trial-actions button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  #sofia-trial-actions button:not(:disabled):hover {
+    transform: translateY(-1px);
+  }
+  .sbtn-primary {
+    background: var(--coral);
+    color: #fff;
+    box-shadow: var(--shadow-coral);
+  }
+  .sbtn-ghost {
+    background: transparent;
+    color: var(--ink);
+    border-color: var(--line);
+  }
+  .sbtn-ghost:not(:disabled):hover {
+    border-color: var(--taupe);
+  }
+  .sbtn-danger {
+    background: transparent;
+    color: var(--green-700);
+    border-color: var(--green-100);
+  }
+  .sbtn-danger:not(:disabled):hover {
+    border-color: var(--green);
+    background: var(--green-050);
+  }
+  .strial__foot {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .strial__foot .accent {
+    color: var(--green);
+  }
+</style>
+
+<script is:inline type="module">
+  import { UltravoxSession } from "https://esm.sh/ultravox-client@0.3.6";
+
+  const TRIAL_ENDPOINT = "https://app.affinitylab.it:8443/api/web-trial/start";
+
+  const fab = document.getElementById("sofia-trial-fab");
+  const panel = document.getElementById("sofia-trial-panel");
+  const close = document.getElementById("sofia-trial-close");
+  const status = document.getElementById("sofia-trial-status");
+  const msg = status.querySelector(".msg");
+  const timer = document.getElementById("sofia-trial-timer");
+  const btnStart = document.getElementById("sofia-trial-start");
+  const btnMute = document.getElementById("sofia-trial-mute");
+  const btnHangup = document.getElementById("sofia-trial-hangup");
+  const agentSel = document.getElementById("sofia-trial-agent");
+
+  let session = null;
+  let muted = false;
+  let countdownId = null;
+
+  function setStatus(text, kind) {
+    msg.textContent = text;
+    status.classList.remove("is-live", "is-error");
+    if (kind) status.classList.add("is-" + kind);
+  }
+  function format(s) {
+    const m = Math.floor(s / 60),
+      r = s % 60;
+    return m + ":" + String(r).padStart(2, "0");
+  }
+  function startCountdown(seconds) {
+    let left = seconds;
+    timer.textContent = format(left);
+    clearInterval(countdownId);
+    countdownId = setInterval(() => {
+      left -= 1;
+      if (left <= 0) {
+        clearInterval(countdownId);
+        timer.textContent = "";
+        return;
+      }
+      timer.textContent = format(left);
+    }, 1000);
+  }
+
+  function openPanel() {
+    panel.classList.add("is-open");
+  }
+  fab.addEventListener("click", () => panel.classList.toggle("is-open"));
+  close.addEventListener("click", () => panel.classList.remove("is-open"));
+
+  // Open the widget from any CTA on the page
+  document.querySelectorAll("[data-trial-open]").forEach((el) => {
+    el.addEventListener("click", (e) => {
+      e.preventDefault();
+      openPanel();
+    });
+  });
+
+  btnStart.addEventListener("click", async () => {
+    btnStart.disabled = true;
+    agentSel.disabled = true;
+    setStatus("Connessione...");
+    try {
+      const resp = await fetch(TRIAL_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ agent: agentSel.value }),
+      });
+      if (resp.status === 429) {
+        const data = await resp.json().catch(() => ({}));
+        setStatus(
+          (data && data.detail && data.detail.message) ||
+            "Limite orario raggiunto. Riprova tra un po'.",
+          "error",
+        );
+        btnStart.disabled = false;
+        agentSel.disabled = false;
+        return;
+      }
+      if (!resp.ok) throw new Error("HTTP " + resp.status);
+      const { joinUrl, maxDurationSeconds } = await resp.json();
+
+      session = new UltravoxSession();
+      session.addEventListener("status", () => {
+        const s = session.status;
+        if (s === "connecting" || s === "idle") setStatus("Connessione...");
+        else if (s === "speaking") setStatus("SofIA sta parlando", "live");
+        else if (s === "thinking") setStatus("SofIA sta pensando", "live");
+        else if (s === "listening") setStatus("In ascolto...", "live");
+        else if (s === "disconnected") endCall();
+      });
+
+      await session.joinCall(joinUrl);
+      btnMute.disabled = false;
+      btnHangup.disabled = false;
+      setStatus("In chiamata", "live");
+      startCountdown(maxDurationSeconds || 180);
+    } catch (e) {
+      console.error("[SofIA trial]", e);
+      setStatus("Errore di connessione. Riprova.", "error");
+      btnStart.disabled = false;
+      agentSel.disabled = false;
+    }
+  });
+
+  btnMute.addEventListener("click", () => {
+    if (!session) return;
+    muted = !muted;
+    if (muted) session.muteMic();
+    else session.unmuteMic();
+    btnMute.textContent = muted ? "Riattiva" : "Muto";
+  });
+
+  btnHangup.addEventListener("click", endCall);
+
+  async function endCall() {
+    clearInterval(countdownId);
+    timer.textContent = "";
+    if (session) {
+      try {
+        await session.leaveCall();
+      } catch {}
+      session = null;
+    }
+    muted = false;
+    btnMute.textContent = "Muto";
+    btnMute.disabled = true;
+    btnHangup.disabled = true;
+    btnStart.disabled = false;
+    agentSel.disabled = false;
+    setStatus("Chiamata terminata");
+  }
+</script>

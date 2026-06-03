@@ -1,0 +1,681 @@
+---
+/* "Dentro SofIA" — sticky-scroll product tour (Aceternity sticky-scroll-reveal
+   pattern, re-implemented in Astro + GSAP ScrollTrigger, warm Vivid Narrative).
+   Left = scrolling steps (active one highlighted); right = a sticky stage whose
+   dashboard mockup cross-fades to match the active step. The mockups are
+   HTML/CSS faux-UI — a preview of the future redesigned dashboard.
+   Robust fallback: without JS / reduced-motion it degrades to a stacked,
+   fully-readable list (the enhanced layout is opt-in via the `is-ready` flag). */
+
+const steps = [
+  {
+    n: "01",
+    tag: "Contatti",
+    title: "Ogni cliente, da ogni canale, in un posto solo",
+    body: "Telefono, WhatsApp, chat sul sito: SofIA registra in automatico chi ti contatta — anche i numeri che non conoscevi — con tutto lo storico delle conversazioni.",
+  },
+  {
+    n: "02",
+    tag: "Conversazioni",
+    title: "Il riassunto di ogni chiamata, già pronto",
+    body: "Non riascolti niente. SofIA ti scrive cosa voleva il cliente, com'è andata e quanto è durata — e vedi a colpo d'occhio risposte e chiamate perse.",
+  },
+  {
+    n: "03",
+    tag: "Agenda",
+    title: "Gli appuntamenti si sincronizzano da soli",
+    body: "SofIA prenota e scrive direttamente sul tuo calendario. Tu apri l'agenda e trovi i posti già riempiti, con i promemoria pronti.",
+  },
+  {
+    n: "04",
+    tag: "Pianifica",
+    title: "Richiama i tuoi clienti. Da sola.",
+    body: "Promemoria, conferme, follow-up: scegli i contatti e l'orario e SofIA fa le chiamate in uscita al posto tuo.",
+  },
+  {
+    n: "05",
+    tag: "Assistente AI",
+    title: "Ti racconta com'è andata. E risponde alle tue domande",
+    body: "Ricevi recap automatici in italiano e chiedi qualsiasi cosa sui tuoi dati: «quante chiamate oggi?», «cosa chiedono di più i clienti?».",
+  },
+];
+
+const apptDays = new Set([3, 9, 14, 20, 21]);
+const calDays = Array.from({ length: 28 }, (_, i) => i + 1);
+---
+
+<section class="section tour" id="dashboard">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <h2>Apri SofIA. <span class="text-coral">È già tutto fatto.</span></h2>
+      <p class="lead">
+        Mentre tu lavori, la tua dashboard si riempie da sola: contatti,
+        riassunti delle chiamate, agenda sincronizzata e recap. Scorri per
+        vedere cosa ti aspetta dentro.
+      </p>
+    </div>
+
+    <div class="tour__grid" data-tour>
+      <div class="tour__steps">
+        {steps.map((s, i) => (
+          <article
+            class:list={["tour__step", { "is-active": i === 0 }]}
+            data-tour-step
+          >
+            <span class="tour__n">{s.n}</span>
+            <span class="tour__tag">{s.tag}</span>
+            <h3 class="tour__title">{s.title}</h3>
+            <p class="tour__body">{s.body}</p>
+          </article>
+        ))}
+      </div>
+
+      <div class="tour__stage" aria-hidden="true">
+        <!-- 01 · Contatti -->
+        <div class="tour__card is-active" data-tour-card>
+          <div class="mk">
+            <div class="mk__bar"><span class="mk__dot"></span> Contatti</div>
+            <div class="mk__b">
+              <div class="mk-head"><strong>Tutti i contatti</strong><span class="mk-pill mk-pill--coral">+ Nuovo</span></div>
+              <div class="mk-row">
+                <span class="mk-ava mk-ava--coral">VF</span>
+                <div class="mk-row__main"><span class="mk-name">Vincenzo</span><span class="mk-sub">+39 379 124…</span></div>
+                <span class="mk-tag mk-tag--tel">Telefono</span>
+                <span class="mk-count">151</span>
+              </div>
+              <div class="mk-row">
+                <span class="mk-ava mk-ava--wa">GI</span>
+                <div class="mk-row__main"><span class="mk-name">Ginevra</span><span class="mk-sub">+39 366 305…</span></div>
+                <span class="mk-tag mk-tag--wa">WhatsApp</span>
+                <span class="mk-count">9</span>
+              </div>
+              <div class="mk-row">
+                <span class="mk-ava mk-ava--green">?</span>
+                <div class="mk-row__main"><span class="mk-name">Sconosciuto</span><span class="mk-sub">+39 345 946…</span></div>
+                <span class="mk-tag mk-tag--chat">Chat</span>
+                <span class="mk-count">2</span>
+              </div>
+              <div class="mk-row">
+                <span class="mk-ava mk-ava--coral">EU</span>
+                <div class="mk-row__main"><span class="mk-name">Eugenio</span><span class="mk-sub">+39 328 865…</span></div>
+                <span class="mk-tag mk-tag--tel">Telefono</span>
+                <span class="mk-count">24</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 02 · Conversazioni -->
+        <div class="tour__card" data-tour-card>
+          <div class="mk">
+            <div class="mk__bar"><span class="mk__dot"></span> Storico chiamate</div>
+            <div class="mk__b">
+              <div class="mk-stats">
+                <div><b>402</b><span>chiamate</span></div>
+                <div><b>56</b><span>contatti</span></div>
+                <div><b>0</b><span>perse oggi</span></div>
+              </div>
+              <div class="mk-call">
+                <span class="mk-callico mk-callico--in">↙</span>
+                <div class="mk-row__main"><span class="mk-name">Ginevra</span><span class="mk-summary">Ha chiamato per prenotare una pulizia dentale…</span></div>
+                <span class="mk-dur">41s</span>
+              </div>
+              <div class="mk-call">
+                <span class="mk-callico mk-callico--out">↗</span>
+                <div class="mk-row__main"><span class="mk-name">Eugenio</span><span class="mk-summary">SofIA ha chiamato per confermare l'appuntamento…</span></div>
+                <span class="mk-dur">1m 21s</span>
+              </div>
+              <div class="mk-call">
+                <span class="mk-callico mk-callico--in">↙</span>
+                <div class="mk-row__main"><span class="mk-name">Michele</span><span class="mk-summary">Richiesta di informazioni su orari e prezzi…</span></div>
+                <span class="mk-dur">32s</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 03 · Agenda -->
+        <div class="tour__card" data-tour-card>
+          <div class="mk">
+            <div class="mk__bar"><span class="mk__dot"></span> Appuntamenti</div>
+            <div class="mk__b">
+              <div class="mk-head"><strong>Maggio 2026</strong><span class="mk-pill mk-pill--green">● Connesso</span></div>
+              <div class="mk-cal">
+                {["L", "M", "M", "G", "V", "S", "D"].map((d) => (
+                  <span class="mk-cal__dow">{d}</span>
+                ))}
+                {calDays.map((d) => (
+                  <span class:list={["mk-cal__d", { "has-appt": apptDays.has(d), today: d === 14 }]}>{d}</span>
+                ))}
+              </div>
+              <div class="mk-appt">
+                <span class="mk-appt__t">10:00</span>
+                <div class="mk-row__main"><span class="mk-name">Pulizia dentale</span><span class="mk-sub">Mario Rossi</span></div>
+              </div>
+              <div class="mk-appt">
+                <span class="mk-appt__t">15:30</span>
+                <div class="mk-row__main"><span class="mk-name">Controllo</span><span class="mk-sub">Anna Bianchi</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 04 · Pianifica -->
+        <div class="tour__card" data-tour-card>
+          <div class="mk">
+            <div class="mk__bar"><span class="mk__dot"></span> Pianifica chiamata</div>
+            <div class="mk__b">
+              <div class="mk-label">Contatti selezionati</div>
+              <div class="mk-chips"><span>Mario Rossi</span><span>Anna B.</span><span class="mk-chips__more">+3</span></div>
+              <div class="mk-toggle"><span class="is-on">Orario singolo</span><span>Fascia oraria</span></div>
+              <div class="mk-field">📅 Domani · 09:00</div>
+              <div class="mk-label">Chiamate pianificate</div>
+              <div class="mk-sched"><span class="mk-sched__dot"></span> Promemoria appuntamento · <b>3 contatti</b></div>
+              <div class="mk-sched"><span class="mk-sched__dot"></span> Conferma visite · Ven 14:00 · <b>5 contatti</b></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 05 · Assistente AI -->
+        <div class="tour__card" data-tour-card>
+          <div class="mk">
+            <div class="mk__bar"><span class="mk__dot"></span> Assistente AI</div>
+            <div class="mk__b">
+              <div class="mk-head"><strong>Recap di oggi</strong><span class="mk-pill mk-pill--coral">↻ Genera</span></div>
+              <div class="mk-stats">
+                <div><b>23</b><span>chiamate</span></div>
+                <div><b>12</b><span>appuntamenti</span></div>
+                <div><b class="mk-pos">positivo</b><span>sentiment</span></div>
+              </div>
+              <p class="mk-narr">
+                Oggi SofIA ha gestito 23 chiamate e fissato 12 appuntamenti,
+                senza perdere nessun cliente. Le richieste più frequenti: pulizie
+                e preventivi. Nessuna criticità rilevata.
+              </p>
+              <div class="mk-ask">
+                <span class="mk-ask__q">Quante chiamate ho ricevuto oggi?</span>
+                <span class="mk-ask__send">➤</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tour__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 1rem + 4vw, 5rem);
+    align-items: start;
+  }
+
+  /* ---------- left: steps ---------- */
+  .tour__step {
+    padding-block: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  }
+  .tour__n {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 0.82rem;
+    color: var(--coral);
+    letter-spacing: 0.1em;
+  }
+  .tour__tag {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .tour__title {
+    font-size: var(--step-1);
+    margin: 0.5rem 0 0.6rem;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+  .tour__body {
+    color: var(--ink-soft);
+    font-size: 1rem;
+    max-width: 38ch;
+  }
+
+  /* ---------- right: sticky stage ---------- */
+  .tour__stage {
+    position: relative;
+    display: grid;
+  }
+  .tour__card {
+    grid-area: 1 / 1; /* stack when enhanced; flows normally as fallback */
+  }
+
+  /* enhanced layout (opt-in once JS confirms motion is OK) */
+  [data-tour].is-ready .tour__step {
+    opacity: 0.32;
+    transition: opacity 0.45s var(--ease-out);
+  }
+  [data-tour].is-ready .tour__step.is-active {
+    opacity: 1;
+  }
+  [data-tour].is-ready .tour__stage {
+    position: sticky;
+    top: 116px;
+    height: clamp(440px, 60vh, 540px);
+  }
+  [data-tour].is-ready .tour__card {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+    transition:
+      opacity 0.5s var(--ease-out),
+      transform 0.5s var(--ease-out);
+    pointer-events: none;
+  }
+  [data-tour].is-ready .tour__card.is-active {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* fallback (no JS / reduced motion): stacked, all visible */
+  [data-tour]:not(.is-ready) .tour__card {
+    grid-area: auto;
+    margin-bottom: 1.2rem;
+  }
+
+  /* ---------- mockup chrome ---------- */
+  .mk {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+  }
+  .mk__bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1rem;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--line);
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+  }
+  .mk__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--coral);
+    box-shadow: 0 0 0 3px var(--coral-100);
+  }
+  .mk__b {
+    flex: 1;
+    padding: 0.9rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    min-height: 0;
+  }
+  .mk-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .mk-head strong {
+    font-family: var(--font-head);
+    font-size: 0.95rem;
+  }
+  .mk-pill {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.22rem 0.55rem;
+    border-radius: 999px;
+  }
+  .mk-pill--coral {
+    background: var(--coral);
+    color: #fff;
+  }
+  .mk-pill--green {
+    background: var(--green-100);
+    color: var(--green-700);
+  }
+
+  /* contact / call rows */
+  .mk-row,
+  .mk-call,
+  .mk-appt {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0.6rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+  }
+  .mk-row__main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .mk-name {
+    font-weight: 700;
+    font-size: 0.84rem;
+    line-height: 1.2;
+  }
+  .mk-sub,
+  .mk-summary {
+    font-size: 0.72rem;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .mk-summary {
+    color: var(--ink-soft);
+  }
+  .mk-ava {
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    display: grid;
+    place-items: center;
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #fff;
+  }
+  .mk-ava--coral { background: var(--coral); }
+  .mk-ava--green { background: var(--green); }
+  .mk-ava--wa { background: var(--wa-green); }
+  .mk-tag {
+    flex-shrink: 0;
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding: 0.12rem 0.45rem;
+    border-radius: 999px;
+  }
+  .mk-tag--tel { background: var(--coral-100); color: var(--coral-700); }
+  .mk-tag--wa { background: var(--wa-green-soft); color: var(--wa-green-ink); }
+  .mk-tag--chat { background: var(--green-100); color: var(--green-700); }
+  .mk-count {
+    flex-shrink: 0;
+    font-weight: 800;
+    font-size: 0.82rem;
+    color: var(--coral);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* stats row */
+  .mk-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+  .mk-stats > div {
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.55rem 0.4rem;
+    text-align: center;
+    display: grid;
+    gap: 0.1rem;
+  }
+  .mk-stats b {
+    font-family: var(--font-head);
+    font-size: 1.15rem;
+    color: var(--coral);
+    line-height: 1;
+  }
+  .mk-stats .mk-pos {
+    font-size: 0.9rem;
+    color: var(--green-700);
+  }
+  .mk-stats span {
+    font-size: 0.64rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .mk-callico {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    display: grid;
+    place-items: center;
+    font-weight: 800;
+    font-size: 0.85rem;
+  }
+  .mk-callico--in { background: var(--green-100); color: var(--green-700); }
+  .mk-callico--out { background: var(--coral-100); color: var(--coral-700); }
+  .mk-dur {
+    flex-shrink: 0;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* calendar */
+  .mk-cal {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+  }
+  .mk-cal__dow {
+    text-align: center;
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: var(--muted);
+    padding-bottom: 2px;
+  }
+  .mk-cal__d {
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+    border-radius: 6px;
+    background: var(--surface-2);
+  }
+  .mk-cal__d.has-appt {
+    background: var(--coral-100);
+    color: var(--coral-700);
+    font-weight: 800;
+  }
+  .mk-cal__d.today {
+    background: var(--coral);
+    color: #fff;
+    font-weight: 800;
+  }
+  .mk-appt__t {
+    flex-shrink: 0;
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 0.82rem;
+    color: var(--coral);
+  }
+
+  /* pianifica */
+  .mk-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .mk-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+  .mk-chips span {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.25rem 0.55rem;
+    border-radius: 999px;
+    background: var(--coral-050);
+    border: 1px solid var(--coral-100);
+    color: var(--coral-700);
+  }
+  .mk-chips__more {
+    background: var(--surface-2) !important;
+    border-color: var(--line) !important;
+    color: var(--muted) !important;
+  }
+  .mk-toggle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.25rem;
+    padding: 0.22rem;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+  }
+  .mk-toggle span {
+    text-align: center;
+    font-size: 0.74rem;
+    font-weight: 700;
+    padding: 0.35rem;
+    border-radius: 999px;
+    color: var(--muted);
+  }
+  .mk-toggle .is-on {
+    background: var(--coral);
+    color: #fff;
+  }
+  .mk-field {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+    padding: 0.55rem 0.7rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+  }
+  .mk-sched {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.76rem;
+    color: var(--ink-soft);
+    padding: 0.5rem 0.6rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--surface-2);
+  }
+  .mk-sched b { color: var(--ink); }
+  .mk-sched__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--coral);
+    flex-shrink: 0;
+  }
+
+  /* recap */
+  .mk-narr {
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.7rem 0.8rem;
+  }
+  .mk-ask {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.5rem 0.5rem 0.8rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface);
+  }
+  .mk-ask__q {
+    flex: 1;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+  .mk-ask__send {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--coral);
+    color: #fff;
+    font-size: 0.7rem;
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 920px) {
+    .tour__grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    [data-tour].is-ready .tour__stage {
+      order: -1;
+      top: 70px;
+      height: clamp(360px, 52vh, 440px);
+    }
+    [data-tour].is-ready .tour__step {
+      padding-block: 1.2rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-tour].is-ready .tour__step,
+    [data-tour].is-ready .tour__card {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  const root = document.querySelector<HTMLElement>("[data-tour]");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (root && !reduce) {
+    const steps = Array.from(root.querySelectorAll<HTMLElement>("[data-tour-step]"));
+    const cards = Array.from(root.querySelectorAll<HTMLElement>("[data-tour-card]"));
+
+    const setActive = (i: number) => {
+      steps.forEach((s, k) => s.classList.toggle("is-active", k === i));
+      cards.forEach((c, k) => c.classList.toggle("is-active", k === i));
+    };
+
+    // opt into the enhanced sticky/cross-fade layout
+    root.classList.add("is-ready");
+    setActive(0);
+
+    gsap.registerPlugin(ScrollTrigger);
+    // The step whose [top 60% → bottom 60%] band brackets the 60% line is the
+    // active one. A single reference line keeps transitions clean (no overlap).
+    steps.forEach((step, i) => {
+      ScrollTrigger.create({
+        trigger: step,
+        start: "top 60%",
+        end: "bottom 60%",
+        onToggle: (self) => {
+          if (self.isActive) setActive(i);
+        },
+      });
+    });
+
+    ScrollTrigger.refresh();
+  }
+</script>

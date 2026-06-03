@@ -1,0 +1,131 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <a href="#top" class="footer__logo">
+        <img src="/sofia-logo-mark.webp" alt="" class="footer__mark" width="32" height="32" />
+        Sof<span>IA</span>
+      </a>
+      <p>L'assistente AI che gestisce telefono, chat, WhatsApp e agenda della tua attività. Un prodotto Affinity Lab.</p>
+    </div>
+
+    <nav class="footer__col" aria-label="Prodotto">
+      <h4>Prodotto</h4>
+      <a href="#canali">Canali</a>
+      <a href="#oltre">Cosa fa</a>
+      <a href="#integrazioni">Integrazioni</a>
+      <a href="#settori">Settori</a>
+    </nav>
+
+    <div class="footer__col">
+      <h4>Affinity Lab</h4>
+      <a href="mailto:info@affinitylab.it">info@affinitylab.it</a>
+      <a href="tel:+393288658690">+39 328 865 8690</a>
+      <span>Via Lanzara, 33 — Nocera Inferiore (SA)</span>
+    </div>
+
+    <div class="footer__col footer__cta">
+      <h4>Pronto a provarla?</h4>
+      <button class="btn btn--primary" data-trial-open>
+        <span class="dot-live"></span> Prova SofIA
+      </button>
+    </div>
+  </div>
+
+  <div class="container footer__bottom">
+    <span>© {year} Affinity Srl · P.IVA 06221050658</span>
+    <a href="https://www.affinitylab.it/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a>
+    <span>Fatto con cura a Nocera Inferiore</span>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--green-900);
+    color: rgba(255, 255, 255, 0.78);
+    padding-top: clamp(3rem, 2rem + 3vw, 5rem);
+  }
+  .footer__inner {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    gap: 2rem;
+    padding-bottom: 3rem;
+  }
+  .footer__brand p {
+    margin-top: 0.9rem;
+    font-size: 0.92rem;
+    max-width: 30ch;
+    color: rgba(255, 255, 255, 0.65);
+  }
+  .footer__logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 1.6rem;
+    color: #fff;
+  }
+  .footer__mark {
+    height: 30px;
+    width: 30px;
+  }
+  .footer__logo span {
+    color: var(--coral);
+  }
+  .footer__col {
+    display: grid;
+    gap: 0.6rem;
+    align-content: start;
+  }
+  .footer__col h4 {
+    color: #fff;
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+  .footer__col a,
+  .footer__col span {
+    font-size: 0.92rem;
+    color: rgba(255, 255, 255, 0.7);
+    transition: color 0.18s ease;
+  }
+  .footer__col a:hover {
+    color: var(--coral);
+  }
+  .footer__cta .btn {
+    margin-top: 0.3rem;
+    justify-self: start;
+  }
+  .footer__bottom {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    padding: 1.4rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.5);
+  }
+  .footer__bottom a {
+    color: rgba(255, 255, 255, 0.5);
+    transition: color 0.18s ease;
+  }
+  .footer__bottom a:hover {
+    color: var(--coral);
+  }
+  @media (max-width: 860px) {
+    .footer__inner {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 520px) {
+    .footer__inner {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

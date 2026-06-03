@@ -1,0 +1,26 @@
+# build output
+dist/
+.output/
+
+# dependencies
+node_modules/
+
+# astro
+.astro/
+
+# logs
+npm-debug.log*
+*.log
+
+# environment
+.env
+.env.production
+
+# os
+.DS_Store
+
+# Il Dockerfile fa npm install fresco per i binari nativi Linux (regole Coolify)
+package-lock.json
+
+# Materiale interno (non pubblicare)
+*.pdf

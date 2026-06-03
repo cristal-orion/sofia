@@ -1,0 +1,207 @@
+---
+import Telefono from "./pillars/Telefono.astro";
+import Chat from "./pillars/Chat.astro";
+import WhatsApp from "./pillars/WhatsApp.astro";
+import Agenda from "./pillars/Agenda.astro";
+
+const tabs = [
+  { id: "tel", label: "Telefono", hint: "Centralino AI" },
+  { id: "chat", label: "Chat", hint: "Sito web" },
+  { id: "wa", label: "WhatsApp", hint: "Messaggi" },
+  { id: "agenda", label: "Agenda", hint: "Gestionale" },
+];
+---
+
+<section class="section channels" id="canali">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <h2>Un assistente. Ovunque parlino i tuoi clienti.</h2>
+      <p class="lead">
+        Telefono, chat sul sito, WhatsApp e agenda lavorano insieme. Scegli un
+        canale e scopri cosa sa fare SofIA.
+      </p>
+    </div>
+
+    <div class="channels__tabs" role="tablist" aria-label="Canali di SofIA" data-tabs>
+      {tabs.map((t, i) => (
+        <button
+          class:list={["chtab", { "is-active": i === 0 }]}
+          role="tab"
+          id={`tab-${t.id}`}
+          aria-controls={`panel-${t.id}`}
+          aria-selected={i === 0 ? "true" : "false"}
+          data-tab={t.id}
+        >
+          <span class="chtab__label">{t.label}</span>
+          <span class="chtab__hint">{t.hint}</span>
+        </button>
+      ))}
+      <span class="channels__marker" data-marker aria-hidden="true"></span>
+    </div>
+
+    <div class="channels__panels">
+      <div class="chpanel is-active" role="tabpanel" id="panel-tel" aria-labelledby="tab-tel" data-panel="tel">
+        <Telefono />
+      </div>
+      <div class="chpanel" role="tabpanel" id="panel-chat" aria-labelledby="tab-chat" data-panel="chat" hidden>
+        <Chat />
+      </div>
+      <div class="chpanel" role="tabpanel" id="panel-wa" aria-labelledby="tab-wa" data-panel="wa" hidden>
+        <WhatsApp />
+      </div>
+      <div class="chpanel" role="tabpanel" id="panel-agenda" aria-labelledby="tab-agenda" data-panel="agenda" hidden>
+        <Agenda />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .channels {
+    background: linear-gradient(180deg, transparent, var(--cream-soft) 40%, transparent);
+  }
+  .channels__tabs {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.4rem;
+    padding: 0.45rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    box-shadow: var(--shadow-sm);
+    max-width: 680px;
+    margin: 0 0 clamp(2.2rem, 1rem + 3vw, 3.4rem);
+  }
+  .channels__marker {
+    position: absolute;
+    z-index: 0;
+    top: 0.45rem;
+    bottom: 0.45rem;
+    left: 0.45rem;
+    width: calc((100% - 0.9rem - 1.2rem) / 4);
+    border-radius: 999px;
+    background: var(--coral);
+    box-shadow: var(--shadow-coral);
+    transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .chtab {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 0.1rem;
+    padding: 0.6rem 0.4rem;
+    background: transparent;
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+    text-align: center;
+    color: var(--ink-soft);
+    transition: color 0.25s ease;
+  }
+  .chtab__label {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 0.98rem;
+    line-height: 1.1;
+  }
+  .chtab__hint {
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    transition: color 0.25s ease;
+  }
+  .chtab.is-active,
+  .chtab.is-active .chtab__hint {
+    color: #fff;
+  }
+  .chtab:not(.is-active):hover {
+    color: var(--coral-700);
+  }
+
+  .chpanel[hidden] {
+    display: none;
+  }
+  .chpanel {
+    animation: panelIn 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @keyframes panelIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .chpanel { animation: none; }
+    .channels__marker { transition: none; }
+  }
+
+  @media (max-width: 560px) {
+    .channels__tabs {
+      grid-template-columns: repeat(2, 1fr);
+      border-radius: var(--radius);
+    }
+    .channels__marker {
+      display: none;
+    }
+    .chtab.is-active {
+      background: var(--coral);
+      border-radius: var(--radius-sm);
+    }
+  }
+</style>
+
+<script>
+  const root = document.querySelector("[data-tabs]");
+  if (root) {
+    const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-tab]"));
+    const marker = root.querySelector<HTMLElement>("[data-marker]");
+    const panels = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-panel]"),
+    );
+
+    function moveMarker(index: number) {
+      if (!marker || window.innerWidth <= 560) return;
+      marker.style.transform = `translateX(${index * 100}%)`;
+    }
+
+    function activate(id: string) {
+      tabs.forEach((t) => {
+        const on = t.dataset.tab === id;
+        t.classList.toggle("is-active", on);
+        t.setAttribute("aria-selected", on ? "true" : "false");
+      });
+      panels.forEach((p) => {
+        const on = p.dataset.panel === id;
+        p.hidden = !on;
+        p.classList.toggle("is-active", on);
+      });
+      const idx = tabs.findIndex((t) => t.dataset.tab === id);
+      moveMarker(idx);
+    }
+
+    tabs.forEach((t) =>
+      t.addEventListener("click", () => activate(t.dataset.tab!)),
+    );
+
+    // keyboard nav
+    root.addEventListener("keydown", (e: Event) => {
+      const ev = e as KeyboardEvent;
+      const idx = tabs.findIndex((t) => t.classList.contains("is-active"));
+      if (ev.key === "ArrowRight" || ev.key === "ArrowLeft") {
+        ev.preventDefault();
+        const next =
+          ev.key === "ArrowRight"
+            ? (idx + 1) % tabs.length
+            : (idx - 1 + tabs.length) % tabs.length;
+        tabs[next].focus();
+        activate(tabs[next].dataset.tab!);
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      const idx = tabs.findIndex((t) => t.classList.contains("is-active"));
+      moveMarker(idx);
+    });
+    moveMarker(0);
+  }
+</script>

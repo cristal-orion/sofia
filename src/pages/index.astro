@@ -1,0 +1,177 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
+import Hero from "../components/Hero.astro";
+import Pillars from "../components/Pillars.astro";
+import Oltre from "../components/Oltre.astro";
+import Tour from "../components/Tour.astro";
+import Integrazioni from "../components/Integrazioni.astro";
+import Settori from "../components/Settori.astro";
+import FAQ from "../components/FAQ.astro";
+import CTA from "../components/CTA.astro";
+import Footer from "../components/Footer.astro";
+import TrialWidget from "../components/TrialWidget.astro";
+---
+
+<Layout>
+  <Nav />
+  <main>
+    <Hero />
+    <Pillars />
+    <Oltre />
+    <Tour />
+    <Integrazioni />
+    <Settori />
+    <FAQ />
+    <CTA />
+  </main>
+  <Footer />
+  <TrialWidget />
+</Layout>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  import { SplitText } from "gsap/SplitText";
+
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- Nav interactions ---------- */
+  const nav = document.querySelector("[data-nav]");
+  const onScroll = () => {
+    if (!nav) return;
+    if (window.scrollY > 8) nav.setAttribute("data-scrolled", "");
+    else nav.removeAttribute("data-scrolled");
+  };
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  const burger = document.querySelector<HTMLButtonElement>("[data-burger]");
+  const mobile = document.querySelector<HTMLElement>("[data-mobile-menu]");
+  burger?.addEventListener("click", () => {
+    const open = burger.getAttribute("aria-expanded") === "true";
+    burger.setAttribute("aria-expanded", String(!open));
+    if (mobile) {
+      mobile.toggleAttribute("data-open", !open);
+      mobile.hidden = open;
+    }
+  });
+  document.querySelectorAll("[data-mobile-link]").forEach((l) =>
+    l.addEventListener("click", () => {
+      burger?.setAttribute("aria-expanded", "false");
+      if (mobile) {
+        mobile.removeAttribute("data-open");
+        mobile.hidden = true;
+      }
+    }),
+  );
+
+  /* ---------- Reveal on scroll ----------
+     GSAP/ScrollTrigger only ORCHESTRATES (adds .is-in); the motion itself is a
+     CSS transition, so it can't freeze mid-tween in a throttled background tab.
+     Reaching this code means the bundle ran, so cancel the no-JS fallback. */
+  clearTimeout((window as any).__revealFallback);
+
+  const revealSel = "[data-reveal], [data-hero], [data-ev]";
+  const revealEls = Array.from(
+    document.querySelectorAll<HTMLElement>(revealSel),
+  );
+
+  const heroTitle = document.querySelector<HTMLElement>(".hero h1");
+
+  if (reduce) {
+    revealEls.forEach((el) => el.classList.add("is-in"));
+  } else {
+    gsap.registerPlugin(ScrollTrigger, SplitText);
+    // Reveal whatever is already in view synchronously — never rAF-gated, so
+    // above-the-fold content can't get stuck invisible in a background tab.
+    // The hero headline is skipped here; it gets a dedicated cinematic below.
+    const vh = window.innerHeight;
+    revealEls.forEach((el, i) => {
+      if (el === heroTitle) return;
+      if (el.getBoundingClientRect().top < vh * 0.92) {
+        setTimeout(() => el.classList.add("is-in"), Math.min(i, 8) * 70);
+      }
+    });
+    // Everything below the fold reveals on scroll (headline excluded).
+    ScrollTrigger.batch(
+      "[data-reveal], [data-hero]:not([data-hero-title]), [data-ev]",
+      {
+        start: "top 90%",
+        onEnter: (els) =>
+          els.forEach((el, i) =>
+            setTimeout(() => el.classList.add("is-in"), i * 70),
+          ),
+      },
+    );
+
+    /* ---------- Cinematic headline (Direction B) ----------
+       Words rise out of per-line masks; the coral highlight ignites L→R.
+       A rAF tween is acceptable here: the hero is above the fold and the tab
+       is foreground on load. Layered fallbacks guarantee the headline is never
+       stuck invisible — if SplitText throws or fonts never resolve, it simply
+       reveals as a block. */
+    if (heroTitle) {
+      const revealTitle = () => heroTitle.classList.add("is-in");
+      let started = false;
+      const start = () => {
+        if (started) return;
+        started = true;
+        runHeadline();
+      };
+      // Wait for fonts so SplitText measures correct line breaks — but never
+      // longer than 1.2s, so a stalled font load can't keep the H1 hidden.
+      const safety = setTimeout(start, 1200);
+      (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => {
+        clearTimeout(safety);
+        start();
+      });
+
+      function runHeadline() {
+        try {
+          const heroHl = heroTitle!.querySelector<HTMLElement>(".hero__hl");
+          SplitText.create(heroTitle!, {
+            type: "lines, words",
+            mask: "lines",
+            autoSplit: true, // re-split cleanly on font load / resize
+            linesClass: "hero-line",
+            onSplit(self) {
+              // Container visible now; words start hidden under the masks.
+              revealTitle();
+              const hlWords = heroHl
+                ? self.words.filter((w) => heroHl.contains(w))
+                : [];
+              const tl = gsap.timeline();
+              tl.from(self.words, {
+                yPercent: 115,
+                duration: 0.8,
+                stagger: 0.055,
+                ease: "power3.out",
+              });
+              if (hlWords.length) {
+                // Ink → coral ignite, swept left→right across the phrase.
+                tl.from(
+                  hlWords,
+                  {
+                    color: "#241f1d",
+                    duration: 0.5,
+                    stagger: 0.08,
+                    ease: "power1.out",
+                  },
+                  "-=0.45",
+                );
+              }
+              // Returning the timeline lets SplitText sync progress on
+              // re-split (autoSplit) so it doesn't replay on every resize.
+              return tl;
+            },
+          });
+        } catch {
+          revealTitle(); // any failure → plain reveal, never stuck hidden
+        }
+      }
+    }
+
+    document.fonts?.ready.then(() => ScrollTrigger.refresh());
+  }
+</script>

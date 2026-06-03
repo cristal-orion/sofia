@@ -1,0 +1,137 @@
+---
+const features = [
+  "Risponde ai visitatori del sito 24/7, senza attese",
+  "Addestrata sulla tua knowledge base: conosce servizi, prezzi e regole",
+  "Raccoglie i contatti e qualifica i lead mentre tu dormi",
+  "Trasforma una semplice visita in un appuntamento fissato",
+  "Passa la conversazione a te quando serve un tocco umano",
+];
+---
+
+<article class="pillar pillar--chat">
+  <div class="pillar__body">
+    <span class="pillar__kicker">
+      <span class="pillar__kicker-ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+      </span>
+      Chatbot del sito
+    </span>
+    <h3 class="pillar__title">Un assistente sul sito che conosce davvero la tua attività.</h3>
+    <p class="pillar__desc">
+      Non il solito chatbot a risposte preconfezionate. SofIA è addestrata sui
+      tuoi dati, risponde con cognizione e accompagna il visitatore fino alla
+      prenotazione.
+    </p>
+    <ul class="pillar__list">
+      {features.map((f) => <li>{f}</li>)}
+    </ul>
+  </div>
+
+  <div class="pillar__visual">
+    <div class="pillar__card chatbox">
+      <div class="chatbox__head">
+        <span class="chatbox__avatar">S</span>
+        <div>
+          <p class="chatbox__name">SofIA</p>
+          <p class="chatbox__status"><span class="dot-live"></span> Risponde subito</p>
+        </div>
+      </div>
+      <div class="chatbox__body">
+        <div class="bubble bubble--in">Quanto costa lo sbiancamento?</div>
+        <div class="bubble bubble--out">
+          Lo sbiancamento parte da 180€. Vuoi che fissi una valutazione gratuita?
+        </div>
+        <div class="bubble bubble--in">Sì, questa settimana se possibile</div>
+        <div class="bubble bubble--out">
+          Perfetto 🙌 Giovedì alle 17:00 è libero. Ti mando la conferma?
+        </div>
+      </div>
+      <div class="chatbox__input">
+        <span>Scrivi un messaggio…</span>
+        <span class="chatbox__send" aria-hidden="true">➤</span>
+      </div>
+    </div>
+  </div>
+</article>
+
+<style>
+  .pillar--chat {
+    --pa: var(--green);
+    --pa-soft: var(--green-100);
+    --pa-ink: var(--green-700);
+  }
+  .chatbox__head {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 1rem 1.2rem;
+    background: var(--green);
+    color: #fff;
+  }
+  .chatbox__avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.18);
+    display: grid;
+    place-items: center;
+    font-family: var(--font-head);
+    font-weight: 800;
+  }
+  .chatbox__name {
+    font-weight: 700;
+    font-family: var(--font-head);
+    line-height: 1.1;
+  }
+  .chatbox__status {
+    font-size: 0.76rem;
+    opacity: 0.9;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .chatbox__status .dot-live {
+    background: #fff;
+    animation: none;
+  }
+  .chatbox__body {
+    padding: 1.1rem;
+    display: grid;
+    gap: 0.6rem;
+    background: var(--surface-2);
+  }
+  .bubble {
+    max-width: 82%;
+    padding: 0.6rem 0.9rem;
+    border-radius: 16px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+  .bubble--in {
+    justify-self: start;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-bottom-left-radius: 5px;
+  }
+  .bubble--out {
+    justify-self: end;
+    background: var(--green);
+    color: #fff;
+    border-bottom-right-radius: 5px;
+  }
+  .chatbox__input {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.85rem 1.2rem;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+  .chatbox__send {
+    color: var(--green);
+    font-weight: 700;
+  }
+</style>

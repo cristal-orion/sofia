@@ -1,0 +1,79 @@
+---
+const tools = [
+  "Google Calendar",
+  "WhatsApp Business",
+  "Calendar / iCal",
+  "Email",
+  "CRM",
+  "Sito web",
+];
+---
+
+<section class="section integ" id="integrazioni">
+  <div class="container integ__inner">
+    <div class="integ__copy" data-reveal>
+      <h2>Si collega a ciò che usi già.</h2>
+      <p class="lead">
+        SofIA si sincronizza con il tuo calendario e i tuoi strumenti. Niente
+        da reinventare: si innesta sul flusso di lavoro che hai oggi.
+      </p>
+    </div>
+    <ul class="integ__grid" aria-label="Strumenti integrati">
+      {tools.map((t) => (
+        <li class="integ__tool">
+          <span class="integ__dot" aria-hidden="true"></span>
+          {t}
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .integ__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 1rem + 4vw, 4rem);
+    align-items: center;
+  }
+  .integ__copy {
+    display: grid;
+    gap: 1rem;
+    max-width: 34rem;
+  }
+  .integ__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+  }
+  .integ__tool {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 1.1rem 1.2rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease;
+  }
+  .integ__tool:hover {
+    transform: translateY(-3px);
+  }
+  .integ__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    background: var(--coral);
+    transform: rotate(45deg);
+  }
+  .integ__tool:nth-child(even) .integ__dot {
+    background: var(--green);
+  }
+  @media (max-width: 760px) {
+    .integ__inner {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
