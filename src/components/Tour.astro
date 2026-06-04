@@ -1,11 +1,14 @@
 ---
-/* "Dentro SofIA" — sticky-scroll product tour (Aceternity sticky-scroll-reveal
-   pattern, re-implemented in Astro + GSAP ScrollTrigger, warm Vivid Narrative).
-   Left = scrolling steps (active one highlighted); right = a sticky stage whose
-   dashboard mockup cross-fades to match the active step. The mockups are
-   HTML/CSS faux-UI — a preview of the future redesigned dashboard.
-   Robust fallback: without JS / reduced-motion it degrades to a stacked,
-   fully-readable list (the enhanced layout is opt-in via the `is-ready` flag). */
+/* "Dentro SofIA" — product tour with two layouts from a single DOM source.
+   Each step is paired with its mockup inside a `.tour__panel`.
+   • Desktop (≥921px, motion OK): the panels are flattened via `display:contents`
+     into a 2-col grid — steps scroll on the left, the matching mockup cross-fades
+     in a sticky stage on the right (Aceternity sticky-scroll-reveal).
+   • Mobile (≤920px): the panels become a horizontal scroll-snap carousel —
+     one slide per step (text + mockup together) with dot indicators. No sticky,
+     no overlapping windows.
+   Robust fallback: without JS / reduced-motion on desktop it degrades to a
+   stacked, fully-readable list (the sticky layout is opt-in via `is-ready`). */
 
 const steps = [
   {
@@ -56,23 +59,15 @@ const calDays = Array.from({ length: 28 }, (_, i) => i + 1);
     </div>
 
     <div class="tour__grid" data-tour>
-      <div class="tour__steps">
-        {steps.map((s, i) => (
-          <article
-            class:list={["tour__step", { "is-active": i === 0 }]}
-            data-tour-step
-          >
-            <span class="tour__n">{s.n}</span>
-            <span class="tour__tag">{s.tag}</span>
-            <h3 class="tour__title">{s.title}</h3>
-            <p class="tour__body">{s.body}</p>
-          </article>
-        ))}
-      </div>
-
-      <div class="tour__stage" aria-hidden="true">
-        <!-- 01 · Contatti -->
-        <div class="tour__card is-active" data-tour-card>
+      <!-- 01 · Contatti -->
+      <div class="tour__panel" data-tour-panel>
+        <article class="tour__step is-active" data-tour-step>
+          <span class="tour__n">{steps[0].n}</span>
+          <span class="tour__tag">{steps[0].tag}</span>
+          <h3 class="tour__title">{steps[0].title}</h3>
+          <p class="tour__body">{steps[0].body}</p>
+        </article>
+        <div class="tour__card is-active" data-tour-card aria-hidden="true">
           <div class="mk">
             <div class="mk__bar"><span class="mk__dot"></span> Contatti</div>
             <div class="mk__b">
@@ -104,9 +99,17 @@ const calDays = Array.from({ length: 28 }, (_, i) => i + 1);
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- 02 · Conversazioni -->
-        <div class="tour__card" data-tour-card>
+      <!-- 02 · Conversazioni -->
+      <div class="tour__panel" data-tour-panel>
+        <article class="tour__step" data-tour-step>
+          <span class="tour__n">{steps[1].n}</span>
+          <span class="tour__tag">{steps[1].tag}</span>
+          <h3 class="tour__title">{steps[1].title}</h3>
+          <p class="tour__body">{steps[1].body}</p>
+        </article>
+        <div class="tour__card" data-tour-card aria-hidden="true">
           <div class="mk">
             <div class="mk__bar"><span class="mk__dot"></span> Storico chiamate</div>
             <div class="mk__b">
@@ -133,9 +136,17 @@ const calDays = Array.from({ length: 28 }, (_, i) => i + 1);
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- 03 · Agenda -->
-        <div class="tour__card" data-tour-card>
+      <!-- 03 · Agenda -->
+      <div class="tour__panel" data-tour-panel>
+        <article class="tour__step" data-tour-step>
+          <span class="tour__n">{steps[2].n}</span>
+          <span class="tour__tag">{steps[2].tag}</span>
+          <h3 class="tour__title">{steps[2].title}</h3>
+          <p class="tour__body">{steps[2].body}</p>
+        </article>
+        <div class="tour__card" data-tour-card aria-hidden="true">
           <div class="mk">
             <div class="mk__bar"><span class="mk__dot"></span> Appuntamenti</div>
             <div class="mk__b">
@@ -159,9 +170,17 @@ const calDays = Array.from({ length: 28 }, (_, i) => i + 1);
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- 04 · Pianifica -->
-        <div class="tour__card" data-tour-card>
+      <!-- 04 · Pianifica -->
+      <div class="tour__panel" data-tour-panel>
+        <article class="tour__step" data-tour-step>
+          <span class="tour__n">{steps[3].n}</span>
+          <span class="tour__tag">{steps[3].tag}</span>
+          <h3 class="tour__title">{steps[3].title}</h3>
+          <p class="tour__body">{steps[3].body}</p>
+        </article>
+        <div class="tour__card" data-tour-card aria-hidden="true">
           <div class="mk">
             <div class="mk__bar"><span class="mk__dot"></span> Pianifica chiamata</div>
             <div class="mk__b">
@@ -175,9 +194,17 @@ const calDays = Array.from({ length: 28 }, (_, i) => i + 1);
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- 05 · Assistente AI -->
-        <div class="tour__card" data-tour-card>
+      <!-- 05 · Assistente AI -->
+      <div class="tour__panel" data-tour-panel>
+        <article class="tour__step" data-tour-step>
+          <span class="tour__n">{steps[4].n}</span>
+          <span class="tour__tag">{steps[4].tag}</span>
+          <h3 class="tour__title">{steps[4].title}</h3>
+          <p class="tour__body">{steps[4].body}</p>
+        </article>
+        <div class="tour__card" data-tour-card aria-hidden="true">
           <div class="mk">
             <div class="mk__bar"><span class="mk__dot"></span> Assistente AI</div>
             <div class="mk__b">
@@ -201,18 +228,27 @@ const calDays = Array.from({ length: 28 }, (_, i) => i + 1);
         </div>
       </div>
     </div>
+
+    <!-- mobile-only carousel indicators -->
+    <div class="tour__dots" data-tour-dots>
+      {steps.map((s, i) => (
+        <button
+          type="button"
+          class:list={["tour__dot", { "is-active": i === 0 }]}
+          data-dot={i}
+          aria-label={`Vai al passo ${s.n}: ${s.tag}`}
+        ></button>
+      ))}
+    </div>
   </div>
 </section>
 
 <style>
   .tour__grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(2rem, 1rem + 4vw, 5rem);
-    align-items: start;
+    display: block;
   }
 
-  /* ---------- left: steps ---------- */
+  /* ---------- steps ---------- */
   .tour__step {
     padding-block: clamp(1.5rem, 1rem + 2vw, 2.5rem);
   }
@@ -244,45 +280,125 @@ const calDays = Array.from({ length: 28 }, (_, i) => i + 1);
     max-width: 38ch;
   }
 
-  /* ---------- right: sticky stage ---------- */
-  .tour__stage {
-    position: relative;
-    display: grid;
-  }
-  .tour__card {
-    grid-area: 1 / 1; /* stack when enhanced; flows normally as fallback */
+  /* mobile dots: hidden on desktop */
+  .tour__dots {
+    display: none;
   }
 
-  /* enhanced layout (opt-in once JS confirms motion is OK) */
-  [data-tour].is-ready .tour__step {
-    opacity: 0.32;
-    transition: opacity 0.45s var(--ease-out);
-  }
-  [data-tour].is-ready .tour__step.is-active {
-    opacity: 1;
-  }
-  [data-tour].is-ready .tour__stage {
-    position: sticky;
-    top: 116px;
-    height: clamp(440px, 60vh, 540px);
-  }
-  [data-tour].is-ready .tour__card {
-    opacity: 0;
-    transform: translateY(14px) scale(0.985);
-    transition:
-      opacity 0.5s var(--ease-out),
-      transform 0.5s var(--ease-out);
-    pointer-events: none;
-  }
-  [data-tour].is-ready .tour__card.is-active {
-    opacity: 1;
-    transform: none;
+  /* =========================================================
+     DESKTOP (≥921px): sticky-scroll, panels flattened to 2 cols
+     ========================================================= */
+  @media (min-width: 921px) {
+    /* fallback when JS/motion is off: stacked, readable */
+    .tour__panel {
+      margin-bottom: 2rem;
+    }
+    .tour__card {
+      max-width: 520px;
+    }
+
+    /* enhanced sticky layout (opt-in once JS confirms motion is OK) */
+    [data-tour].is-ready {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2rem, 1rem + 4vw, 5rem);
+      align-items: start;
+    }
+    [data-tour].is-ready .tour__panel {
+      display: contents; /* step → col 1, card → sticky stage in col 2 */
+      margin-bottom: 0;
+    }
+    [data-tour].is-ready .tour__step {
+      grid-column: 1;
+      opacity: 0.32;
+      transition: opacity 0.45s var(--ease-out);
+    }
+    [data-tour].is-ready .tour__step.is-active {
+      opacity: 1;
+    }
+    [data-tour].is-ready .tour__card {
+      grid-column: 2;
+      grid-row: 1 / -1; /* all cards share the stage cell → cross-fade */
+      align-self: start;
+      position: sticky;
+      top: 116px;
+      max-width: none;
+      height: clamp(440px, 60vh, 540px);
+      opacity: 0;
+      transform: translateY(14px) scale(0.985);
+      transition:
+        opacity 0.5s var(--ease-out),
+        transform 0.5s var(--ease-out);
+      pointer-events: none;
+    }
+    [data-tour].is-ready .tour__card.is-active {
+      opacity: 1;
+      transform: none;
+    }
   }
 
-  /* fallback (no JS / reduced motion): stacked, all visible */
-  [data-tour]:not(.is-ready) .tour__card {
-    grid-area: auto;
-    margin-bottom: 1.2rem;
+  /* =========================================================
+     MOBILE (≤920px): horizontal scroll-snap carousel
+     ========================================================= */
+  @media (max-width: 920px) {
+    .tour__grid {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      /* let slides reach the screen edges, then pad back in */
+      margin-inline: calc(-1 * var(--gutter));
+      padding-inline: var(--gutter);
+    }
+    .tour__grid::-webkit-scrollbar {
+      display: none;
+    }
+    .tour__panel {
+      flex: 0 0 100%;
+      min-width: 0;
+      scroll-snap-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .tour__step {
+      padding-block: 0;
+    }
+    .tour__body {
+      max-width: none;
+    }
+    .tour__card {
+      width: 100%;
+    }
+    .tour__card .mk {
+      min-height: 380px;
+    }
+
+    /* dots */
+    .tour__dots {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+    }
+    .tour__dot {
+      width: 8px;
+      height: 8px;
+      padding: 0;
+      border: none;
+      border-radius: 999px;
+      background: var(--line);
+      cursor: pointer;
+      transition:
+        width 0.3s var(--ease-out),
+        background 0.3s var(--ease-out);
+    }
+    .tour__dot.is-active {
+      width: 22px;
+      background: var(--coral);
+    }
   }
 
   /* ---------- mockup chrome ---------- */
@@ -618,25 +734,10 @@ const calDays = Array.from({ length: 28 }, (_, i) => i + 1);
     font-size: 0.7rem;
   }
 
-  /* ---------- responsive ---------- */
-  @media (max-width: 920px) {
-    .tour__grid {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
-    [data-tour].is-ready .tour__stage {
-      order: -1;
-      top: 70px;
-      height: clamp(360px, 52vh, 440px);
-    }
-    [data-tour].is-ready .tour__step {
-      padding-block: 1.2rem;
-    }
-  }
-
   @media (prefers-reduced-motion: reduce) {
     [data-tour].is-ready .tour__step,
-    [data-tour].is-ready .tour__card {
+    [data-tour].is-ready .tour__card,
+    .tour__dot {
       transition: none;
     }
   }
@@ -646,36 +747,86 @@ const calDays = Array.from({ length: 28 }, (_, i) => i + 1);
   import { gsap } from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-  const root = document.querySelector<HTMLElement>("[data-tour]");
-  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  gsap.registerPlugin(ScrollTrigger);
 
-  if (root && !reduce) {
+  const root = document.querySelector<HTMLElement>("[data-tour]");
+
+  if (root) {
     const steps = Array.from(root.querySelectorAll<HTMLElement>("[data-tour-step]"));
     const cards = Array.from(root.querySelectorAll<HTMLElement>("[data-tour-card]"));
+    const panels = Array.from(root.querySelectorAll<HTMLElement>("[data-tour-panel]"));
+    const dots = Array.from(
+      document.querySelectorAll<HTMLButtonElement>("[data-tour-dots] [data-dot]"),
+    );
 
     const setActive = (i: number) => {
       steps.forEach((s, k) => s.classList.toggle("is-active", k === i));
       cards.forEach((c, k) => c.classList.toggle("is-active", k === i));
+      dots.forEach((d, k) => d.classList.toggle("is-active", k === i));
     };
 
-    // opt into the enhanced sticky/cross-fade layout
-    root.classList.add("is-ready");
-    setActive(0);
+    const mm = gsap.matchMedia();
 
-    gsap.registerPlugin(ScrollTrigger);
-    // The step whose [top 60% → bottom 60%] band brackets the 60% line is the
-    // active one. A single reference line keeps transitions clean (no overlap).
-    steps.forEach((step, i) => {
-      ScrollTrigger.create({
-        trigger: step,
-        start: "top 60%",
-        end: "bottom 60%",
-        onToggle: (self) => {
-          if (self.isActive) setActive(i);
+    // --- Desktop: sticky scroll with cross-fading stage ---
+    mm.add(
+      "(min-width: 921px) and (prefers-reduced-motion: no-preference)",
+      () => {
+        root.classList.add("is-ready");
+        setActive(0);
+
+        // The step whose [top 60% → bottom 60%] band brackets the 60% line is
+        // the active one. A single reference line keeps transitions clean.
+        const triggers = steps.map((step, i) =>
+          ScrollTrigger.create({
+            trigger: step,
+            start: "top 60%",
+            end: "bottom 60%",
+            onToggle: (self) => {
+              if (self.isActive) setActive(i);
+            },
+          }),
+        );
+
+        ScrollTrigger.refresh();
+
+        return () => {
+          triggers.forEach((t) => t.kill());
+          root.classList.remove("is-ready");
+        };
+      },
+    );
+
+    // --- Mobile: horizontal scroll-snap carousel ---
+    mm.add("(max-width: 920px)", () => {
+      setActive(0);
+
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              const i = panels.indexOf(e.target as HTMLElement);
+              if (i >= 0) setActive(i);
+            }
+          });
         },
-      });
-    });
+        { root, threshold: 0.6 },
+      );
+      panels.forEach((p) => io.observe(p));
 
-    ScrollTrigger.refresh();
+      const onDot = (e: Event) => {
+        const i = Number((e.currentTarget as HTMLElement).dataset.dot);
+        panels[i]?.scrollIntoView({
+          behavior: "smooth",
+          inline: "center",
+          block: "nearest",
+        });
+      };
+      dots.forEach((d) => d.addEventListener("click", onDot));
+
+      return () => {
+        io.disconnect();
+        dots.forEach((d) => d.removeEventListener("click", onDot));
+      };
+    });
   }
 </script>
