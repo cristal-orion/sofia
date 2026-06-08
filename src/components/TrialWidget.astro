@@ -32,6 +32,22 @@ const scenarios = [
   </div>
 
   <div class="strial__body">
+    <div class="strial__email">
+      <label for="sofia-trial-email">La tua email</label>
+      <input
+        id="sofia-trial-email"
+        type="email"
+        inputmode="email"
+        autocomplete="email"
+        placeholder="nome@azienda.it"
+        aria-describedby="sofia-trial-email-note"
+        required
+      />
+      <span id="sofia-trial-email-note" class="strial__email-note">
+        Ti scriviamo solo per la prova. Niente spam.
+      </span>
+    </div>
+
     <div class="strial__scenario">
       <label for="sofia-trial-agent">Con chi vuoi parlare</label>
       <select id="sofia-trial-agent" aria-label="Scegli lo scenario">
@@ -209,6 +225,58 @@ const scenarios = [
   }
   .strial__body {
     padding: 16px 18px 18px;
+  }
+  .strial__email {
+    margin-bottom: 14px;
+  }
+  .strial__email label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  #sofia-trial-email {
+    width: 100%;
+    height: 44px;
+    padding: 0 14px;
+    border-radius: 12px;
+    background-color: var(--surface-2);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 13px;
+    transition: border-color 0.15s, box-shadow 0.2s;
+  }
+  #sofia-trial-email::placeholder {
+    color: var(--muted);
+    font-weight: 500;
+  }
+  #sofia-trial-email:focus {
+    outline: none;
+    border-color: var(--coral);
+    box-shadow: 0 0 0 3px rgba(255, 95, 73, 0.18);
+  }
+  #sofia-trial-email:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  #sofia-trial-email.is-invalid {
+    border-color: var(--coral-700);
+    box-shadow: 0 0 0 3px rgba(255, 95, 73, 0.12);
+  }
+  .strial__email-note {
+    display: block;
+    margin-top: 6px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .strial__email-note.is-error {
+    color: var(--coral-700);
+    font-weight: 600;
   }
   .strial__scenario {
     margin-bottom: 14px;
@@ -388,6 +456,59 @@ const scenarios = [
   const btnMute = document.getElementById("sofia-trial-mute");
   const btnHangup = document.getElementById("sofia-trial-hangup");
   const agentSel = document.getElementById("sofia-trial-agent");
+  const emailInput = document.getElementById("sofia-trial-email");
+  const emailNote = document.getElementById("sofia-trial-email-note");
+  const emailNoteDefault = emailNote.textContent;
+
+  // Pre-fill the email if the visitor already left it earlier.
+  try {
+    const saved = localStorage.getItem("sofia-trial-email");
+    if (saved) emailInput.value = saved;
+  } catch {}
+
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  function emailError(text) {
+    emailInput.classList.add("is-invalid");
+    emailNote.classList.add("is-error");
+    emailNote.textContent = text;
+  }
+  function emailReset() {
+    emailInput.classList.remove("is-invalid");
+    emailNote.classList.remove("is-error");
+    emailNote.textContent = emailNoteDefault;
+  }
+  emailInput.addEventListener("input", emailReset);
+
+  // Save the lead before the call starts: Klaviyo profile + event,
+  // GTM/dataLayer event, and local cache for pre-fill.
+  function captureLead(email, scenarioValue) {
+    const scenario =
+      agentSel.options[agentSel.selectedIndex]?.text || scenarioValue;
+    try {
+      localStorage.setItem("sofia-trial-email", email);
+    } catch {}
+    try {
+      if (window.klaviyo) {
+        window.klaviyo.identify({ email: email });
+        window.klaviyo.push([
+          "track",
+          "Provato SofIA",
+          { Scenario: scenario, Fonte: "Widget prova ora" },
+        ]);
+      }
+    } catch (e) {
+      console.warn("[SofIA trial] Klaviyo non disponibile", e);
+    }
+    try {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "trial_lead",
+        trial_email: email,
+        trial_scenario: scenarioValue,
+      });
+    } catch {}
+  }
 
   let session = null;
   let muted = false;
@@ -433,14 +554,24 @@ const scenarios = [
   });
 
   btnStart.addEventListener("click", async () => {
+    const email = emailInput.value.trim();
+    if (!EMAIL_RE.test(email)) {
+      emailError("Inserisci un'email valida per avviare la prova.");
+      emailInput.focus();
+      return;
+    }
+    emailReset();
+    captureLead(email, agentSel.value);
+
     btnStart.disabled = true;
     agentSel.disabled = true;
+    emailInput.disabled = true;
     setStatus("Connessione...");
     try {
       const resp = await fetch(TRIAL_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ agent: agentSel.value }),
+        body: JSON.stringify({ agent: agentSel.value, email: email }),
       });
       if (resp.status === 429) {
         const data = await resp.json().catch(() => ({}));
@@ -451,6 +582,7 @@ const scenarios = [
         );
         btnStart.disabled = false;
         agentSel.disabled = false;
+        emailInput.disabled = false;
         return;
       }
       if (!resp.ok) throw new Error("HTTP " + resp.status);
@@ -476,6 +608,7 @@ const scenarios = [
       setStatus("Errore di connessione. Riprova.", "error");
       btnStart.disabled = false;
       agentSel.disabled = false;
+      emailInput.disabled = false;
     }
   });
 
@@ -504,6 +637,7 @@ const scenarios = [
     btnHangup.disabled = true;
     btnStart.disabled = false;
     agentSel.disabled = false;
+    emailInput.disabled = false;
     setStatus("Chiamata terminata");
   }
 </script>
