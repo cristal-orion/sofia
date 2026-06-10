@@ -1,0 +1,91 @@
+PROMPT PER LE ILLUSTRAZIONI MANCANTI — Sezione "Settori" (SofIA)
+================================================================
+
+OBIETTIVO
+Generare 3 illustrazioni coerenti con lo stile dell'immagine di riferimento
+già esistente (la receptionist allo studio, file "studi.png"). Devono sembrare
+parte della stessa serie: stessa palette, stesse forme morbide, stessa grana.
+
+DOVE METTERLE QUANDO PRONTE
+Salvarle in: src/assets/settori/
+con questi nomi esatti:
+  - bellezza.png
+  - ospitalita.png
+  - auto.png
+Poi aggiornare gli import in src/components/Settori.astro (sostituendo i
+placeholder che ora puntano tutti a studi.png).
+
+FORMATO
+- Proporzione 4:3 orizzontale (come l'immagine di riferimento ~1448x1086).
+- Risoluzione alta (almeno 1400px di lato lungo). Verranno ottimizzate in webp.
+
+VINCOLI DI STILE (validi per TUTTE e 3 — ripeterli ogni volta)
+- Flat editorial illustration, 2D, stile identico al riferimento.
+- Palette calda e tenue: sfondo crema (#f9f5e3), forme verde salvia (#4a5d50),
+  UN SOLO accento coral (#ff5f49) su un telefono che squilla.
+- Forme arrotondate e morbide, grana di carta sottile (paper grain texture).
+- Figura umana semplificata ma espressiva, serena, al lavoro.
+- Niente testo, niente loghi, niente robot, niente 3D, niente gradienti lucidi.
+- Composizione pulita: bancone/scrivania in primo piano, parete chiara dietro,
+  qualche pianta e un piccolo quadro come arredo (come nel riferimento).
+
+CONSIGLIO IMPORTANTE
+Generarle IN SERIE partendo dall'immagine di riferimento (studi.png) come
+immagine di input, chiedendo esplicitamente: "same illustration style, same
+color palette, same line weight, same grain" — così non derivano di stile.
+
+
+------------------------------------------------------------------
+1) BELLEZZA E BENESSERE  ->  src/assets/settori/bellezza.png
+   (Centri estetici · Saloni e parrucchieri · Centri benessere · Palestre)
+------------------------------------------------------------------
+Flat editorial illustration, 4:3 landscape, same warm muted style as the
+reference image: cream background (#f9f5e3), sage green shapes (#4a5d50), and a
+single coral accent (#ff5f49) on a ringing telephone. A calm hairdresser /
+beautician at the reception counter of a beauty salon, smiling gently while a
+coral vintage phone rings beside her (small coral motion lines). Soft rounded
+shapes, subtle paper-grain texture, simplified expressive human figure, plants
+and a small framed picture as decor. No text, no robots, no 3D, no glossy
+gradients.
+
+
+------------------------------------------------------------------
+2) RISTORAZIONE E OSPITALITÀ  ->  src/assets/settori/ospitalita.png
+   (Ristoranti · Hotel e B&B)
+------------------------------------------------------------------
+Flat editorial illustration, 4:3 landscape, same warm muted style as the
+reference image: cream background (#f9f5e3), sage green shapes (#4a5d50), and a
+single coral accent (#ff5f49) on a ringing telephone. A calm hotel receptionist
+(or restaurant host) standing behind a wooden reception/welcome counter, smiling
+gently while a coral vintage phone rings beside the register (small coral motion
+lines). Soft rounded shapes, subtle paper-grain texture, simplified expressive
+human figure, plants and a small framed picture as decor. No text, no robots,
+no 3D, no glossy gradients.
+
+
+------------------------------------------------------------------
+3) AUTO E MOTORI  ->  src/assets/settori/auto.png
+   (Autosaloni e concessionarie · Officine)
+------------------------------------------------------------------
+Flat editorial illustration, 4:3 landscape, same warm muted style as the
+reference image: cream background (#f9f5e3), sage green shapes (#4a5d50), and a
+single coral accent (#ff5f49) on a ringing telephone. A calm mechanic / car
+dealership worker at a service desk, smiling gently while a coral vintage phone
+rings beside him (small coral motion lines); subtle hint of a workshop or a car
+silhouette in the background. Soft rounded shapes, subtle paper-grain texture,
+simplified expressive human figure, plants and a small framed picture as decor.
+No text, no robots, no 3D, no glossy gradients.
+
+
+================================================================
+BONUS — se servisse rigenerare l'immagine HERO (panoramica 16:9)
+File attuale: src/assets/hero.png (donna a destra, spazio vuoto a sinistra)
+------------------------------------------------------------------
+Wide cinematic landscape illustration, 16:9 aspect ratio, same flat editorial
+style: cream background (#f9f5e3), sage green shapes (#4a5d50), single coral
+accent (#ff5f49) on a ringing phone. A young woman with a hair bun sits calmly
+at a reception desk positioned on the RIGHT third of the frame, writing in a
+notebook in front of a monitor, with a coral vintage telephone ringing beside
+her. The entire LEFT HALF is calm uncluttered cream negative space (for text
+overlay). Soft rounded shapes, paper-grain texture, no text, no robots, no 3D,
+no glossy gradients.

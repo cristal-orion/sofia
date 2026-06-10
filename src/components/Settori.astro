@@ -1,66 +1,231 @@
 ---
-const settori = [
-  "Studi medici e dentistici",
-  "Autosaloni e concessionarie",
-  "Centri estetici",
-  "Ristoranti",
-  "Palestre",
-  "Hotel e B&B",
-  "Saloni e parrucchieri",
-  "Studi legali",
-  "Officine",
-  "Centri benessere",
+import { Image } from "astro:assets";
+import studi from "../assets/settori/studi.png";
+import bellezza from "../assets/settori/bellezza.png";
+import ospitalita from "../assets/settori/ospitalita.png";
+import auto from "../assets/settori/auto.png";
+
+const families = [
+  {
+    id: "studi",
+    name: "Studi e professionisti",
+    sectors: ["Studi medici e dentistici", "Studi legali"],
+    img: studi,
+    alt: "Receptionist di uno studio che annota un appuntamento mentre il telefono squilla",
+  },
+  {
+    id: "bellezza",
+    name: "Bellezza e benessere",
+    sectors: ["Centri estetici", "Saloni e parrucchieri", "Centri benessere", "Palestre"],
+    img: bellezza,
+    alt: "Estetista al lavoro in un salone mentre il telefono squilla",
+  },
+  {
+    id: "ospitalita",
+    name: "Ristorazione e ospitalità",
+    sectors: ["Ristoranti", "Hotel e B&B"],
+    img: ospitalita,
+    alt: "Receptionist d'hotel che accoglie un ospite mentre il telefono squilla",
+  },
+  {
+    id: "auto",
+    name: "Auto e motori",
+    sectors: ["Autosaloni e concessionarie", "Officine"],
+    img: auto,
+    alt: "Addetto di un'officina al banco accettazione mentre il telefono squilla",
+  },
 ];
 ---
 
 <section class="section settori" id="settori">
   <div class="container">
-    <div class="section-head section-head--center" data-reveal>
-      <h2>Una configurazione, il tuo settore.</h2>
-      <p class="lead">
-        Dalla dashboard imposti SofIA in pochi minuti per la tua attività. Le
-        regole, i servizi e il tono di voce li scegli tu.
-      </p>
-    </div>
+    <div class="settori__grid" data-settori>
+      <div class="settori__media" data-reveal>
+        {families.map((f, i) => (
+          <div class={`settori__shot ${i === 0 ? "is-active" : ""}`} data-shot={f.id}>
+            <Image
+              src={f.img}
+              alt={f.alt}
+              widths={[420, 640, 840]}
+              sizes="(max-width: 860px) 90vw, 44vw"
+              loading="lazy"
+            />
+          </div>
+        ))}
+      </div>
 
-    <ul class="settori__cloud">
-      {settori.map((s) => <li class="settori__chip">{s}</li>)}
-      <li class="settori__chip settori__chip--more">+ il tuo</li>
-    </ul>
+      <div class="settori__content">
+        <div class="section-head" data-reveal>
+          <h2>Una configurazione, <span class="text-coral">il tuo settore.</span></h2>
+          <p class="lead">
+            Dalla dashboard imposti SofIA in pochi minuti per la tua attività.
+            Le regole, i servizi e il tono di voce li scegli tu.
+          </p>
+        </div>
+
+        <ul class="settori__list" role="tablist" aria-label="Settori" data-reveal>
+          {families.map((f, i) => (
+            <li role="presentation">
+              <button
+                type="button"
+                class={`settori__fam ${i === 0 ? "is-active" : ""}`}
+                role="tab"
+                aria-selected={i === 0 ? "true" : "false"}
+                data-fam={f.id}
+              >
+                <span class="settori__fam-name">{f.name}</span>
+                <span class="settori__fam-tags">{f.sectors.join(" · ")}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+
+        <p class="settori__more" data-reveal>
+          Non lo trovi? <strong>+ il tuo settore</strong> — SofIA si configura per
+          qualsiasi attività che riceve telefonate.
+        </p>
+      </div>
+    </div>
   </div>
 </section>
 
 <style>
-  .settori__cloud {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.7rem;
-    max-width: 900px;
-    margin-inline: auto;
+  .settori__grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: clamp(1.6rem, 1rem + 3vw, 4rem);
+    align-items: center;
   }
-  .settori__chip {
-    padding: 0.7rem 1.2rem;
-    border-radius: 999px;
+
+  /* ---------- Media (crossfade) ---------- */
+  .settori__media {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--green-050);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-md);
+    aspect-ratio: 4 / 3;
+  }
+  .settori__shot {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.5s var(--ease-out);
+  }
+  .settori__shot.is-active {
+    opacity: 1;
+  }
+  .settori__shot :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ---------- Family list ---------- */
+  .settori__list {
+    display: grid;
+    gap: 0.6rem;
+    margin-top: clamp(1rem, 0.6rem + 1vw, 1.6rem);
+  }
+  .settori__fam {
+    width: 100%;
+    text-align: left;
+    display: grid;
+    gap: 0.25rem;
+    padding: 1rem 1.2rem;
+    border-radius: var(--radius);
     background: var(--surface);
     border: 1px solid var(--line);
-    font-weight: 600;
-    font-size: 0.95rem;
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    cursor: pointer;
+    position: relative;
+    transition: border-color 0.2s ease, transform 0.18s var(--ease-out),
+      box-shadow 0.25s ease, background 0.2s ease;
   }
-  .settori__chip:hover {
-    transform: translateY(-3px);
-    border-color: var(--coral);
+  .settori__fam::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 14%;
+    bottom: 14%;
+    width: 4px;
+    border-radius: 0 4px 4px 0;
+    background: var(--coral);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .settori__fam:hover {
+    transform: translateX(3px);
+    border-color: var(--line-strong);
+  }
+  .settori__fam.is-active {
+    border-color: transparent;
+    background: linear-gradient(160deg, var(--green) 0%, var(--green-900) 100%);
+    box-shadow: var(--shadow-md);
+  }
+  .settori__fam.is-active::before {
+    opacity: 1;
+  }
+  .settori__fam-name {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: var(--step-1);
+    color: var(--ink);
+  }
+  .settori__fam.is-active .settori__fam-name {
+    color: #fff;
+  }
+  .settori__fam-tags {
+    font-size: 0.86rem;
+    color: var(--muted);
+  }
+  .settori__fam.is-active .settori__fam-tags {
+    color: rgba(255, 255, 255, 0.78);
+  }
+
+  .settori__more {
+    margin-top: 1.4rem;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+  }
+  .settori__more strong {
     color: var(--coral-700);
   }
-  .settori__chip--more {
-    background: var(--green);
-    color: #fff;
-    border-color: transparent;
-  }
-  .settori__chip--more:hover {
-    color: #fff;
-    border-color: transparent;
+
+  @media (max-width: 860px) {
+    .settori__grid {
+      grid-template-columns: 1fr;
+    }
+    .settori__media {
+      max-width: 520px;
+      margin-inline: auto;
+    }
+    .settori .section-head {
+      text-align: left;
+    }
   }
 </style>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-settori]");
+  if (root) {
+    const tabs = root.querySelectorAll<HTMLButtonElement>("[data-fam]");
+    const shots = root.querySelectorAll<HTMLElement>("[data-shot]");
+
+    const select = (id: string) => {
+      tabs.forEach((t) => {
+        const active = t.dataset.fam === id;
+        t.classList.toggle("is-active", active);
+        t.setAttribute("aria-selected", String(active));
+      });
+      shots.forEach((s) => s.classList.toggle("is-active", s.dataset.shot === id));
+    };
+
+    tabs.forEach((t) => {
+      t.addEventListener("click", () => select(t.dataset.fam!));
+      // Anteprima al passaggio del mouse: l'immagine segue senza dover cliccare.
+      t.addEventListener("mouseenter", () => select(t.dataset.fam!));
+    });
+  }
+</script>

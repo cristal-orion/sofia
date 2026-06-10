@@ -1,12 +1,29 @@
 ---
-import HeroOrchestrator from "./HeroOrchestrator.astro";
+import { Image } from "astro:assets";
+import heroImg from "../assets/hero.png";
+import heroMobileImg from "../assets/hero-mobile.png";
 ---
 
 <section class="hero" id="top">
   <div class="hero__bg" aria-hidden="true">
-    <span class="hero__blob hero__blob--a"></span>
-    <span class="hero__blob hero__blob--b"></span>
-    <span class="hero__grid"></span>
+    <Image
+      class="hero__bg-img hero__bg-img--wide"
+      src={heroImg}
+      alt=""
+      widths={[768, 1280, 1680, 2200]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <Image
+      class="hero__bg-img hero__bg-img--mobile"
+      src={heroMobileImg}
+      alt=""
+      widths={[480, 720, 960]}
+      sizes="100vw"
+      loading="eager"
+    />
+    <span class="hero__scrim"></span>
   </div>
 
   <div class="container hero__inner">
@@ -40,71 +57,64 @@ import HeroOrchestrator from "./HeroOrchestrator.astro";
         <li>3 minuti di prova, subito</li>
       </ul>
     </div>
-
-    <div class="hero__demo" data-hero="6">
-      <HeroOrchestrator />
-    </div>
   </div>
 </section>
 
 <style>
   .hero {
     position: relative;
+    display: flex;
+    align-items: center;
+    min-height: clamp(560px, 78vh, 820px);
     padding-block: clamp(3rem, 2rem + 5vw, 6rem) var(--section-y);
     overflow: hidden;
   }
+  /* L'immagine occupa solo la PORZIONE DESTRA della hero (da ~38% in poi);
+     il lato sinistro resta sfondo crema della pagina per il testo. Il box è
+     sempre dentro al viewport: nessun rischio di overflow orizzontale. */
   .hero__bg {
     position: absolute;
-    inset: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 22%;
     z-index: 0;
     pointer-events: none;
+    overflow: hidden;
   }
-  .hero__blob {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(70px);
-    opacity: 0.5;
+  .hero__bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
   }
-  .hero__blob--a {
-    width: 42vw;
-    height: 42vw;
-    top: -14vw;
-    right: -8vw;
-    background: radial-gradient(circle, var(--glow-coral), transparent 68%);
+  /* Su desktop si vede solo la panoramica; quella quadrata è per mobile. */
+  .hero__bg-img--mobile {
+    display: none;
   }
-  .hero__blob--b {
-    width: 34vw;
-    height: 34vw;
-    bottom: -16vw;
-    left: -10vw;
-    background: radial-gradient(circle, var(--glow-green), transparent 68%);
-  }
-  .hero__grid {
+  /* Velo crema sul bordo sinistro dell'immagine: la fonde nello sfondo e
+     garantisce il contrasto del testo scuro. */
+  .hero__scrim {
     position: absolute;
     inset: 0;
-    background-image:
-      linear-gradient(rgba(36, 31, 29, 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(36, 31, 29, 0.04) 1px, transparent 1px);
-    background-size: 46px 46px;
-    mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000, transparent 75%);
-    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000, transparent 75%);
+    background: linear-gradient(
+      90deg,
+      var(--cream) 0%,
+      rgba(249, 245, 227, 0.55) 22%,
+      rgba(249, 245, 227, 0) 48%
+    );
   }
 
   .hero__inner {
     position: relative;
     z-index: 1;
-    display: grid;
-    grid-template-columns: 1.05fr 0.95fr;
-    gap: clamp(2rem, 1rem + 4vw, 4.5rem);
-    align-items: center;
-  }
-  .hero__inner > * {
-    min-width: 0;
+    width: 100%;
   }
   .hero__copy {
     display: grid;
     gap: 1.4rem;
-    max-width: 42rem;
+    max-width: 44rem;
+    width: min(100%, 52%);
   }
   .hero h1 {
     margin-top: 0.4rem;
@@ -159,6 +169,20 @@ import HeroOrchestrator from "./HeroOrchestrator.astro";
     display: grid;
     gap: 1rem;
     justify-items: center;
+  }
+  .hero__illustration {
+    margin: 0;
+    width: 100%;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-lg);
+    background: var(--cream-soft);
+  }
+  .hero__illustration img {
+    display: block;
+    width: 100%;
+    height: auto;
   }
   .demo-card {
     width: min(100%, 420px);
@@ -321,14 +345,39 @@ import HeroOrchestrator from "./HeroOrchestrator.astro";
   }
 
   @media (max-width: 920px) {
+    /* Niente sovrapposizione su mobile: testo sopra, illustrazione sotto. */
+    .hero {
+      flex-direction: column;
+      min-height: 0;
+      align-items: stretch;
+      padding-bottom: 0;
+    }
     .hero__inner {
-      grid-template-columns: 1fr;
+      order: 1;
     }
     .hero__copy {
       max-width: 100%;
+      width: 100%;
     }
-    .hero__demo {
+    .hero__bg {
+      position: relative;
       order: 2;
+      inset: auto;
+      margin-top: clamp(1.5rem, 1rem + 3vw, 2.5rem);
+    }
+    .hero__bg-img {
+      height: auto;
+      object-fit: contain;
+    }
+    /* Switch immagini: su mobile mostra la quadrata, nascondi la panoramica. */
+    .hero__bg-img--wide {
+      display: none;
+    }
+    .hero__bg-img--mobile {
+      display: block;
+    }
+    .hero__scrim {
+      display: none;
     }
   }
 </style>
