@@ -1,0 +1,383 @@
+---
+// ROI calculator — modello "quanto recuperi con SofIA".
+// 2 input numerici con stepper + 2 slider percentuali + toggle mese/anno.
+// Stima: chiamate/g × %perse × %conversione × valore × 22 giorni lavorativi.
+---
+
+<section class="section calc" id="calcolatore">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <h2>Quanto fatturato <span class="text-coral">stai perdendo?</span></h2>
+      <p class="lead">
+        Inserisci i dati della tua attività e scopri quanto SofIA può aiutarti
+        a recuperare, semplicemente rispondendo a ogni chiamata.
+      </p>
+    </div>
+
+    <div class="calc__panel" data-reveal data-calc>
+      <div class="calc__controls">
+        <div class="calc__field">
+          <span class="calc__label">Chiamate al giorno</span>
+          <div class="calc__stepper">
+            <button type="button" class="calc__step" data-step="-1" data-target="calls" aria-label="Diminuisci chiamate">−</button>
+            <input type="number" inputmode="numeric" min="1" max="300" step="1" value="40" data-calc-calls aria-label="Chiamate al giorno" />
+            <button type="button" class="calc__step" data-step="1" data-target="calls" aria-label="Aumenta chiamate">+</button>
+          </div>
+        </div>
+
+        <div class="calc__field">
+          <label class="calc__label" for="calc-lost">
+            % di chiamate perse
+            <output class="calc__val" id="calc-lost-out">30%</output>
+          </label>
+          <input type="range" id="calc-lost" min="0" max="100" step="1" value="30" data-calc-lost aria-describedby="calc-lost-out" />
+        </div>
+
+        <div class="calc__field">
+          <label class="calc__label" for="calc-conv">
+            % chiamate che diventano clienti
+            <output class="calc__val" id="calc-conv-out">40%</output>
+          </label>
+          <input type="range" id="calc-conv" min="0" max="100" step="1" value="40" data-calc-conv aria-describedby="calc-conv-out" />
+        </div>
+
+        <div class="calc__field">
+          <span class="calc__label">Valore medio di un cliente (€)</span>
+          <div class="calc__stepper">
+            <button type="button" class="calc__step" data-step="-10" data-target="value" aria-label="Diminuisci valore">−</button>
+            <input type="number" inputmode="numeric" min="10" max="2000" step="10" value="80" data-calc-value aria-label="Valore medio cliente in euro" />
+            <button type="button" class="calc__step" data-step="10" data-target="value" aria-label="Aumenta valore">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc__result">
+        <div class="calc__toggle" role="group" aria-label="Periodo">
+          <button type="button" class="calc__toggle-btn is-active" data-period="month" aria-pressed="true">Mese</button>
+          <button type="button" class="calc__toggle-btn" data-period="year" aria-pressed="false">Anno</button>
+        </div>
+
+        <div class="calc__result-body" aria-live="polite">
+          <span class="calc__result-lbl">Con SofIA potresti recuperare</span>
+          <span class="calc__amount">+<span data-calc-total>10.560</span> €</span>
+          <span class="calc__result-sub" data-calc-period-lbl>al mese</span>
+        </div>
+
+        <p class="calc__note">
+          Entrate che oggi vanno perse quando il telefono squilla a vuoto.
+          E senza fare una chiamata in più.
+        </p>
+
+        <a class="btn btn--primary btn--lg calc__btn" href="#prova" data-trial-open>Fai rispondere SofIA</a>
+      </div>
+    </div>
+
+    <p class="calc__disclaimer" data-reveal>
+      * Calcolo indicativo su 22 giorni lavorativi al mese. Personalizza i dati per una stima più precisa.
+    </p>
+  </div>
+</section>
+
+<style>
+  .calc .section-head {
+    max-width: 60ch;
+  }
+
+  .calc__panel {
+    display: grid;
+    grid-template-columns: 1fr 0.95fr;
+    gap: clamp(1.5rem, 1rem + 2.5vw, 3.5rem);
+    align-items: stretch;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.6rem, 1rem + 2.5vw, 3rem);
+    box-shadow: var(--shadow-md);
+  }
+
+  .calc__controls {
+    display: grid;
+    gap: clamp(1.4rem, 1rem + 1.2vw, 2rem);
+    align-content: center;
+  }
+  .calc__field {
+    display: grid;
+    gap: 0.7rem;
+  }
+  .calc__label {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    font-weight: 700;
+    font-size: var(--step-0);
+    color: var(--ink);
+  }
+  .calc__val {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: var(--step-1);
+    color: var(--coral-700);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- Stepper (numero + - / +) ---------- */
+  .calc__stepper {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .calc__stepper input {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: var(--step-1);
+    color: var(--ink);
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.6rem 0.8rem;
+    font-variant-numeric: tabular-nums;
+    -moz-appearance: textfield;
+  }
+  .calc__stepper input::-webkit-outer-spin-button,
+  .calc__stepper input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .calc__stepper input:focus-visible {
+    outline: none;
+    border-color: var(--coral);
+    box-shadow: 0 0 0 3px var(--glow-coral-soft);
+  }
+  .calc__step {
+    flex: 0 0 auto;
+    width: 52px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--green);
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.18s ease, transform 0.12s ease;
+  }
+  .calc__step:hover {
+    background: var(--green-700);
+  }
+  .calc__step:active {
+    transform: scale(0.94);
+  }
+
+  /* ---------- Range slider ---------- */
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--coral-100);
+    outline: none;
+    cursor: pointer;
+    --fill: 30%;
+    background-image: linear-gradient(var(--coral), var(--coral));
+    background-size: var(--fill) 100%;
+    background-repeat: no-repeat;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--coral);
+    border: 4px solid var(--surface);
+    box-shadow: var(--shadow-coral);
+    transition: transform 0.15s var(--ease-out);
+  }
+  input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.12);
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--coral);
+    border: 4px solid var(--surface);
+    box-shadow: var(--shadow-coral);
+  }
+  input[type="range"]:focus-visible {
+    box-shadow: 0 0 0 4px var(--glow-coral-soft);
+  }
+
+  /* ---------- Result card ---------- */
+  .calc__result {
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    text-align: center;
+    gap: 1rem;
+    padding: clamp(1.6rem, 1rem + 2vw, 2.6rem);
+    border-radius: var(--radius);
+    background: linear-gradient(160deg, var(--green) 0%, var(--green-900) 100%);
+    color: #fff;
+  }
+  .calc__toggle {
+    display: inline-flex;
+    gap: 0.3rem;
+    padding: 0.3rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+  }
+  .calc__toggle-btn {
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.7);
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 0.5rem 1.3rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .calc__toggle-btn.is-active {
+    background: #fff;
+    color: var(--green-900);
+  }
+  .calc__result-body {
+    display: grid;
+    justify-items: center;
+    gap: 0.3rem;
+  }
+  .calc__result-lbl {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.78);
+  }
+  .calc__amount {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: clamp(2.8rem, 1.8rem + 4.5vw, 4.6rem);
+    line-height: 1;
+    color: var(--coral);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+  .calc__result-sub {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.82);
+  }
+  .calc__note {
+    font-size: 0.86rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.5;
+    max-width: 34ch;
+  }
+  .calc__btn {
+    width: 100%;
+  }
+
+  .calc__disclaimer {
+    margin-top: 1.2rem;
+    text-align: center;
+    font-size: 0.8rem;
+    font-style: italic;
+    color: var(--muted);
+  }
+
+  @media (max-width: 760px) {
+    .calc__panel {
+      grid-template-columns: 1fr;
+    }
+    .calc .section-head {
+      max-width: 24ch;
+      text-align: center;
+      justify-items: center;
+      margin-inline: auto;
+    }
+    .calc .section-head .lead {
+      max-width: 50ch;
+    }
+  }
+</style>
+
+<script>
+  const panel = document.querySelector<HTMLElement>("[data-calc]");
+  if (panel) {
+    const callsEl = panel.querySelector<HTMLInputElement>("[data-calc-calls]")!;
+    const valueEl = panel.querySelector<HTMLInputElement>("[data-calc-value]")!;
+    const lostEl = panel.querySelector<HTMLInputElement>("[data-calc-lost]")!;
+    const convEl = panel.querySelector<HTMLInputElement>("[data-calc-conv]")!;
+    const lostOut = document.getElementById("calc-lost-out")!;
+    const convOut = document.getElementById("calc-conv-out")!;
+    const totalEl = panel.querySelector<HTMLElement>("[data-calc-total]")!;
+    const periodLbl = panel.querySelector<HTMLElement>("[data-calc-period-lbl]")!;
+    const toggleBtns = panel.querySelectorAll<HTMLButtonElement>("[data-period]");
+
+    const nf = new Intl.NumberFormat("it-IT");
+    const WORK_DAYS = 22; // giorni lavorativi/mese, stima prudente
+    let period: "month" | "year" = "month";
+
+    const clamp = (v: number, min: number, max: number) =>
+      Math.min(max, Math.max(min, v));
+
+    const paintFill = (el: HTMLInputElement) => {
+      const min = Number(el.min);
+      const max = Number(el.max);
+      const pct = ((Number(el.value) - min) / (max - min)) * 100;
+      el.style.setProperty("--fill", `${pct}%`);
+    };
+
+    const update = () => {
+      const calls = clamp(Number(callsEl.value) || 0, 1, 300);
+      const value = clamp(Number(valueEl.value) || 0, 10, 2000);
+      const lost = Number(lostEl.value);
+      const conv = Number(convEl.value);
+
+      // Clienti recuperabili = chiamate perse che si sarebbero convertite.
+      const perDay = calls * (lost / 100) * (conv / 100) * value;
+      const month = perDay * WORK_DAYS;
+      const amount = Math.round(period === "month" ? month : month * 12);
+
+      lostOut.textContent = `${lost}%`;
+      convOut.textContent = `${conv}%`;
+      totalEl.textContent = nf.format(amount);
+      periodLbl.textContent = period === "month" ? "al mese" : "all'anno";
+
+      paintFill(lostEl);
+      paintFill(convEl);
+    };
+
+    callsEl.addEventListener("input", update);
+    valueEl.addEventListener("input", update);
+    lostEl.addEventListener("input", update);
+    convEl.addEventListener("input", update);
+
+    panel.querySelectorAll<HTMLButtonElement>("[data-step]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const target = btn.dataset.target === "calls" ? callsEl : valueEl;
+        const delta = Number(btn.dataset.step);
+        const min = Number(target.min);
+        const max = Number(target.max);
+        target.value = String(clamp((Number(target.value) || 0) + delta, min, max));
+        update();
+      });
+    });
+
+    toggleBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        period = btn.dataset.period as "month" | "year";
+        toggleBtns.forEach((b) => {
+          const active = b === btn;
+          b.classList.toggle("is-active", active);
+          b.setAttribute("aria-pressed", String(active));
+        });
+        update();
+      });
+    });
+
+    update();
+  }
+</script>
