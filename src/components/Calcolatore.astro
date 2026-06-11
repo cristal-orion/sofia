@@ -59,7 +59,7 @@
 
         <div class="calc__result-body" aria-live="polite">
           <span class="calc__result-lbl">Con SofIA potresti recuperare</span>
-          <span class="calc__amount">+<span data-calc-total>10.560</span> €</span>
+          <span class="calc__amount">+<span data-calc-total>10.560</span><span class="calc__cur">€</span></span>
           <span class="calc__result-sub" data-calc-period-lbl>al mese</span>
         </div>
 
@@ -264,6 +264,11 @@
     color: var(--coral);
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+  .calc__cur {
+    font-size: 0.6em;
+    margin-left: 0.08em;
   }
   .calc__result-sub {
     font-size: 0.95rem;
