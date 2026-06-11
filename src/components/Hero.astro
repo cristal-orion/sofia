@@ -6,15 +6,16 @@ import heroMobileImg from "../assets/hero-mobile.png";
 
 <section class="hero" id="top">
   <div class="hero__bg" aria-hidden="true">
-    <Image
+    <video
       class="hero__bg-img hero__bg-img--wide"
-      src={heroImg}
-      alt=""
-      widths={[768, 1280, 1680, 2200]}
-      sizes="100vw"
-      loading="eager"
-      fetchpriority="high"
-    />
+      src="/hero.mp4"
+      poster={heroImg.src}
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+    ></video>
     <Image
       class="hero__bg-img hero__bg-img--mobile"
       src={heroMobileImg}
