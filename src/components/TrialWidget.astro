@@ -447,7 +447,7 @@ const scenarios = [
   const TRIAL_ENDPOINT = "https://app.affinitylab.it:8443/api/web-trial/start";
   const KLAVIYO_COMPANY_ID = "TATHwU";
   const KLAVIYO_LIST_ID = "TRKkgn";
-  const KLAVIYO_SUBSCRIBE_ENDPOINT = `https://a.klaviyo.com/client/subscriptions/?company_id=${KLAVIYO_COMPANY_ID}`;
+  const KLAVIYO_SUBSCRIBE_ENDPOINT = "https://manage.kmail-lists.com/ajax/subscriptions/subscribe";
 
   const fab = document.getElementById("sofia-trial-fab");
   const panel = document.getElementById("sofia-trial-panel");
@@ -544,51 +544,25 @@ const scenarios = [
 
   async function subscribeToKlaviyo(email) {
     const scenario = agentSel.options[agentSel.selectedIndex]?.text || agentSel.value;
+    const body = new URLSearchParams({
+      g: KLAVIYO_LIST_ID,
+      email,
+      "$fields": "$source,Scenario",
+      "$source": "Widget prova SofIA",
+      Scenario: scenario,
+    });
+
     const resp = await fetch(KLAVIYO_SUBSCRIBE_ENDPOINT, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        revision: "2024-10-15",
+        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
       },
-      body: JSON.stringify({
-        data: {
-          type: "subscription",
-          attributes: {
-            profile: {
-              data: {
-                type: "profile",
-                attributes: {
-                  email,
-                  properties: {
-                    Fonte: "Widget prova SofIA",
-                    Scenario: scenario,
-                  },
-                  subscriptions: {
-                    email: {
-                      marketing: {
-                        consent: "SUBSCRIBED",
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-          relationships: {
-            list: {
-              data: {
-                type: "list",
-                id: KLAVIYO_LIST_ID,
-              },
-            },
-          },
-        },
-      }),
+      body,
     });
+    const data = await resp.json().catch(() => null);
 
-    if (!resp.ok) {
-      const detail = await resp.text().catch(() => "");
-      throw new Error("Klaviyo HTTP " + resp.status + " " + detail);
+    if (!resp.ok || !data?.success) {
+      throw new Error("Klaviyo subscribe failed " + resp.status);
     }
   }
 
