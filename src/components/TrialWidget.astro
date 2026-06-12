@@ -445,6 +445,9 @@ const scenarios = [
   import { UltravoxSession } from "https://esm.sh/ultravox-client@0.3.6";
 
   const TRIAL_ENDPOINT = "https://app.affinitylab.it:8443/api/web-trial/start";
+  const KLAVIYO_COMPANY_ID = "TATHwU";
+  const KLAVIYO_LIST_ID = "TRKkgn";
+  const KLAVIYO_SUBSCRIBE_ENDPOINT = `https://a.klaviyo.com/client/subscriptions/?company_id=${KLAVIYO_COMPANY_ID}`;
 
   const fab = document.getElementById("sofia-trial-fab");
   const panel = document.getElementById("sofia-trial-panel");
@@ -539,6 +542,39 @@ const scenarios = [
     }, 1000);
   }
 
+  async function subscribeToKlaviyo(email) {
+    const resp = await fetch(KLAVIYO_SUBSCRIBE_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        revision: "2024-10-15",
+      },
+      body: JSON.stringify({
+        data: {
+          type: "subscription",
+          attributes: {
+            profile: {
+              data: {
+                type: "profile",
+                attributes: { email },
+              },
+            },
+          },
+          relationships: {
+            list: {
+              data: {
+                type: "list",
+                id: KLAVIYO_LIST_ID,
+              },
+            },
+          },
+        },
+      }),
+    });
+
+    if (!resp.ok) throw new Error("Klaviyo HTTP " + resp.status);
+  }
+
   function openPanel() {
     panel.classList.add("is-open");
   }
@@ -561,13 +597,15 @@ const scenarios = [
       return;
     }
     emailReset();
-    captureLead(email, agentSel.value);
 
     btnStart.disabled = true;
     agentSel.disabled = true;
     emailInput.disabled = true;
-    setStatus("Connessione...");
+    setStatus("Sblocco prova...");
     try {
+      await subscribeToKlaviyo(email);
+      captureLead(email, agentSel.value);
+      setStatus("Connessione...");
       const resp = await fetch(TRIAL_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
