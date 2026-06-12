@@ -543,6 +543,7 @@ const scenarios = [
   }
 
   async function subscribeToKlaviyo(email) {
+    const scenario = agentSel.options[agentSel.selectedIndex]?.text || agentSel.value;
     const resp = await fetch(KLAVIYO_SUBSCRIBE_ENDPOINT, {
       method: "POST",
       headers: {
@@ -556,7 +557,20 @@ const scenarios = [
             profile: {
               data: {
                 type: "profile",
-                attributes: { email },
+                attributes: {
+                  email,
+                  properties: {
+                    Fonte: "Widget prova SofIA",
+                    Scenario: scenario,
+                  },
+                  subscriptions: {
+                    email: {
+                      marketing: {
+                        consent: "SUBSCRIBED",
+                      },
+                    },
+                  },
+                },
               },
             },
           },
@@ -572,7 +586,10 @@ const scenarios = [
       }),
     });
 
-    if (!resp.ok) throw new Error("Klaviyo HTTP " + resp.status);
+    if (!resp.ok) {
+      const detail = await resp.text().catch(() => "");
+      throw new Error("Klaviyo HTTP " + resp.status + " " + detail);
+    }
   }
 
   function openPanel() {
