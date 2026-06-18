@@ -68,6 +68,50 @@ const scenarios = [
       <button type="button" id="sofia-trial-hangup" class="sbtn-danger" disabled>Termina</button>
     </div>
 
+    <div id="sofia-trial-followup">
+      <div class="strial__thanks strial__thanks--ask">
+        <h5>Ti è piaciuta SofIA?</h5>
+        <p>Lasciaci nome e numero: ti richiamiamo noi per spiegarti come attivarla nella tua attività.</p>
+      </div>
+
+      <div class="strial__followup-fields">
+        <div class="strial__field">
+          <label for="sofia-trial-name">Nome</label>
+          <input
+            id="sofia-trial-name"
+            type="text"
+            autocomplete="given-name"
+            placeholder="Come ti chiami"
+          />
+        </div>
+        <div class="strial__field">
+          <label for="sofia-trial-phone">Telefono</label>
+          <input
+            id="sofia-trial-phone"
+            type="tel"
+            inputmode="tel"
+            autocomplete="tel"
+            placeholder="+39 333 123 4567"
+            aria-describedby="sofia-trial-phone-note"
+          />
+          <span id="sofia-trial-phone-note" class="strial__email-note">
+            Ti chiamiamo solo per la prova, nessun impegno.
+          </span>
+        </div>
+        <div class="strial__followup-actions">
+          <button type="button" id="sofia-trial-callback" class="sbtn-primary">Voglio essere richiamato</button>
+          <button type="button" id="sofia-trial-skip" class="sbtn-ghost">No, grazie</button>
+        </div>
+      </div>
+
+      <div class="strial__thanks strial__thanks--sent">
+        <span class="strial__thanks-ico" aria-hidden="true">✓</span>
+        <h5>Fatto, grazie!</h5>
+        <p>Ti richiamiamo presto al numero che ci hai lasciato.</p>
+        <button type="button" id="sofia-trial-followup-close" class="sbtn-ghost">Chiudi</button>
+      </div>
+    </div>
+
     <div class="strial__foot">
       <span>SofIA · v1.0</span>
       <span><span class="accent">●</span> WebRTC secure</span>
@@ -439,6 +483,131 @@ const scenarios = [
   .strial__foot .accent {
     color: var(--green);
   }
+
+  /* --- Modulo richiamata post-chiamata --- */
+  #sofia-trial-followup {
+    display: none;
+  }
+  .strial__body.is-followup .strial__email,
+  .strial__body.is-followup .strial__scenario,
+  .strial__body.is-followup #sofia-trial-status,
+  .strial__body.is-followup #sofia-trial-actions {
+    display: none;
+  }
+  .strial__body.is-followup #sofia-trial-followup {
+    display: block;
+  }
+  .strial__thanks {
+    text-align: center;
+    margin-bottom: 14px;
+  }
+  .strial__thanks h5 {
+    margin: 0;
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--ink);
+  }
+  .strial__thanks p {
+    margin: 6px 0 0;
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: var(--muted);
+  }
+  .strial__thanks-ico {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    margin-bottom: 8px;
+    border-radius: 50%;
+    background: var(--green-050);
+    color: var(--green-700);
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .strial__field {
+    margin-bottom: 14px;
+  }
+  .strial__field label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  #sofia-trial-name,
+  #sofia-trial-phone {
+    width: 100%;
+    height: 44px;
+    padding: 0 14px;
+    border-radius: 12px;
+    background-color: var(--surface-2);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 13px;
+    transition: border-color 0.15s, box-shadow 0.2s;
+  }
+  #sofia-trial-name::placeholder,
+  #sofia-trial-phone::placeholder {
+    color: var(--muted);
+    font-weight: 500;
+  }
+  #sofia-trial-name:focus,
+  #sofia-trial-phone:focus {
+    outline: none;
+    border-color: var(--coral);
+    box-shadow: 0 0 0 3px rgba(255, 95, 73, 0.18);
+  }
+  #sofia-trial-name.is-invalid,
+  #sofia-trial-phone.is-invalid {
+    border-color: var(--coral-700);
+    box-shadow: 0 0 0 3px rgba(255, 95, 73, 0.12);
+  }
+  .strial__followup-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .strial__followup-actions button {
+    cursor: pointer;
+    height: 42px;
+    padding: 0 12px;
+    border-radius: 12px;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 12.5px;
+    border: 1px solid transparent;
+    transition: transform 0.12s ease, opacity 0.12s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s;
+  }
+  .strial__followup-actions button:not(:disabled):hover {
+    transform: translateY(-1px);
+  }
+  .strial__thanks--sent {
+    display: none;
+  }
+  #sofia-trial-followup.is-sent .strial__thanks--ask,
+  #sofia-trial-followup.is-sent .strial__followup-fields {
+    display: none;
+  }
+  #sofia-trial-followup.is-sent .strial__thanks--sent {
+    display: block;
+  }
+  #sofia-trial-followup-close {
+    margin-top: 12px;
+    cursor: pointer;
+    height: 40px;
+    padding: 0 18px;
+    border-radius: 12px;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 12.5px;
+  }
 </style>
 
 <script is:inline type="module">
@@ -462,6 +631,15 @@ const scenarios = [
   const emailInput = document.getElementById("sofia-trial-email");
   const emailNote = document.getElementById("sofia-trial-email-note");
   const emailNoteDefault = emailNote.textContent;
+  const body = panel.querySelector(".strial__body");
+  const followup = document.getElementById("sofia-trial-followup");
+  const nameInput = document.getElementById("sofia-trial-name");
+  const phoneInput = document.getElementById("sofia-trial-phone");
+  const phoneNote = document.getElementById("sofia-trial-phone-note");
+  const phoneNoteDefault = phoneNote.textContent;
+  const btnCallback = document.getElementById("sofia-trial-callback");
+  const btnSkip = document.getElementById("sofia-trial-skip");
+  const btnFollowupClose = document.getElementById("sofia-trial-followup-close");
 
   // Pre-fill the email if the visitor already left it earlier.
   try {
@@ -513,8 +691,104 @@ const scenarios = [
     } catch {}
   }
 
+  // --- Modulo richiamata: validazione + salvataggio nome/telefono ---
+  function phoneDigits(raw) {
+    return raw.replace(/\D/g, "");
+  }
+  // Normalizza in formato internazionale (default Italia +39) per Klaviyo.
+  function normalizePhone(raw) {
+    let p = raw.replace(/[^\d+]/g, "");
+    if (p.startsWith("00")) p = "+" + p.slice(2);
+    if (!p.startsWith("+")) p = "+39" + p;
+    return p;
+  }
+  function phoneError(text) {
+    phoneInput.classList.add("is-invalid");
+    phoneNote.classList.add("is-error");
+    phoneNote.textContent = text;
+  }
+  function phoneReset() {
+    phoneInput.classList.remove("is-invalid");
+    phoneNote.classList.remove("is-error");
+    phoneNote.textContent = phoneNoteDefault;
+  }
+  phoneInput.addEventListener("input", phoneReset);
+  nameInput.addEventListener("input", () =>
+    nameInput.classList.remove("is-invalid"),
+  );
+
+  // Salva la richiesta di richiamata: profilo Klaviyo (nome + telefono,
+  // legato all'email della prova) + evento Klaviyo e GTM/dataLayer.
+  function captureCallback(name, phone) {
+    const phoneE164 = normalizePhone(phone);
+    const scenario =
+      agentSel.options[agentSel.selectedIndex]?.text || agentSel.value;
+    try {
+      if (window.klaviyo) {
+        const profile = { first_name: name, phone_number: phoneE164 };
+        if (lastEmail) profile.email = lastEmail;
+        window.klaviyo.identify(profile);
+        window.klaviyo.push([
+          "track",
+          "Richiamata richiesta",
+          {
+            Nome: name,
+            Telefono: phoneE164,
+            Scenario: scenario,
+            Fonte: "Widget prova ora",
+          },
+        ]);
+      }
+    } catch (e) {
+      console.warn("[SofIA trial] Klaviyo non disponibile", e);
+    }
+    try {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "trial_callback",
+        trial_email: lastEmail,
+        trial_name: name,
+        trial_phone: phoneE164,
+      });
+    } catch {}
+  }
+
+  function showFollowup() {
+    followup.classList.remove("is-sent");
+    body.classList.add("is-followup");
+    setTimeout(() => nameInput.focus(), 60);
+  }
+  function hideFollowup() {
+    body.classList.remove("is-followup");
+    followup.classList.remove("is-sent");
+  }
+
+  btnCallback.addEventListener("click", () => {
+    const name = nameInput.value.trim();
+    const phone = phoneInput.value.trim();
+    if (name.length < 2) {
+      nameInput.classList.add("is-invalid");
+      nameInput.focus();
+      return;
+    }
+    if (phoneDigits(phone).length < 8) {
+      phoneError("Inserisci un numero di telefono valido.");
+      phoneInput.focus();
+      return;
+    }
+    captureCallback(name, phone);
+    followup.classList.add("is-sent");
+  });
+  btnSkip.addEventListener("click", hideFollowup);
+  btnFollowupClose.addEventListener("click", () => {
+    hideFollowup();
+    panel.classList.remove("is-open");
+  });
+
   let session = null;
   let muted = false;
+  let callConnected = false;
+  let lastEmail = "";
   let countdownId = null;
 
   function setStatus(text, kind) {
@@ -588,6 +862,8 @@ const scenarios = [
       return;
     }
     emailReset();
+    lastEmail = email;
+    hideFollowup();
 
     btnStart.disabled = true;
     agentSel.disabled = true;
@@ -628,6 +904,7 @@ const scenarios = [
       });
 
       await session.joinCall(joinUrl);
+      callConnected = true;
       btnMute.disabled = false;
       btnHangup.disabled = false;
       setStatus("In chiamata", "live");
@@ -668,5 +945,9 @@ const scenarios = [
     agentSel.disabled = false;
     emailInput.disabled = false;
     setStatus("Chiamata terminata");
+    if (callConnected) {
+      callConnected = false;
+      showFollowup();
+    }
   }
 </script>
