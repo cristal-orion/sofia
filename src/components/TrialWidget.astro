@@ -717,8 +717,9 @@ const scenarios = [
     nameInput.classList.remove("is-invalid"),
   );
 
-  // Salva la richiesta di richiamata: profilo Klaviyo (nome + telefono,
-  // legato all'email della prova) + evento Klaviyo e GTM/dataLayer.
+  // Tracciamento best-effort della richiamata: evento Klaviyo onsite +
+  // GTM/dataLayer. Il salvataggio AFFIDABILE di nome/telefono sul profilo
+  // avviene in submitCallback() (endpoint hosted, bloccante).
   function captureCallback(name, phone) {
     const phoneE164 = normalizePhone(phone);
     const scenario =
@@ -753,6 +754,36 @@ const scenarios = [
     } catch {}
   }
 
+  // Salvataggio affidabile e bloccante della richiamata: aggiorna il profilo
+  // Klaviyo (email della prova + nome + telefono) tramite l'endpoint hosted,
+  // come per l'email. Non dipende dallo script onsite: se fallisce, lancia
+  // un errore e l'utente non vede la conferma.
+  async function submitCallback(name, phoneE164) {
+    const scenario =
+      agentSel.options[agentSel.selectedIndex]?.text || agentSel.value;
+    const body = new URLSearchParams({
+      g: KLAVIYO_LIST_ID,
+      email: lastEmail,
+      "$fields": "$first_name,Telefono,Scenario",
+      "$first_name": name,
+      Telefono: phoneE164,
+      Scenario: scenario,
+    });
+
+    const resp = await fetch(KLAVIYO_SUBSCRIBE_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+      },
+      body,
+    });
+    const data = await resp.json().catch(() => null);
+
+    if (!resp.ok || !data?.success) {
+      throw new Error("Klaviyo callback failed " + resp.status);
+    }
+  }
+
   function showFollowup() {
     followup.classList.remove("is-sent");
     body.classList.add("is-followup");
@@ -763,7 +794,7 @@ const scenarios = [
     followup.classList.remove("is-sent");
   }
 
-  btnCallback.addEventListener("click", () => {
+  btnCallback.addEventListener("click", async () => {
     const name = nameInput.value.trim();
     const phone = phoneInput.value.trim();
     if (name.length < 2) {
@@ -776,7 +807,22 @@ const scenarios = [
       phoneInput.focus();
       return;
     }
-    captureCallback(name, phone);
+    const phoneE164 = normalizePhone(phone);
+    const originalLabel = btnCallback.textContent;
+    btnCallback.disabled = true;
+    btnCallback.textContent = "Invio...";
+    try {
+      await submitCallback(name, phoneE164);
+    } catch (e) {
+      console.warn("[SofIA trial] Richiamata non salvata", e);
+      phoneError("Non siamo riusciti a inviare la richiesta. Riprova.");
+      btnCallback.disabled = false;
+      btnCallback.textContent = originalLabel;
+      return;
+    }
+    captureCallback(name, phone); // evento Klaviyo + GTM/dataLayer (best-effort)
+    btnCallback.disabled = false;
+    btnCallback.textContent = originalLabel;
     followup.classList.add("is-sent");
   });
   btnSkip.addEventListener("click", hideFollowup);
