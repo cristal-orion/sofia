@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import { faqs } from "../data/faq";
 
 interface Props {
   title?: string;
@@ -10,6 +11,85 @@ const {
   title = "SofIA — Il gestionale di appuntamenti che lavora al telefono per te",
   description = "SofIA risponde al telefono, chatta sul sito, scrive su WhatsApp e gestisce la tua agenda. L'assistente AI proattivo che fissa appuntamenti e non perde mai un cliente, 24/7.",
 } = Astro.props;
+
+// URL assolute per canonical / Open Graph (richiede `site` in astro.config).
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL("/og-sofia.jpg", Astro.site).href;
+
+// Dati strutturati (JSON-LD): aiutano motori di ricerca e LLM a capire COS'È
+// SofIA, chi la produce e cosa fa. Un solo @graph con le entità collegate.
+const orgId = `${Astro.site}#affinitylab`;
+const productId = `${Astro.site}#sofia`;
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": orgId,
+      name: "Affinity Lab",
+      legalName: "Affinity Srl",
+      url: "https://www.affinitylab.it",
+      vatID: "IT06221050658",
+      email: "info@affinitylab.it",
+      telephone: "+39 328 865 8690",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Via Lanzara, 33",
+        addressLocality: "Nocera Inferiore",
+        addressRegion: "SA",
+        addressCountry: "IT",
+      },
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${Astro.site}#website`,
+      url: Astro.site?.href,
+      name: "SofIA",
+      inLanguage: "it-IT",
+      publisher: { "@id": orgId },
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": productId,
+      name: "SofIA",
+      applicationCategory: "BusinessApplication",
+      applicationSubCategory: "Assistente AI per la gestione di appuntamenti e chiamate",
+      operatingSystem: "Web, iOS, Android",
+      url: Astro.site?.href,
+      inLanguage: "it-IT",
+      description:
+        "SofIA è l'assistente AI che gestisce telefono, chat sul sito, WhatsApp e agenda di un'attività. Risponde alle chiamate con voce naturale multilingua, qualifica i clienti, fissa e sincronizza gli appuntamenti sul calendario, richiama i clienti in autonomia e produce report giornalieri — 24 ore su 24.",
+      featureList: [
+        "Risponde al telefono con voce naturale multilingua, anche a più chiamate insieme",
+        "Chatta sul sito web e su WhatsApp",
+        "Fissa appuntamenti e li sincronizza sul calendario (Google Calendar, iCal)",
+        "Chiamate in uscita: promemoria, conferme e follow-up automatici",
+        "Riassunto di ogni chiamata e report giornaliero dell'attività",
+        "Knowledge base che impara a ogni conversazione",
+        "Configurabile per settore da dashboard: servizi, orari, prezzi, tono di voce",
+      ],
+      offers: {
+        "@type": "Offer",
+        category: "Prova gratuita",
+        price: "0",
+        priceCurrency: "EUR",
+        description: "Prova gratuita di 3 minuti, parlando direttamente con SofIA dal sito.",
+      },
+      provider: { "@id": orgId },
+      publisher: { "@id": orgId },
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${Astro.site}#faq`,
+      mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
+    },
+  ],
+};
 ---
 
 <!doctype html>
@@ -29,11 +109,31 @@ const {
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#ff5f49" />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
 
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="SofIA" />
+    <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="SofIA — Risponde, scrive e fissa appuntamenti. Mentre tu lavori." />
     <meta property="og:locale" content="it_IT" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content="SofIA — Risponde, scrive e fissa appuntamenti. Mentre tu lavori." />
+
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(structuredData)}
+    />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

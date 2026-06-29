@@ -1,0 +1,49 @@
+# SofIA
+
+> SofIA è l'assistente AI proattivo che gestisce telefono, chat sul sito, WhatsApp e agenda di un'attività. Risponde alle chiamate con voce naturale e multilingua, qualifica i clienti, fissa e sincronizza gli appuntamenti sul calendario, richiama i clienti in autonomia e produce report giornalieri — 24 ore su 24. È un prodotto di Affinity Lab (Affinity Srl, Nocera Inferiore).
+
+## Cos'è SofIA
+
+SofIA non è un semplice centralino: è un gestionale di appuntamenti che lavora al telefono al posto tuo. Si innesta sul numero e sugli strumenti che usi già — niente migrazioni, niente cambio di gestionale. Configurabile da dashboard per qualsiasi settore che riceve telefonate.
+
+## Cosa fa
+
+- **Telefono**: risponde a più chiamate contemporaneamente con voce naturale, nella lingua di chi chiama. Il telefono non è mai occupato e nessun cliente resta in attesa. Quando serve, passa la conversazione a un umano.
+- **Chat e WhatsApp**: gestisce le conversazioni sul sito web e su WhatsApp Business.
+- **Agenda**: fissa gli appuntamenti e li sincronizza in automatico sul calendario (Google Calendar, iCal), con i promemoria già pronti.
+- **Chiamate in uscita**: esegue da sola richiami, conferme e follow-up agli orari che scegli tu.
+- **Contatti**: registra in automatico ogni cliente da ogni canale — anche i numeri sconosciuti — con tutto lo storico delle conversazioni.
+- **Report e analisi**: ogni sera un riepilogo (chiamate gestite, appuntamenti fissati, clienti persi, richieste ricorrenti, orari di picco). Riassunto automatico di ogni chiamata, senza riascoltare nulla.
+- **Knowledge base**: impara a ogni conversazione e diventa più precisa ogni giorno.
+
+## Per chi è
+
+- Studi e professionisti: studi medici e dentistici, studi legali
+- Bellezza e benessere: centri estetici, saloni e parrucchieri, centri benessere, palestre
+- Ristorazione e ospitalità: ristoranti, hotel e B&B
+- Auto e motori: autosaloni e concessionarie, officine
+- Qualsiasi attività che riceve telefonate (configurabile su misura)
+
+## Come si prova
+
+Prova gratuita di 3 minuti direttamente dal sito: si sceglie uno scenario e si fa una chiamata vera dal browser, parlando con SofIA. Nessun impegno, nessuna carta di credito. Configurazione base in pochi minuti.
+
+## Integrazioni
+
+Google Calendar, WhatsApp Business, Calendar / iCal, Email, Sito web.
+
+## Domande frequenti
+
+- **Quante chiamate gestisce insieme?** Tutte quelle che servono: risponde a più chiamate in parallelo.
+- **Si sente che è un'AI?** Parla con voce naturale e si adatta alla lingua di chi chiama; quando serve passa a un umano.
+- **Devo cambiare numero o gestionale?** No, si innesta su numero e strumenti esistenti.
+- **Posso configurarla per la mia attività?** Sì: servizi, orari, prezzi, regole e tono di voce dalla dashboard.
+- **Quanto serve per partire?** Pochi minuti per la configurazione base; la prova si fa subito dal sito.
+
+## Contatti
+
+- Sito: https://prontosofia.it
+- Produttore: Affinity Lab — https://www.affinitylab.it
+- Email: info@affinitylab.it
+- Telefono: +39 328 865 8690
+- Sede: Via Lanzara, 33 — Nocera Inferiore (SA), Italia
