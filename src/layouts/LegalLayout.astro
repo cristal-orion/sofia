@@ -1,0 +1,194 @@
+---
+import Layout from "./Layout.astro";
+import Footer from "../components/Footer.astro";
+import TrialWidget from "../components/TrialWidget.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  heading: string;
+  updated: string;
+}
+
+const { title, description, heading, updated } = Astro.props;
+---
+
+<Layout title={title} description={description}>
+  <header class="legal-bar">
+    <div class="container legal-bar__inner">
+      <a href="/" class="legal-bar__brand" aria-label="SofIA — home">
+        <img src="/sofia-logo-full.webp" alt="SofIA" width="480" height="160" class="legal-bar__logo" />
+      </a>
+      <a href="/" class="legal-bar__back">← Torna al sito</a>
+    </div>
+  </header>
+
+  <main class="legal">
+    <div class="container legal__inner">
+      <p class="legal__eyebrow">Documento legale</p>
+      <h1 class="legal__title">{heading}</h1>
+      <p class="legal__updated">Ultimo aggiornamento: {updated}</p>
+      <article class="legal__body">
+        <slot />
+      </article>
+    </div>
+  </main>
+
+  <Footer />
+  <TrialWidget />
+</Layout>
+
+<style>
+  .legal-bar {
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+  }
+  .legal-bar__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 0.9rem;
+  }
+  .legal-bar__logo {
+    height: 42px;
+    width: auto;
+    display: block;
+  }
+  .legal-bar__back {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+  .legal-bar__back:hover { color: var(--coral-700); }
+
+  .legal {
+    padding-block: clamp(2.5rem, 1.8rem + 3vw, 5rem);
+    background: var(--bg);
+  }
+  .legal__inner { max-width: 760px; }
+
+  .legal__eyebrow {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--coral-700);
+  }
+  .legal__title {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: var(--step-3);
+    line-height: 1.08;
+    color: var(--ink);
+    margin: 0.4rem 0 0.6rem;
+  }
+  .legal__updated {
+    font-size: 0.88rem;
+    color: var(--muted);
+    margin: 0 0 2.2rem;
+  }
+
+  /* Prose */
+  .legal__body :global(h2) {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: var(--step-1);
+    color: var(--ink);
+    margin: 2.4rem 0 0.7rem;
+    scroll-margin-top: 1rem;
+  }
+  .legal__body :global(h3) {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 1.02rem;
+    color: var(--ink);
+    margin: 1.6rem 0 0.5rem;
+  }
+  .legal__body :global(p),
+  .legal__body :global(li) {
+    font-size: 0.98rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+  .legal__body :global(p) { margin: 0 0 1rem; }
+  .legal__body :global(ul) {
+    margin: 0 0 1.2rem;
+    padding-left: 1.2rem;
+    display: grid;
+    gap: 0.4rem;
+  }
+  .legal__body :global(li) { padding-left: 0.2rem; }
+  .legal__body :global(a) {
+    color: var(--coral-700);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    word-break: break-word;
+  }
+  .legal__body :global(a:hover) { color: var(--coral-600); }
+  .legal__body :global(strong) { color: var(--ink); }
+
+  /* Tabella cookie */
+  .legal__body :global(.legal-table-wrap) {
+    overflow-x: auto;
+    margin: 0 0 1.4rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+  }
+  .legal__body :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    min-width: 460px;
+  }
+  .legal__body :global(th),
+  .legal__body :global(td) {
+    text-align: left;
+    padding: 0.7rem 0.9rem;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .legal__body :global(th) {
+    background: var(--surface-2);
+    font-family: var(--font-head);
+    font-weight: 700;
+    color: var(--ink);
+    font-size: 0.82rem;
+    letter-spacing: 0.03em;
+  }
+  .legal__body :global(tr:last-child td) { border-bottom: 0; }
+
+  .legal__body :global(.legal-note) {
+    margin: 1.6rem 0;
+    padding: 1rem 1.2rem;
+    background: var(--coral-050);
+    border: 1px solid var(--coral-100);
+    border-radius: var(--radius-sm);
+    font-size: 0.92rem;
+  }
+
+  .legal__body :global(.btn-prefs) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.4rem 0 1.4rem;
+    padding: 0.7rem 1.2rem;
+    border-radius: 999px;
+    border: 1.5px solid var(--line-strong);
+    background: var(--surface);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 0.92rem;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .legal__body :global(.btn-prefs:hover) {
+    border-color: var(--coral);
+    color: var(--coral-700);
+  }
+</style>

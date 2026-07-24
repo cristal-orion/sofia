@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { faqs } from "../data/faq";
+import CookieConsent from "../components/CookieConsent.astro";
 
 interface Props {
   title?: string;
@@ -99,13 +100,103 @@ const structuredData = {
 <!doctype html>
 <html lang="it" class="no-js">
   <head>
-    <!-- Google Tag Manager -->
-    <script is:inline>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-PS98FD2J');</script>
-    <!-- End Google Tag Manager -->
+    <!-- Consent bootstrap — GDPR / Linee guida cookie del Garante.
+         Nessun tracker non necessario (GTM, Klaviyo) parte prima del consenso.
+         Google Consent Mode v2 è impostato su "denied" di default; il banner
+         (CookieConsent.astro) chiama window.SofiaConsent.set(...) per aggiornare
+         il consenso e caricare gli script SOLO per le categorie accettate. -->
+    <script is:inline>
+      (function () {
+        var STORE_KEY = "sofia-cookie-consent";
+        var VERSION = 1; // incrementa per ri-chiedere il consenso se cambiano i tracker
+        var GTM_ID = "GTM-PS98FD2J";
+        var KLAVIYO_ID = "TATHwU";
+
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        window.gtag = gtag;
+
+        // Consent Mode v2: tutto negato finché l'utente non sceglie.
+        gtag("consent", "default", {
+          ad_storage: "denied",
+          ad_user_data: "denied",
+          ad_personalization: "denied",
+          analytics_storage: "denied",
+          functionality_storage: "granted",
+          security_storage: "granted",
+          wait_for_update: 500,
+        });
+
+        var gtmDone = false, klaviyoDone = false;
+
+        function loadGTM() {
+          if (gtmDone) return; gtmDone = true;
+          (function (w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+            var f = d.getElementsByTagName(s)[0], j = d.createElement(s),
+                dl = l != "dataLayer" ? "&l=" + l : "";
+            j.async = true;
+            j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+            f.parentNode.insertBefore(j, f);
+          })(window, document, "script", "dataLayer", GTM_ID);
+        }
+
+        function loadKlaviyo() {
+          if (klaviyoDone) return; klaviyoDone = true;
+          var s = document.createElement("script");
+          s.async = true;
+          s.type = "text/javascript";
+          s.src = "https://static.klaviyo.com/onsite/js/" + KLAVIYO_ID + "/klaviyo.js?company_id=" + KLAVIYO_ID;
+          document.head.appendChild(s);
+          // Shim window.klaviyo così le push funzionano appena il file è pronto.
+          !function(){if(!window.klaviyo){window._klOnsite=window._klOnsite||[];try{window.klaviyo=new Proxy({},{get:function(n,i){return"push"===i?function(){var n;(n=window._klOnsite).push.apply(n,arguments)}:function(){for(var n=arguments.length,o=new Array(n),w=0;w<n;w++)o[w]=arguments[w];var t="function"==typeof o[o.length-1]?o.pop():void 0,e=new Promise((function(n){window._klOnsite.push([i].concat(o,[function(i){t&&t(i),n(i)}]))}));return e}}})}catch(n){window.klaviyo=window.klaviyo||[],window.klaviyo.push=function(){var n;(n=window._klOnsite).push.apply(n,arguments)}}}}();
+        }
+
+        function apply(consent) {
+          gtag("consent", "update", {
+            analytics_storage: consent.analytics ? "granted" : "denied",
+            ad_storage: consent.marketing ? "granted" : "denied",
+            ad_user_data: consent.marketing ? "granted" : "denied",
+            ad_personalization: consent.marketing ? "granted" : "denied",
+          });
+          if (consent.analytics || consent.marketing) loadGTM();
+          if (consent.marketing) loadKlaviyo();
+        }
+
+        function read() {
+          try {
+            var raw = localStorage.getItem(STORE_KEY);
+            if (!raw) return null;
+            var data = JSON.parse(raw);
+            return data && data.v === VERSION ? data : null;
+          } catch (e) { return null; }
+        }
+
+        function save(consent) {
+          var record = {
+            analytics: !!consent.analytics,
+            marketing: !!consent.marketing,
+            v: VERSION,
+            ts: new Date().toISOString(),
+          };
+          try { localStorage.setItem(STORE_KEY, JSON.stringify(record)); } catch (e) {}
+          apply(record);
+          document.dispatchEvent(new CustomEvent("sofia:consent-updated", { detail: record }));
+        }
+
+        window.SofiaConsent = {
+          version: VERSION,
+          get: read,
+          set: save,
+          hasChoice: function () { return !!read(); },
+        };
+
+        // Consenso già espresso in una visita precedente → riapplica subito.
+        var existing = read();
+        if (existing) apply(existing);
+      })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/webp" href="/sofia-logo-mark.webp" />
@@ -161,15 +252,7 @@ const structuredData = {
     </script>
   </head>
   <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PS98FD2J"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
     <slot />
-    <script async type="text/javascript" src="https://static.klaviyo.com/onsite/js/TATHwU/klaviyo.js?company_id=TATHwU"></script>
-    <script type="text/javascript" is:inline>
-      // Initialize Klaviyo object on page load
-      !function(){if(!window.klaviyo){window._klOnsite=window._klOnsite||[];try{window.klaviyo=new Proxy({},{get:function(n,i){return"push"===i?function(){var n;(n=window._klOnsite).push.apply(n,arguments)}:function(){for(var n=arguments.length,o=new Array(n),w=0;w<n;w++)o[w]=arguments[w];var t="function"==typeof o[o.length-1]?o.pop():void 0,e=new Promise((function(n){window._klOnsite.push([i].concat(o,[function(i){t&&t(i),n(i)}]))}));return e}}})}catch(n){window.klaviyo=window.klaviyo||[],window.klaviyo.push=function(){var n;(n=window._klOnsite).push.apply(n,arguments)}}}}();
-    </script>
+    <CookieConsent />
   </body>
 </html>

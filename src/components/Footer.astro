@@ -5,7 +5,7 @@ const year = new Date().getFullYear();
 <footer class="footer">
   <div class="container footer__inner">
     <div class="footer__brand">
-      <a href="#top" class="footer__logo">
+      <a href="/" class="footer__logo">
         <img src="/sofia-logo-mark.webp" alt="" class="footer__mark" width="32" height="32" />
         Sof<span>IA</span>
       </a>
@@ -40,10 +40,10 @@ const year = new Date().getFullYear();
 
     <nav class="footer__col" aria-label="Prodotto">
       <h4>Prodotto</h4>
-      <a href="#canali">Canali</a>
-      <a href="#oltre">Cosa fa</a>
-      <a href="#integrazioni">Integrazioni</a>
-      <a href="#settori">Settori</a>
+      <a href="/#canali">Canali</a>
+      <a href="/#oltre">Cosa fa</a>
+      <a href="/#integrazioni">Integrazioni</a>
+      <a href="/#settori">Settori</a>
     </nav>
 
     <div class="footer__col">
@@ -64,7 +64,11 @@ const year = new Date().getFullYear();
 
   <div class="container footer__bottom">
     <span>© {year} Affinity Srl · P.IVA 06221050658</span>
-    <a href="https://www.affinitylab.it/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a>
+    <div class="footer__legal">
+      <a href="/privacy-policy">Privacy Policy</a>
+      <a href="/cookie-policy">Cookie Policy</a>
+      <button type="button" class="footer__link-btn" data-cookie-preferences>Preferenze cookie</button>
+    </div>
     <span>Fatto con cura a Nocera Inferiore</span>
   </div>
 </footer>
@@ -159,12 +163,28 @@ const year = new Date().getFullYear();
     font-size: 0.82rem;
     color: rgba(255, 255, 255, 0.5);
   }
-  .footer__bottom a {
+  .footer__legal {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 1.1rem;
+  }
+  .footer__bottom a,
+  .footer__link-btn {
     color: rgba(255, 255, 255, 0.5);
     transition: color 0.18s ease;
   }
-  .footer__bottom a:hover {
+  .footer__bottom a:hover,
+  .footer__link-btn:hover {
     color: var(--coral);
+  }
+  .footer__link-btn {
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    font-size: 0.82rem;
+    cursor: pointer;
   }
   @media (max-width: 860px) {
     .footer__inner {
