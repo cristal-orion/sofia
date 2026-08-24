@@ -69,7 +69,10 @@ const year = new Date().getFullYear();
       <a href="/cookie-policy">Cookie Policy</a>
       <button type="button" class="footer__link-btn" data-cookie-preferences>Preferenze cookie</button>
     </div>
-    <span>Fatto con cura a Nocera Inferiore</span>
+    <span class="footer__credit">
+      Fatto con cura a Nocera Inferiore · Realizzato da
+      <a href="https://twobee.it/" target="_blank" rel="noopener">TwoBee</a>
+    </span>
   </div>
 </footer>
 
@@ -177,6 +180,16 @@ const year = new Date().getFullYear();
   .footer__bottom a:hover,
   .footer__link-btn:hover {
     color: var(--coral);
+  }
+  .footer__credit a {
+    color: rgba(255, 255, 255, 0.72);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-color: rgba(255, 255, 255, 0.28);
+  }
+  .footer__credit a:hover {
+    color: var(--coral);
+    text-decoration-color: var(--coral);
   }
   .footer__link-btn {
     background: none;
