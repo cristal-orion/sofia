@@ -73,6 +73,7 @@
   --shadow-md: 0 12px 32px rgba(36, 31, 29, 0.1);
   --shadow-lg: 0 28px 70px rgba(36, 31, 29, 0.16);
   --shadow-coral: 0 14px 38px rgba(255, 95, 73, 0.34);
+  --shadow-coral-lg: 0 18px 44px rgba(255, 95, 73, 0.44);
 
   /* motion */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);

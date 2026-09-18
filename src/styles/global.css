@@ -84,6 +84,7 @@
   --shadow-md: 0 12px 32px rgba(36, 31, 29, 0.1);
   --shadow-lg: 0 28px 70px rgba(36, 31, 29, 0.16);
   --shadow-coral: 0 14px 38px rgba(255, 95, 73, 0.34);
+  --shadow-coral-lg: 0 18px 44px rgba(255, 95, 73, 0.44);
 }
 
 /* ============================================================
@@ -269,7 +270,7 @@ p {
 }
 .btn--primary:hover {
   background: var(--coral-600);
-  box-shadow: 0 18px 44px rgba(255, 95, 73, 0.44);
+  box-shadow: var(--shadow-coral-lg);
 }
 .btn--inverted {
   --btn-bg: var(--green);
@@ -298,6 +299,21 @@ p {
 .btn--lg {
   padding: 1.1rem 1.9rem;
   font-size: 1.05rem;
+}
+
+/* ============================================================
+   Focus
+   ============================================================ */
+/* Il ring di sistema su una pill coral o su un fondo crema si legge male.
+   `:where()` ha specificità 0, quindi un componente può ancora sovrascriverlo. */
+:where(a, button, summary, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+/* Sui fondi scuri serve il contrario. */
+.footer :where(a, button):focus-visible,
+.cta :where(a, button):focus-visible {
+  outline-color: #fff;
 }
 
 /* ============================================================

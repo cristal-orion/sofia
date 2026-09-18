@@ -71,6 +71,21 @@ machine source of truth; this file is the human one.
 - Restrained: reveal-on-scroll (CSS transition orchestrated by GSAP ScrollTrigger, robust against frozen tabs) · tab-marker slide · one FAB pulse. Animate transform/opacity only.
 - Reduced-motion fallback · reveals show instantly, loops off.
 
+## Forme per rotta
+
+Il sistema è condiviso: le rotte non si differenziano per tema, solo per
+macrostruttura. Registro (Hallmark legge questo prima di scegliere):
+
+| Rotta | Macrostruttura | Note |
+| --- | --- | --- |
+| `/` | Tabbed Channels | 4 pilastri Telefono · Chat · WhatsApp · Agenda |
+| `/pricing` | Stat-Led | La cifra d'ingresso è il titolo; è il link usato nelle ads |
+| `/privacy-policy`, `/cookie-policy` | Long Document | `LegalLayout.astro` |
+
+I prezzi vivono in `src/data/piani.ts` e alimentano insieme la tabella
+visibile (`Pricing.astro`, usata da home e `/pricing`) e il JSON-LD
+`AggregateOffer` nel `Layout`. Non scrivere cifre a mano nel markup.
+
 ## Exports
 `tokens.css` (in this project) is the source of truth. For Tailwind v4
 `@theme`, DTCG `tokens.json`, or shadcn/ui CSS variables, ask *"extend

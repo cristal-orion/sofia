@@ -1,16 +1,22 @@
 ---
+// Link assoluti: la navbar vive anche su /pricing, dove un href "#canali"
+// non porterebbe da nessuna parte.
 const links = [
-  { href: "#canali", label: "Canali" },
-  { href: "#oltre", label: "Cosa fa" },
-  { href: "#integrazioni", label: "Integrazioni" },
-  { href: "#settori", label: "Settori" },
-  { href: "#faq", label: "FAQ" },
+  { href: "/#canali", label: "Canali" },
+  { href: "/#oltre", label: "Cosa fa" },
+  { href: "/#integrazioni", label: "Integrazioni" },
+  { href: "/#settori", label: "Settori" },
+  { href: "/pricing", label: "Prezzi" },
+  { href: "/#faq", label: "FAQ" },
 ];
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isCurrent = (href: string) => href === path;
 ---
 
 <header class="nav" data-nav>
   <div class="container nav__inner">
-    <a href="#top" class="nav__brand" aria-label="SofIA — home">
+    <a href="/" class="nav__brand" aria-label="SofIA — home">
       <img
         src="/sofia-logo-full.webp"
         alt="SofIA"
@@ -22,7 +28,9 @@ const links = [
     </a>
 
     <nav class="nav__links" aria-label="Sezioni">
-      {links.map((l) => <a href={l.href}>{l.label}</a>)}
+      {links.map((l) => (
+        <a href={l.href} aria-current={isCurrent(l.href) ? "page" : undefined}>{l.label}</a>
+      ))}
     </nav>
 
     <div class="nav__cta">
@@ -38,7 +46,11 @@ const links = [
   </div>
 
   <div class="nav__mobile" data-mobile-menu hidden>
-    {links.map((l) => <a href={l.href} data-mobile-link>{l.label}</a>)}
+    {links.map((l) => (
+      <a href={l.href} data-mobile-link aria-current={isCurrent(l.href) ? "page" : undefined}>
+        {l.label}
+      </a>
+    ))}
     <a href="#prova" class="btn btn--primary btn--lg" data-trial-open data-mobile-link>Prova SofIA</a>
   </div>
 </header>
@@ -85,6 +97,10 @@ const links = [
     transition: color 0.18s ease;
   }
   .nav__links a:hover {
+    color: var(--coral-700);
+  }
+  .nav__links a[aria-current="page"],
+  .nav__mobile a[aria-current="page"] {
     color: var(--coral-700);
   }
   .nav__cta {

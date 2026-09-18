@@ -1,0 +1,591 @@
+---
+// Rotta dedicata ai piani: è il link che finisce nelle campagne pubblicitarie,
+// quindi risponde alla domanda "quanto costa" già nel primo schermo.
+// Macrostruttura Hallmark: 04 Stat-Led (la home usa Tabbed Channels).
+import Layout from "../layouts/Layout.astro";
+import Nav from "../components/Nav.astro";
+import Pricing from "../components/Pricing.astro";
+import Footer from "../components/Footer.astro";
+import TrialWidget from "../components/TrialWidget.astro";
+import SiteScripts from "../components/SiteScripts.astro";
+import { faqPrezzi } from "../data/faq";
+import { piani, promoPrimoMese, numeroIt } from "../data/piani";
+
+const passi = [
+  {
+    n: "1",
+    titolo: "Prova",
+    testo:
+      "Chiami SofIA dal sito e senti come risponde. Tre minuti, nessuna carta di credito.",
+  },
+  {
+    n: "2",
+    titolo: "Attivazione",
+    testo:
+      "Colleghiamo il tuo numero, la tua agenda e le istruzioni che SofIA deve seguire.",
+  },
+  {
+    n: "3",
+    titolo: "In linea",
+    testo:
+      "SofIA risponde dalla prima chiamata. L'abbonamento parte dal giorno dell'attivazione.",
+  },
+];
+
+const fatti = [
+  { k: "24/7", v: "Risponde notte e festivi" },
+  { k: "3 min", v: "Prova gratuita dal browser" },
+  { k: "0", v: "Numeri da cambiare" },
+];
+
+const mailtoAttiva =
+  "mailto:info@affinitylab.it?subject=" +
+  encodeURIComponent("Attivazione SofIA — richiesta piano") +
+  "&body=" +
+  encodeURIComponent(
+    "Ciao, vorrei attivare SofIA per la mia attività.\n\nAttività:\nCittà:\nTelefono:\nChiamate ricevute in un giorno:\n",
+  );
+---
+
+<Layout
+  title="Prezzi e piani SofIA — da € 250 al mese"
+  description="I piani di SofIA: Base 250 €, Pro 450 €, Elite 900 € al mese (IVA esclusa). Numero dedicato, risposta attiva 24/7 e CRM appuntamenti inclusi in tutti i piani."
+  faqEntries={faqPrezzi}
+>
+  <Nav />
+
+  <main>
+    <!-- Hero Stat-Led: la cifra è il titolo, tutto il resto la qualifica. -->
+    <section class="section ph">
+      <div class="container ph__inner">
+        <div class="ph__main">
+          <p class="eyebrow" data-hero>Piani e attivazione</p>
+
+          <h1 class="ph__title" data-hero>
+            <span class="ph__lead-in">SofIA risponde al telefono da</span>
+            <span class="ph__figure">
+              <span class="ph__cur">€</span>{numeroIt(piani[0].mensile)}<span class="ph__per">/mese</span>
+            </span>
+          </h1>
+
+          <p class="ph__qualifier" data-hero>
+            Mille minuti di conversazione, un numero dedicato e la risposta attiva
+            24 ore su 24. IVA esclusa, con fatturazione mensile.
+          </p>
+
+          <div class="ph__actions" data-hero>
+            <button class="btn btn--primary btn--lg" data-trial-open>
+              <span class="dot-live"></span> Provala adesso
+            </button>
+            <a href="#prezzi" class="btn btn--outline btn--lg">Confronta i tre piani</a>
+          </div>
+        </div>
+
+        <aside class="ph__promo" data-hero aria-label="Offerta sul primo mese">
+          <span class="ph__promo-tag">Offerta di lancio</span>
+          <p class="ph__promo-label">Il primo mese</p>
+          <p class="ph__promo-figure">
+            <span class="ph__promo-cur">€</span>{numeroIt(promoPrimoMese.prezzo)}
+          </p>
+          <p class="ph__promo-meta">
+            IVA inclusa · {numeroIt(promoPrimoMese.minuti)} minuti di conversazione
+          </p>
+          <p class="ph__promo-note">
+            Dal secondo mese parte il piano che hai scelto, ai prezzi di listino.
+          </p>
+        </aside>
+
+        <ul class="ph__facts" data-hero>
+          {fatti.map((f) => (
+            <li>
+              <span class="ph__fact-k">{f.k}</span>
+              <span class="ph__fact-v">{f.v}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <Pricing
+      promo={false}
+      eyebrow="I piani"
+      heading="Scegli in base a quanto squilla il telefono."
+      lead="Numero dedicato, risposta attiva 24/7 e CRM appuntamenti sono in tutti e tre. Cambiano i minuti di conversazione inclusi e le linee che SofIA presidia."
+    />
+
+    <!-- Come si parte: tre passaggi, dal PDF commerciale. -->
+    <section class="section steps" id="attivazione">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">Attivazione</p>
+          <h2>Dalla prova alla prima chiamata.</h2>
+          <p class="lead">Tre passaggi. Il primo lo fai adesso, dal browser.</p>
+        </div>
+
+        <ol class="steps__list">
+          {passi.map((p) => (
+            <li class="step" data-reveal>
+              <span class="step__n" aria-hidden="true">{p.n}</span>
+              <div class="step__body">
+                <h3 class="step__title">{p.titolo}</h3>
+                <p class="step__text">{p.testo}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- FAQ specifiche sui prezzi: alimentano anche il JSON-LD della rotta. -->
+    <section class="section pfaq" id="faq-prezzi">
+      <div class="container pfaq__inner">
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">Domande sul listino</p>
+          <h2>Quello che chiedono prima di attivare.</h2>
+        </div>
+
+        <div class="pfaq__list">
+          {faqPrezzi.map((f, i) => (
+            <details class="pfaq__item" open={i === 0}>
+              <summary class="pfaq__q">
+                <span>{f.q}</span>
+                <span class="pfaq__icon" aria-hidden="true"></span>
+              </summary>
+              <div class="pfaq__a"><p>{f.a}</p></div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Chiusura commerciale: recapiti in chiaro, come nel listino cartaceo. -->
+    <section class="section contatti">
+      <div class="container">
+        <div class="contatti__box" data-reveal>
+          <div class="contatti__copy">
+            <h2>Attiviamo SofIA sul tuo numero.</h2>
+            <p>
+              Scrivici con il nome dell'attività e quante chiamate ricevi in un
+              giorno. Ti diciamo quale piano regge il tuo telefono.
+            </p>
+            <div class="contatti__actions">
+              <a href={mailtoAttiva} class="btn btn--primary btn--lg">Scrivici per attivare</a>
+              <button class="btn btn--ghost btn--lg contatti__ghost" data-trial-open>
+                Prova SofIA
+              </button>
+            </div>
+          </div>
+
+          <address class="contatti__recapiti">
+            <a href="mailto:info@affinitylab.it">info@affinitylab.it</a>
+            <a href="tel:+393288658690">+39 328 865 8690</a>
+            <span>Affinity Srl · Via Lanzara, 33 — Nocera Inferiore (SA)</span>
+          </address>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+  <TrialWidget />
+  <SiteScripts />
+</Layout>
+
+<style>
+  /* Hallmark · macrostructure: Stat-Led · theme: Vivid Narrative (design.md)
+   * tone: warm-but-technical · anchor hue: coral 25° · studied: no
+   * pre-emit critique: P5 H5 E4 S5 R5 V4
+   */
+
+  /* ---------- Hero Stat-Led ---------- */
+  .ph {
+    padding-top: clamp(2.2rem, 1.4rem + 2.6vw, 4rem);
+    padding-bottom: clamp(1rem, 0.6rem + 1vw, 2rem);
+    background:
+      radial-gradient(
+        ellipse 70% 60% at 15% 0%,
+        var(--coral-050) 0%,
+        transparent 62%
+      ),
+      var(--bg);
+  }
+  .ph__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.6fr);
+    gap: clamp(1.6rem, 1rem + 3vw, 3.5rem);
+    align-items: center;
+  }
+  .ph__main {
+    display: grid;
+    gap: 1.1rem;
+    justify-items: start;
+    min-width: 0;
+  }
+
+  /* ---- cartellino offerta primo mese ----
+     La cifra resta più piccola di quella di listino: il prezzo ricorrente
+     deve restare il numero dominante, la promo è il secondo livello. */
+  .ph__promo {
+    display: grid;
+    gap: 0.25rem;
+    justify-items: start;
+    min-width: 0;
+    padding: clamp(1.2rem, 0.9rem + 1vw, 1.8rem);
+    background: var(--surface);
+    border: 1.5px solid var(--coral);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-coral);
+  }
+  .ph__promo-tag {
+    padding: 0.3rem 0.7rem;
+    margin-bottom: 0.3rem;
+    border-radius: 999px;
+    background: var(--coral);
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .ph__promo-label {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+  }
+  .ph__promo-figure {
+    display: flex;
+    align-items: baseline;
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: clamp(2.8rem, 2rem + 2.2vw, 4rem);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--coral-700);
+  }
+  .ph__promo-cur {
+    margin-right: 0.08em;
+    font-size: 0.5em;
+    color: var(--coral);
+  }
+  .ph__promo-meta {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .ph__promo-note {
+    margin-top: 0.4rem;
+    padding-top: 0.7rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+  .ph__title {
+    display: grid;
+    gap: 0.4rem;
+    font-size: inherit;
+    line-height: 1;
+  }
+  .ph__lead-in {
+    font-family: var(--font-body);
+    font-size: var(--step-1);
+    font-weight: 600;
+    letter-spacing: 0;
+    color: var(--ink-soft);
+  }
+  .ph__figure {
+    display: flex;
+    align-items: baseline;
+    /* wrap di sicurezza: html ha overflow-x clip, quindi un'eccedenza qui
+       verrebbe tagliata via invece di diventare scroll */
+    flex-wrap: wrap;
+    font-family: var(--font-head);
+    font-weight: 800;
+    /* il minimo tiene "€250 /mese" dentro i 320px di gutter compreso */
+    font-size: clamp(3.3rem, 1.6rem + 8.5vw, 9rem);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.045em;
+    line-height: 0.92;
+    color: var(--coral-700);
+  }
+  .ph__cur {
+    margin-right: 0.06em;
+    font-size: 0.48em;
+    color: var(--coral);
+  }
+  .ph__per {
+    margin-left: 0.1em;
+    font-family: var(--font-body);
+    font-size: 0.2em;
+    font-weight: 700;
+    letter-spacing: 0;
+    color: var(--muted);
+  }
+  .ph__qualifier {
+    max-width: 48ch;
+    font-size: var(--step-1);
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+  .ph__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 0.5rem;
+  }
+
+  .ph__facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 2.4rem;
+    margin-top: 1.6rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--line);
+    width: 100%;
+    grid-column: 1 / -1;
+  }
+  .ph__facts li {
+    display: grid;
+    gap: 0.1rem;
+  }
+  .ph__fact-k {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 1.35rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--green);
+  }
+  .ph__fact-v {
+    font-size: 0.86rem;
+    color: var(--muted);
+  }
+
+  /* ---------- Attivazione ---------- */
+  .steps {
+    background: var(--surface-2);
+    border-block: 1px solid var(--line);
+  }
+  .steps__list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1rem, 0.6rem + 1.6vw, 2rem);
+    padding: 0;
+    list-style: none;
+    counter-reset: none;
+  }
+  .step {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+    padding-top: 1.3rem;
+    border-top: 2px solid var(--coral-100);
+  }
+  .step__n {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: var(--coral);
+    color: #fff;
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 1.05rem;
+  }
+  .step__body {
+    display: grid;
+    gap: 0.35rem;
+    min-width: 0;
+  }
+  .step__title {
+    font-size: var(--step-1);
+  }
+  .step__text {
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- FAQ prezzi ---------- */
+  .pfaq__inner {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: clamp(1.5rem, 1rem + 3vw, 4rem);
+    align-items: start;
+  }
+  .pfaq__list {
+    display: grid;
+    gap: 0.7rem;
+  }
+  .pfaq__item {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 0 1.3rem;
+    transition:
+      border-color 0.2s var(--ease-out),
+      box-shadow 0.2s var(--ease-out);
+  }
+  .pfaq__item[open] {
+    border-color: var(--coral-100);
+    box-shadow: var(--shadow-sm);
+  }
+  .pfaq__q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.15rem 0;
+    cursor: pointer;
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 1.05rem;
+    list-style: none;
+  }
+  .pfaq__q::-webkit-details-marker {
+    display: none;
+  }
+  .pfaq__q:focus-visible {
+    outline: 2px solid var(--coral);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  .pfaq__icon {
+    position: relative;
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+  }
+  .pfaq__icon::before,
+  .pfaq__icon::after {
+    content: "";
+    position: absolute;
+    background: var(--coral);
+    border-radius: 2px;
+    transition: transform 0.25s var(--ease-out);
+  }
+  .pfaq__icon::before {
+    top: 10px;
+    left: 0;
+    width: 22px;
+    height: 2px;
+  }
+  .pfaq__icon::after {
+    top: 0;
+    left: 10px;
+    width: 2px;
+    height: 22px;
+  }
+  .pfaq__item[open] .pfaq__icon::after {
+    transform: scaleY(0);
+  }
+  .pfaq__a {
+    overflow: hidden;
+    padding-bottom: 1.2rem;
+    color: var(--ink-soft);
+    max-width: 58ch;
+  }
+
+  /* ---------- Chiusura commerciale ---------- */
+  .contatti__box {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: clamp(1.6rem, 1rem + 3vw, 3.5rem);
+    align-items: center;
+    padding: clamp(1.8rem, 1.2rem + 3vw, 3.4rem);
+    background: var(--green-900);
+    border-radius: var(--radius-lg);
+    color: rgba(255, 255, 255, 0.78);
+    box-shadow: var(--shadow-lg);
+  }
+  .contatti__copy {
+    display: grid;
+    gap: 0.9rem;
+    justify-items: start;
+  }
+  .contatti__copy h2 {
+    color: #fff;
+    font-size: var(--step-3);
+  }
+  .contatti__copy p {
+    max-width: 42ch;
+    color: rgba(255, 255, 255, 0.72);
+  }
+  .contatti__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-top: 0.3rem;
+  }
+  /* specificità doppia: deve battere .btn--ghost di global.css a prescindere
+     dall'ordine con cui i due fogli finiscono nel bundle */
+  .contatti__actions .contatti__ghost {
+    --btn-fg: #fff;
+    --btn-bg: transparent;
+    border-color: rgba(255, 255, 255, 0.28);
+  }
+  /* .btn--ghost:hover imposta `background` diretto, non la variabile:
+     va sovrascritto con la stessa proprietà, non con --btn-bg */
+  .contatti__actions .contatti__ghost:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+  .contatti__box :where(a, button):focus-visible {
+    outline-color: #fff;
+  }
+  .contatti__recapiti {
+    display: grid;
+    gap: 0.45rem;
+    padding-left: clamp(1rem, 0.6rem + 1.2vw, 1.8rem);
+    border-left: 2px solid rgba(255, 255, 255, 0.16);
+    font-style: normal;
+  }
+  .contatti__recapiti a {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #fff;
+    word-break: break-word;
+  }
+  .contatti__recapiti a:hover {
+    color: var(--coral);
+  }
+  .contatti__recapiti span {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px) {
+    .ph__inner {
+      grid-template-columns: minmax(0, 1fr);
+      align-items: start;
+    }
+    .ph__promo {
+      justify-self: stretch;
+    }
+    .steps__list {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.4rem;
+    }
+    .pfaq__inner,
+    .contatti__box {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .contatti__recapiti {
+      padding-left: 0;
+      padding-top: 1.2rem;
+      border-left: 0;
+      border-top: 2px solid rgba(255, 255, 255, 0.16);
+    }
+  }
+  @media (max-width: 520px) {
+    .ph__facts {
+      gap: 1rem 1.6rem;
+    }
+    .ph__actions .btn {
+      width: 100%;
+    }
+  }
+</style>

@@ -13,7 +13,7 @@ interface Props {
 const { title, description, heading, updated } = Astro.props;
 ---
 
-<Layout title={title} description={description}>
+<Layout title={title} description={description} faqEntries={[]}>
   <header class="legal-bar">
     <div class="container legal-bar__inner">
       <a href="/" class="legal-bar__brand" aria-label="SofIA — home">

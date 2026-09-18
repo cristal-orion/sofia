@@ -1,0 +1,478 @@
+---
+// Tabella piani — sorgente dati condivisa con /pricing e con il JSON-LD.
+// Lo stesso componente vive in home e sulla rotta dedicata: cambia solo la
+// testata, così i prezzi restano scritti in un posto solo.
+import {
+  piani,
+  inclusoOvunque,
+  promoPrimoMese,
+  risparmioTrimestre,
+  totaleTrimestre,
+  numeroIt,
+} from "../data/piani";
+
+const risparmioMax = Math.max(...piani.map(risparmioTrimestre));
+
+interface Props {
+  id?: string;
+  eyebrow?: string;
+  heading?: string;
+  lead?: string;
+  /** Mostra il rimando alla pagina dedicata (usato in home). */
+  link?: boolean;
+  /** Fascia con l'offerta sul primo mese. Off su /pricing, dove la stessa
+   *  offerta è già il cartellino nell'hero. */
+  promo?: boolean;
+}
+
+const {
+  id = "prezzi",
+  eyebrow = "Piani",
+  heading = "Tre piani. Scegli in base a quanto squilla il telefono.",
+  lead = "Numero dedicato, risposta attiva 24/7 e CRM appuntamenti sono in tutti e tre. Cambiano i minuti di conversazione inclusi e le linee che SofIA presidia.",
+  link = false,
+  promo = true,
+} = Astro.props;
+
+const mailto = (nome: string) =>
+  `mailto:info@affinitylab.it?subject=${encodeURIComponent(
+    `Attivazione piano ${nome} — SofIA`,
+  )}&body=${encodeURIComponent(
+    `Ciao, vorrei attivare il piano ${nome} di SofIA per la mia attività.\n\nAttività:\nCittà:\nTelefono:\n`,
+  )}`;
+---
+
+<section class="section pricing" id={id} data-billing="mensile" data-pricing>
+  <div class="container">
+    <div class="section-head section-head--center" data-reveal>
+      <p class="eyebrow eyebrow--center">{eyebrow}</p>
+      <h2>{heading}</h2>
+      <p class="lead">{lead}</p>
+    </div>
+
+    <div class="pricing__toggle-wrap" data-reveal>
+      <div class="pricing__toggle" role="group" aria-label="Periodo di fatturazione">
+        <button type="button" class="pricing__toggle-btn is-active" data-billing-set="mensile" aria-pressed="true">
+          Mensile
+        </button>
+        <button type="button" class="pricing__toggle-btn" data-billing-set="trimestrale" aria-pressed="false">
+          Trimestrale
+          <span class="pricing__save">fino a {numeroIt(risparmioMax)} € in meno</span>
+        </button>
+      </div>
+    </div>
+
+    {promo && (
+    <p class="pricing__promo" data-reveal>
+      <span class="pricing__promo-tag">Offerta di lancio</span>
+      <span class="pricing__promo-text">
+        <strong>Il primo mese costa {promoPrimoMese.prezzo} €, IVA inclusa</strong>, con
+        {numeroIt(promoPrimoMese.minuti)} minuti di conversazione. Dal secondo mese parte
+        il piano che hai scelto, ai prezzi qui sotto.
+      </span>
+    </p>
+    )}
+
+    <div class="pricing__grid">
+      {piani.map((p) => (
+        <article class="plan" class:list={[{ "plan--reco": p.consigliato }]} data-reveal>
+          {p.consigliato && <span class="plan__badge">Il più scelto</span>}
+
+          <h3 class="plan__name">{p.nome}</h3>
+
+          <p class="plan__price">
+            <span class="plan__amount" data-show="mensile">
+              <span class="plan__cur">€</span>{numeroIt(p.mensile)}
+            </span>
+            <span class="plan__amount" data-show="trimestrale">
+              <span class="plan__cur">€</span>{numeroIt(p.trimestrale)}
+            </span>
+            <span class="plan__per">/mese</span>
+          </p>
+
+          <p class="plan__billing">
+            <span data-show="mensile">Fatturazione mensile · IVA esclusa</span>
+            <span data-show="trimestrale">
+              {numeroIt(totaleTrimestre(p))} € ogni 3 mesi · {numeroIt(risparmioTrimestre(p))} € in meno · IVA esclusa
+            </span>
+          </p>
+
+          <p class="plan__rhythm">{p.ritmo}</p>
+
+          <ul class="plan__list">
+            {p.incluso.map((voce) => (
+              <li>
+                <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+                  <path d="M4 10.5 8 14.5 16 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                {voce}
+              </li>
+            ))}
+          </ul>
+
+          <a
+            class="btn plan__cta"
+            class:list={[p.consigliato ? "btn--primary" : "btn--outline"]}
+            href={mailto(p.nome)}
+          >
+            Attiva {p.nome}
+          </a>
+        </article>
+      ))}
+    </div>
+
+    <div class="pricing__base" data-reveal>
+      <p class="pricing__base-title">In tutti e tre i piani</p>
+      <ul class="pricing__base-list">
+        {inclusoOvunque.map((v) => (
+          <li>
+            <strong>{v.titolo}</strong>
+            <span>{v.testo}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <p class="pricing__note" data-reveal>
+      Passi al piano superiore quando cresce il volume di chiamate.
+      {link && (
+        <>
+          {" "}<a href="/pricing" class="pricing__link">Vedi la pagina piani</a>
+        </>
+      )}
+    </p>
+  </div>
+</section>
+
+<style>
+  /* la testata centrata di global.css è tarata su titoli corti (24ch):
+     questo ne chiede qualcuno in più per stare su due righe */
+  .pricing .section-head--center {
+    max-width: 32ch;
+  }
+  .pricing .section-head--center .lead {
+    max-width: 58ch;
+  }
+
+  /* ---- toggle mensile / trimestrale ---- */
+  .pricing__toggle-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: clamp(1.6rem, 1rem + 1.6vw, 2.6rem);
+  }
+  .pricing__toggle {
+    display: inline-flex;
+    gap: 0.25rem;
+    padding: 0.3rem;
+    background: var(--taupe-050);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+  }
+  .pricing__toggle-btn {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.45rem;
+    padding: 0.62rem 1.15rem;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ink-soft);
+    font-weight: 700;
+    font-size: 0.92rem;
+    cursor: pointer;
+    transition:
+      background 0.2s var(--ease-out),
+      color 0.2s var(--ease-out),
+      box-shadow 0.2s var(--ease-out);
+  }
+  .pricing__toggle-btn:hover {
+    color: var(--ink);
+  }
+  .pricing__toggle-btn:focus-visible {
+    outline: 2px solid var(--coral);
+    outline-offset: 2px;
+  }
+  .pricing__toggle-btn.is-active {
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: var(--shadow-sm);
+  }
+  .pricing__save {
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--coral-700);
+    white-space: nowrap;
+  }
+
+  /* ---- promo primo mese ---- */
+  .pricing__promo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem 1rem;
+    max-width: 780px;
+    margin: 0 auto clamp(1.2rem, 0.8rem + 1.2vw, 2rem);
+    padding: 0.9rem 1.2rem;
+    background: var(--coral-050);
+    border: 1.5px solid var(--coral-100);
+    border-radius: var(--radius);
+    text-align: left;
+  }
+  .pricing__promo-tag {
+    flex-shrink: 0;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    background: var(--coral);
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .pricing__promo-text {
+    flex: 1 1 22rem;
+    min-width: 0;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+  }
+  .pricing__promo-text strong {
+    color: var(--coral-700);
+  }
+
+  /* ---- griglia piani ---- */
+  .pricing__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(0.9rem, 0.5rem + 1.4vw, 1.5rem);
+    align-items: stretch;
+  }
+
+  .plan {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto auto auto auto 1fr auto;
+    gap: 0.5rem;
+    min-width: 0;
+    padding: clamp(1.5rem, 1.1rem + 1.2vw, 2.2rem);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    transition:
+      border-color 0.25s var(--ease-out),
+      box-shadow 0.25s var(--ease-out);
+  }
+  .plan:hover {
+    border-color: var(--taupe-300);
+    box-shadow: var(--shadow-md);
+  }
+  .plan--reco {
+    border-color: var(--coral);
+    box-shadow: var(--shadow-coral);
+  }
+  .plan--reco:hover {
+    border-color: var(--coral);
+    box-shadow: var(--shadow-coral-lg);
+  }
+
+  .plan__badge {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 0.32rem 0.85rem;
+    border-radius: 999px;
+    background: var(--coral);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .plan__name {
+    font-size: var(--step-1);
+    letter-spacing: -0.01em;
+  }
+  .plan--reco .plan__name {
+    color: var(--coral-700);
+  }
+
+  .plan__price {
+    display: flex;
+    align-items: baseline;
+    gap: 0.35rem;
+    margin-top: 0.3rem;
+    font-family: var(--font-head);
+    font-weight: 800;
+    line-height: 1;
+  }
+  .plan__amount {
+    display: inline-flex;
+    align-items: baseline;
+    font-size: clamp(2.6rem, 2rem + 2.2vw, 3.4rem);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+  }
+  .plan__cur {
+    margin-right: 0.12em;
+    font-size: 0.55em;
+    color: var(--taupe);
+  }
+  .plan__per {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--muted);
+  }
+
+  .plan__billing {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--muted);
+    min-height: 2.4em;
+  }
+  .plan__rhythm {
+    margin-top: 0.4rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+  }
+
+  .plan__list {
+    display: grid;
+    gap: 0.6rem;
+    margin: 0.9rem 0 1.4rem;
+    align-content: start;
+  }
+  .plan__list li {
+    display: grid;
+    grid-template-columns: 20px minmax(0, 1fr);
+    gap: 0.6rem;
+    align-items: start;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+  .plan__list svg {
+    width: 20px;
+    height: 20px;
+    margin-top: 0.1em;
+    color: var(--coral);
+  }
+  .plan--reco .plan__list svg {
+    color: var(--coral-600);
+  }
+
+  .plan__cta {
+    width: 100%;
+  }
+
+  /* ---- base comune ai tre piani ---- */
+  .pricing__base {
+    margin-top: clamp(1.4rem, 1rem + 1.4vw, 2.2rem);
+    padding: clamp(1.4rem, 1rem + 1.4vw, 2rem);
+    background: var(--green-050);
+    border: 1px solid var(--green-100);
+    border-radius: var(--radius-lg);
+  }
+  .pricing__base-title {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--green-700);
+    margin-bottom: 1rem;
+  }
+  .pricing__base-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem clamp(1rem, 0.6rem + 1.6vw, 2.4rem);
+  }
+  .pricing__base-list li {
+    display: grid;
+    gap: 0.2rem;
+    padding-left: 1.1rem;
+    border-left: 2px solid var(--green-100);
+  }
+  .pricing__base-list strong {
+    font-family: var(--font-head);
+    font-size: 1rem;
+  }
+  .pricing__base-list span {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+
+  .pricing__note {
+    margin-top: 1.2rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .pricing__link {
+    color: var(--coral-700);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--coral-100);
+  }
+  .pricing__link:hover {
+    text-decoration-color: var(--coral);
+  }
+
+  /* ---- commutazione mensile / trimestrale ---- */
+  .pricing[data-billing="mensile"] [data-show="trimestrale"],
+  .pricing[data-billing="trimestrale"] [data-show="mensile"] {
+    display: none;
+  }
+
+  @media (max-width: 900px) {
+    .pricing__grid {
+      grid-template-columns: minmax(0, 1fr);
+      max-width: 460px;
+      margin-inline: auto;
+      gap: 1.6rem;
+    }
+    .plan {
+      grid-template-rows: none;
+    }
+    .pricing__base-list {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 420px) {
+    .pricing__toggle {
+      width: 100%;
+    }
+    .pricing__toggle-btn {
+      flex: 1;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.1rem;
+      padding-inline: 0.7rem;
+    }
+  }
+</style>
+
+<script>
+  // Commutazione mensile/trimestrale: cambia un solo attributo sulla sezione,
+  // il resto lo fa il CSS. Nessun ricalcolo di prezzi lato client.
+  document.querySelectorAll<HTMLElement>("[data-pricing]").forEach((section) => {
+    const buttons = section.querySelectorAll<HTMLButtonElement>("[data-billing-set]");
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const mode = btn.dataset.billingSet;
+        if (!mode || section.dataset.billing === mode) return;
+        section.dataset.billing = mode;
+        buttons.forEach((b) => {
+          const on = b === btn;
+          b.classList.toggle("is-active", on);
+          b.setAttribute("aria-pressed", String(on));
+        });
+      });
+    });
+  });
+</script>
