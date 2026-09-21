@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import heroImg from "../assets/hero.png";
 import heroMobileImg from "../assets/hero-mobile.png";
+import { promoPrimoMese, numeroIt } from "../data/piani";
 ---
 
 <section class="hero" id="top">
@@ -52,7 +53,19 @@ import heroMobileImg from "../assets/hero-mobile.png";
         <a href="#oltre" class="btn btn--outline btn--lg">Scopri cosa fa</a>
       </div>
 
-      <ul class="hero__trust" data-hero="5">
+      <a class="hero__promo" href="/pricing" data-hero="5">
+        <span class="hero__promo-tag">Offerta di lancio</span>
+        <span class="hero__promo-figure">
+          {numeroIt(promoPrimoMese.prezzo)}<span class="hero__promo-cur">€</span>
+        </span>
+        <span class="hero__promo-text">
+          <strong>il primo mese</strong>, IVA inclusa · {numeroIt(promoPrimoMese.minuti)} minuti
+          <span class="sr-only">— vedi i piani</span>
+        </span>
+        <svg class="hero__promo-arrow" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+
+      <ul class="hero__trust" data-hero="6">
         <li>Voce naturale multilingua</li>
         <li>Nessun setup tecnico</li>
         <li>3 minuti di prova, subito</li>
@@ -113,7 +126,7 @@ import heroMobileImg from "../assets/hero-mobile.png";
   }
   .hero__copy {
     display: grid;
-    gap: 1.4rem;
+    gap: 1.2rem;
     max-width: 44rem;
     width: min(100%, 52%);
   }
@@ -144,6 +157,93 @@ import heroMobileImg from "../assets/hero-mobile.png";
     gap: 0.85rem;
     margin-top: 0.4rem;
   }
+  /* ---- cartellino offerta primo mese ----
+     Sta fra le CTA e la lista trust: il numero è grande abbastanza da
+     fermare l'occhio, ma resta sotto alle azioni, non le scavalca. Il fondo
+     è pieno perché qui sotto scorre il video della hero. */
+  .hero__promo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.8rem;
+    /* Appesa alle CTA: il margine negativo le tiene legate, così si leggono
+       come un blocco solo e la lista trust resta sopra la piega. */
+    margin-top: -0.4rem;
+    max-width: 100%;
+    padding: 0.55rem 0.95rem;
+    background: var(--surface);
+    border: 1.5px solid var(--coral-100);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    color: inherit;
+    text-decoration: none;
+  }
+  /* Il prefisso .hero serve a battere in specificità il `transform: none`
+     che il reveal applica con .is-in: senza, l'hover non si muoverebbe. */
+  .hero .hero__promo {
+    transition:
+      opacity var(--dur-reveal) var(--ease-out),
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.25s var(--ease-out);
+  }
+  .hero .hero__promo:hover,
+  .hero .hero__promo:focus-visible {
+    border-color: var(--coral);
+    box-shadow: var(--shadow-coral);
+    transform: translateY(-2px);
+  }
+  .hero__promo-tag {
+    padding: 0.28rem 0.65rem;
+    border-radius: 999px;
+    background: var(--coral);
+    color: #fff;
+    font-size: 0.64rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .hero__promo-figure {
+    display: flex;
+    align-items: baseline;
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 1.85rem;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--coral-700);
+  }
+  .hero__promo-cur {
+    margin-left: 0.1em;
+    font-size: 0.62em;
+    color: var(--coral);
+  }
+  .hero__promo-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 0.86rem;
+    line-height: 1.35;
+    color: var(--ink-soft);
+  }
+  .hero__promo-text strong {
+    color: var(--ink);
+  }
+  /* Freccia al posto di un "vedi i piani" scritto: la strip è già tutta un
+     link, e così il testo sta su una riga sola. */
+  .hero__promo-arrow {
+    flex: none;
+    width: 1.05rem;
+    height: 1.05rem;
+    margin-left: auto;
+    color: var(--coral-700);
+    transition: transform 0.2s ease;
+  }
+  .hero .hero__promo:hover .hero__promo-arrow {
+    transform: translateX(3px);
+  }
+
   .hero__trust {
     display: flex;
     flex-wrap: wrap;
