@@ -48,29 +48,29 @@ const mailtoAttiva =
 ---
 
 <Layout
-  title="Prezzi e piani SofIA — da € 250 al mese"
-  description="I piani di SofIA: Base 250 €, Pro 450 €, Elite 900 € al mese (IVA esclusa). Numero dedicato, risposta attiva 24/7 e CRM appuntamenti inclusi in tutti i piani."
+  title="Promo SofIA — primo mese a € 85"
+  description="Promo SofIA valida fino al 15 ottobre: primo mese a 85 € IVA inclusa. Dal secondo mese scegli tra Base, Pro ed Elite."
   faqEntries={faqPrezzi}
 >
   <Nav />
 
   <main>
-    <!-- Hero Stat-Led: la cifra è il titolo, tutto il resto la qualifica. -->
+    <!-- Hero Stat-Led: la promo è il messaggio dominante. -->
     <section class="section ph">
       <div class="container ph__inner">
         <div class="ph__main">
-          <p class="eyebrow" data-hero>Piani e attivazione</p>
+          <p class="eyebrow" data-hero>PROMO fino al 15 ottobre</p>
 
           <h1 class="ph__title" data-hero>
-            <span class="ph__lead-in">SofIA risponde al telefono da</span>
+            <span class="ph__lead-in">Il primo mese di SofIA</span>
             <span class="ph__figure">
-              <span class="ph__cur">€</span>{numeroIt(piani[0].mensile)}<span class="ph__per">/mese</span>
+              <span class="ph__cur">€</span>{numeroIt(promoPrimoMese.prezzo)}<span class="ph__per">IVA inclusa</span>
             </span>
           </h1>
 
           <p class="ph__qualifier" data-hero>
-            Mille minuti di conversazione, un numero dedicato e la risposta attiva
-            24 ore su 24. IVA esclusa, con fatturazione mensile.
+            500 minuti di conversazione, un numero dedicato e la risposta attiva
+            24 ore su 24. Promo valida fino al 15 ottobre.
           </p>
 
           <div class="ph__actions" data-hero>
@@ -81,17 +81,17 @@ const mailtoAttiva =
           </div>
         </div>
 
-        <aside class="ph__promo" data-hero aria-label="Offerta sul primo mese">
-          <span class="ph__promo-tag">Offerta di lancio</span>
-          <p class="ph__promo-label">Il primo mese</p>
+        <aside class="ph__promo" data-hero aria-label="Prezzo dal secondo mese">
+          <span class="ph__promo-tag">Dal secondo mese</span>
+          <p class="ph__promo-label">Scegli il piano più adatto</p>
           <p class="ph__promo-figure">
-            <span class="ph__promo-cur">€</span>{numeroIt(promoPrimoMese.prezzo)}
+            <span class="ph__promo-cur">€</span>{numeroIt(piani[0].mensile)}<span class="ph__promo-per">/mese</span>
           </p>
           <p class="ph__promo-meta">
-            IVA inclusa · {numeroIt(promoPrimoMese.minuti)} minuti di conversazione
+            Piano Base · IVA esclusa
           </p>
           <p class="ph__promo-note">
-            Dal secondo mese parte il piano che hai scelto, ai prezzi di listino.
+            Base, Pro o Elite: confronta i piani qui sotto.
           </p>
         </aside>
 
@@ -222,9 +222,7 @@ const mailtoAttiva =
     min-width: 0;
   }
 
-  /* ---- cartellino offerta primo mese ----
-     La cifra resta più piccola di quella di listino: il prezzo ricorrente
-     deve restare il numero dominante, la promo è il secondo livello. */
+  /* ---- cartellino prezzo dal secondo mese ---- */
   .ph__promo {
     display: grid;
     gap: 0.25rem;
@@ -268,6 +266,14 @@ const mailtoAttiva =
     margin-right: 0.08em;
     font-size: 0.5em;
     color: var(--coral);
+  }
+  .ph__promo-per {
+    margin-left: 0.1em;
+    font-family: var(--font-body);
+    font-size: 0.24em;
+    font-weight: 700;
+    letter-spacing: 0;
+    color: var(--muted);
   }
   .ph__promo-meta {
     font-size: 0.88rem;

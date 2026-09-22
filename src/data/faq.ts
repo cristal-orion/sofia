@@ -38,11 +38,11 @@ export const faqs: Faq[] = [
 export const faqPrezzi: Faq[] = [
   {
     q: "I prezzi sono IVA inclusa?",
-    a: "I tre piani sono al netto dell'IVA, che trovi aggiunta in fattura. Fa eccezione l'offerta sul primo mese: gli 85 € sono già IVA inclusa.",
+    a: "I tre piani sono al netto dell'IVA, che trovi aggiunta in fattura. Fa eccezione la PROMO fino al 15 ottobre sul primo mese: gli 85 € sono già IVA inclusa.",
   },
   {
     q: "Come funziona il primo mese a 85 €?",
-    a: "Il primo mese costa 85 € IVA inclusa e comprende 500 minuti di conversazione. Dal secondo mese parte il piano che hai scelto, ai prezzi di listino.",
+    a: "La PROMO fino al 15 ottobre porta il primo mese a 85 € IVA inclusa e comprende 500 minuti di conversazione. Dal secondo mese parte il piano che hai scelto, ai prezzi di listino.",
   },
   {
     q: "Cosa sono i minuti inclusi?",

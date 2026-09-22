@@ -16,8 +16,6 @@ export interface Piano {
   minuti: number;
   /** numeri di telefono presidiati, come etichetta */
   numeri: string;
-  /** a chi si rivolge il piano, espresso in minuti al giorno */
-  ritmo: string;
   /** voci incluse in questo piano, oltre a quelle comuni */
   incluso: string[];
   consigliato?: boolean;
@@ -31,7 +29,6 @@ export const piani: Piano[] = [
     trimestrale: 200,
     minuti: 1000,
     numeri: "1 numero di telefono",
-    ritmo: "Circa 33 minuti di conversazione al giorno.",
     incluso: [
       "1.000 minuti di conversazione al mese",
       "1 numero di telefono",
@@ -46,7 +43,6 @@ export const piani: Piano[] = [
     trimestrale: 350,
     minuti: 2500,
     numeri: "Fino a 2 numeri",
-    ritmo: "Circa 83 minuti di conversazione al giorno.",
     incluso: [
       "2.500 minuti di conversazione al mese",
       "Fino a 2 numeri di telefono",
@@ -62,7 +58,6 @@ export const piani: Piano[] = [
     trimestrale: 600,
     minuti: 6000,
     numeri: "Fino a 4 numeri",
-    ritmo: "Circa 200 minuti di conversazione al giorno.",
     incluso: [
       "6.000 minuti di conversazione al mese",
       "Fino a 4 numeri di telefono",
@@ -72,7 +67,7 @@ export const piani: Piano[] = [
   },
 ];
 
-/** Offerta di lancio sul primo mese. Attenzione: questa cifra è IVA INCLUSA,
+/** Promo sul primo mese valida fino al 15 ottobre. Attenzione: questa cifra è IVA INCLUSA,
  *  mentre i tre piani qui sopra sono IVA esclusa. Le due basi vanno sempre
  *  etichettate in pagina, mai mostrate una accanto all'altra senza dirlo. */
 export const promoPrimoMese = {

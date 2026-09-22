@@ -64,7 +64,7 @@ const mailto = (nome: string) =>
 
     {promo && (
     <p class="pricing__promo" data-reveal>
-      <span class="pricing__promo-tag">Offerta di lancio</span>
+      <span class="pricing__promo-tag">PROMO fino al 15 ottobre</span>
       <span class="pricing__promo-text">
         <strong>Il primo mese costa {promoPrimoMese.prezzo} €, IVA inclusa</strong>, con
         {numeroIt(promoPrimoMese.minuti)} minuti di conversazione. Dal secondo mese parte
@@ -96,8 +96,6 @@ const mailto = (nome: string) =>
               {numeroIt(totaleTrimestre(p))} € ogni 3 mesi · {numeroIt(risparmioTrimestre(p))} € in meno · IVA esclusa
             </span>
           </p>
-
-          <p class="plan__rhythm">{p.ritmo}</p>
 
           <ul class="plan__list">
             {p.incluso.map((voce) => (
@@ -250,7 +248,7 @@ const mailto = (nome: string) =>
   .plan {
     position: relative;
     display: grid;
-    grid-template-rows: auto auto auto auto 1fr auto;
+    grid-template-rows: auto auto auto 1fr auto;
     gap: 0.5rem;
     min-width: 0;
     padding: clamp(1.5rem, 1.1rem + 1.2vw, 2.2rem);
@@ -333,14 +331,6 @@ const mailto = (nome: string) =>
     color: var(--muted);
     min-height: 2.4em;
   }
-  .plan__rhythm {
-    margin-top: 0.4rem;
-    padding-top: 0.9rem;
-    border-top: 1px solid var(--line);
-    font-size: 0.88rem;
-    color: var(--ink-soft);
-  }
-
   .plan__list {
     display: grid;
     gap: 0.6rem;
