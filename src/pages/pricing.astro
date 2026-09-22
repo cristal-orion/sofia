@@ -16,7 +16,7 @@ const passi = [
     n: "1",
     titolo: "Prova",
     testo:
-      "Chiami SofIA dal sito e senti come risponde. Tre minuti, nessuna carta di credito.",
+      "Chiama SofIA dal sito per tre minuti. Non serve una carta di credito.",
   },
   {
     n: "2",
@@ -33,9 +33,9 @@ const passi = [
 ];
 
 const fatti = [
-  { k: "24/7", v: "Risponde notte e festivi" },
+  { k: "24/7", v: "Risponde anche nei festivi" },
   { k: "3 min", v: "Prova gratuita dal browser" },
-  { k: "0", v: "Numeri da cambiare" },
+  { k: "0", v: "Cambi di numero richiesti" },
 ];
 
 const mailtoAttiva =
@@ -109,7 +109,7 @@ const mailtoAttiva =
     <Pricing
       promo={false}
       eyebrow="I piani"
-      heading="Scegli in base a quanto squilla il telefono."
+      heading="Scegli il piano in base al volume di chiamate."
       lead="Numero dedicato, risposta attiva 24/7 e CRM appuntamenti sono in tutti e tre. Cambiano i minuti di conversazione inclusi e le linee che SofIA presidia."
     />
 
@@ -118,8 +118,8 @@ const mailtoAttiva =
       <div class="container">
         <div class="section-head" data-reveal>
           <p class="eyebrow">Attivazione</p>
-          <h2>Dalla prova alla prima chiamata.</h2>
-          <p class="lead">Tre passaggi. Il primo lo fai adesso, dal browser.</p>
+          <h2>Come attivare SofIA.</h2>
+          <p class="lead">Prova la chiamata, configura il servizio e collega il tuo numero.</p>
         </div>
 
         <ol class="steps__list">
@@ -141,7 +141,7 @@ const mailtoAttiva =
       <div class="container pfaq__inner">
         <div class="section-head" data-reveal>
           <p class="eyebrow">Domande sul listino</p>
-          <h2>Quello che chiedono prima di attivare.</h2>
+          <h2>Domande su prezzi e attivazione.</h2>
         </div>
 
         <div class="pfaq__list">
@@ -165,8 +165,8 @@ const mailtoAttiva =
           <div class="contatti__copy">
             <h2>Attiviamo SofIA sul tuo numero.</h2>
             <p>
-              Scrivici con il nome dell'attività e quante chiamate ricevi in un
-              giorno. Ti diciamo quale piano regge il tuo telefono.
+              Scrivici il nome dell'attività e quante chiamate ricevi in un
+              giorno. Ti consigliamo il piano adatto a quel volume.
             </p>
             <div class="contatti__actions">
               <a href={mailtoAttiva} class="btn btn--primary btn--lg">Scrivici per attivare</a>

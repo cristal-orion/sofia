@@ -14,32 +14,32 @@ const steps = [
   {
     n: "01",
     tag: "Contatti",
-    title: "Ogni cliente, da ogni canale, in un posto solo",
-    body: "Telefono, WhatsApp, chat sul sito: SofIA registra in automatico chi ti contatta — anche i numeri che non conoscevi — con tutto lo storico delle conversazioni.",
+    title: "Riunisce i contatti di ogni canale",
+    body: "SofIA registra chi ti contatta per telefono, WhatsApp o chat, compresi i numeri nuovi. Per ogni contatto conserva lo storico delle conversazioni.",
   },
   {
     n: "02",
     tag: "Conversazioni",
-    title: "Il riassunto di ogni chiamata, già pronto",
-    body: "Non riascolti niente. SofIA ti scrive cosa voleva il cliente, com'è andata e quanto è durata — e vedi a colpo d'occhio risposte e chiamate perse.",
+    title: "Leggi il riassunto di ogni chiamata",
+    body: "SofIA registra la richiesta del cliente, l'esito e la durata. La schermata distingue anche le chiamate risposte da quelle perse.",
   },
   {
     n: "03",
     tag: "Agenda",
-    title: "Gli appuntamenti si sincronizzano da soli",
-    body: "SofIA prenota e scrive direttamente sul tuo calendario. Tu apri l'agenda e trovi i posti già riempiti, con i promemoria pronti.",
+    title: "Scrive gli appuntamenti sul tuo calendario",
+    body: "Quando prenota, SofIA aggiorna il calendario e prepara i promemoria. Nell'agenda trovi subito cliente, servizio e orario.",
   },
   {
     n: "04",
     tag: "Pianifica",
-    title: "Richiama i tuoi clienti. Da sola.",
-    body: "Promemoria, conferme, follow-up: scegli i contatti e l'orario e SofIA fa le chiamate in uscita al posto tuo.",
+    title: "Programma le chiamate in uscita",
+    body: "Scegli i contatti e l'orario. SofIA esegue le chiamate per promemoria, conferme e follow-up.",
   },
   {
     n: "05",
     tag: "Assistente AI",
-    title: "Ti racconta com'è andata. E risponde alle tue domande",
-    body: "Ricevi recap automatici in italiano e chiedi qualsiasi cosa sui tuoi dati: «quante chiamate oggi?», «cosa chiedono di più i clienti?».",
+    title: "Ricevi i recap e interroga i dati",
+    body: "SofIA prepara i riepiloghi in italiano. Puoi chiederle quante chiamate ha gestito oggi o quali richieste ricevi più spesso.",
   },
 ];
 
@@ -50,11 +50,10 @@ const calDays = Array.from({ length: 28 }, (_, i) => i + 1);
 <section class="section tour" id="dashboard">
   <div class="container">
     <div class="section-head" data-reveal>
-      <h2>Apri SofIA. <span class="text-coral">È già tutto fatto.</span></h2>
+      <h2>SofIA aggiorna la dashboard <span class="text-coral">mentre lavori.</span></h2>
       <p class="lead">
-        Mentre tu lavori, la tua dashboard si riempie da sola: contatti,
-        riassunti delle chiamate, agenda sincronizzata e recap. Scorri per
-        vedere cosa ti aspetta dentro.
+        Contatti, riassunti, appuntamenti e recap restano nello stesso spazio.
+        Scorri per vedere le cinque aree principali.
       </p>
     </div>
 
@@ -215,9 +214,9 @@ const calDays = Array.from({ length: 28 }, (_, i) => i + 1);
                 <div><b class="mk-pos">positivo</b><span>sentiment</span></div>
               </div>
               <p class="mk-narr">
-                Oggi SofIA ha gestito 23 chiamate e fissato 12 appuntamenti,
-                senza perdere nessun cliente. Le richieste più frequenti: pulizie
-                e preventivi. Nessuna criticità rilevata.
+                Oggi SofIA ha gestito 23 chiamate e fissato 12 appuntamenti. I
+                clienti hanno chiesto soprattutto pulizie e preventivi. Non
+                risultano criticità.
               </p>
               <div class="mk-ask">
                 <span class="mk-ask__q">Quante chiamate ho ricevuto oggi?</span>

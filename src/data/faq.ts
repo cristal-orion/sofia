@@ -8,19 +8,19 @@ export interface Faq {
 export const faqs: Faq[] = [
   {
     q: "Quante chiamate può gestire SofIA contemporaneamente?",
-    a: "Tutte quelle che servono. SofIA risponde a più chiamate insieme, quindi il telefono non è mai occupato e nessun cliente resta in attesa.",
+    a: "SofIA gestisce più chiamate contemporaneamente. Se due clienti telefonano nello stesso momento, risponde a entrambi senza mettere la linea in occupato.",
   },
   {
     q: "Si sente che è un'intelligenza artificiale?",
-    a: "SofIA parla con voce naturale e si adatta alla lingua di chi chiama. La maggior parte delle persone la vive come una conversazione normale — e quando serve un intervento umano, passa la palla a te.",
+    a: "SofIA usa una voce naturale e parla nella lingua di chi chiama. Se la richiesta richiede il tuo intervento, ti trasferisce la chiamata.",
   },
   {
     q: "Devo cambiare numero di telefono o gestionale?",
-    a: "No. SofIA si innesta sul numero e sugli strumenti che usi già, sincronizzandosi con il tuo calendario. Nessuna migrazione complicata.",
+    a: "No. Colleghiamo SofIA al numero e agli strumenti che usi, compreso il calendario.",
   },
   {
     q: "Posso configurarla per la mia attività specifica?",
-    a: "Sì. Dalla dashboard imposti servizi, orari, prezzi, regole e tono di voce. SofIA si adatta al tuo settore, qualunque esso sia.",
+    a: "Sì. Dalla dashboard imposti servizi, orari, prezzi, regole e tono di voce per la tua attività.",
   },
   {
     q: "Cosa succede ai miei appuntamenti già presi su carta?",
@@ -28,7 +28,7 @@ export const faqs: Faq[] = [
   },
   {
     q: "Quanto tempo serve per partire?",
-    a: "Pochi minuti per la configurazione base. La parte di prova la fai subito, qui dal sito, parlando direttamente con SofIA.",
+    a: "La configurazione base richiede pochi minuti. Puoi provare subito la chiamata dal sito e completare numero, agenda e istruzioni prima dell'attivazione.",
   },
 ];
 
@@ -42,7 +42,7 @@ export const faqPrezzi: Faq[] = [
   },
   {
     q: "Come funziona il primo mese a 85 €?",
-    a: "La PROMO fino al 15 ottobre porta il primo mese a 85 € IVA inclusa e comprende 500 minuti di conversazione. Dal secondo mese parte il piano che hai scelto, ai prezzi di listino.",
+    a: "Fino al 15 ottobre, il primo mese costa 85 € IVA inclusa e comprende 500 minuti di conversazione. Dal secondo mese paghi il prezzo di listino del piano scelto.",
   },
   {
     q: "Cosa sono i minuti inclusi?",
@@ -58,14 +58,14 @@ export const faqPrezzi: Faq[] = [
   },
   {
     q: "Posso cambiare piano dopo?",
-    a: "Sì. Passi a un piano superiore quando il telefono squilla più di prima: cambiano i minuti inclusi e il numero di linee che SofIA presidia.",
+    a: "Sì. Puoi passare a un piano superiore quando aumentano le chiamate. Cambiano i minuti inclusi e il numero di linee gestite.",
   },
   {
     q: "Posso sentirla prima di attivare?",
-    a: "Sì. Dal sito fai una chiamata vera con SofIA: tre minuti, senza carta di credito e senza impegno.",
+    a: "Sì. Dal sito puoi parlare con SofIA per tre minuti senza inserire una carta di credito.",
   },
   {
     q: "Devo cambiare numero di telefono?",
-    a: "No. SofIA si innesta sul numero e sugli strumenti che usi già, e si sincronizza con il tuo calendario.",
+    a: "No. Colleghiamo SofIA al numero e agli strumenti che usi, compreso il calendario.",
   },
 ];

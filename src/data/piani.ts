@@ -84,11 +84,11 @@ export const inclusoOvunque = [
   },
   {
     titolo: "Risposta attiva 24/7",
-    testo: "Notte, domenica, agosto: il telefono non squilla mai a vuoto.",
+    testo: "SofIA risponde anche di notte e nei giorni festivi.",
   },
   {
     titolo: "CRM appuntamenti",
-    testo: "Ogni contatto e ogni appuntamento finiscono in un archivio ordinato.",
+    testo: "SofIA registra contatti e appuntamenti in un archivio consultabile.",
   },
 ];
 

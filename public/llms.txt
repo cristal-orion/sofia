@@ -1,20 +1,20 @@
 # SofIA
 
-> SofIA è l'assistente AI proattivo che gestisce telefono, chat sul sito, WhatsApp e agenda di un'attività. Risponde alle chiamate con voce naturale e multilingua, qualifica i clienti, fissa e sincronizza gli appuntamenti sul calendario, richiama i clienti in autonomia e produce report giornalieri — 24 ore su 24. È un prodotto di Affinity Lab (Affinity Srl, Nocera Inferiore).
+> SofIA gestisce telefono, chat sul sito, WhatsApp e agenda di un'attività. Risponde con voce naturale multilingua, qualifica le richieste, fissa gli appuntamenti, aggiorna il calendario, richiama i clienti e prepara report giornalieri. Il servizio è attivo 24 ore su 24 ed è prodotto da Affinity Lab (Affinity Srl, Nocera Inferiore).
 
 ## Cos'è SofIA
 
-SofIA non è un semplice centralino: è un gestionale di appuntamenti che lavora al telefono al posto tuo. Si innesta sul numero e sugli strumenti che usi già — niente migrazioni, niente cambio di gestionale. Configurabile da dashboard per qualsiasi settore che riceve telefonate.
+SofIA è un gestionale di appuntamenti che risponde al telefono per la tua attività. Si collega al numero, al calendario e agli strumenti che usi. Dalla dashboard configuri servizi, orari, prezzi, regole e tono di voce.
 
 ## Cosa fa
 
-- **Telefono**: risponde a più chiamate contemporaneamente con voce naturale, nella lingua di chi chiama. Il telefono non è mai occupato e nessun cliente resta in attesa. Quando serve, passa la conversazione a un umano.
+- **Telefono**: risponde a più chiamate contemporaneamente con voce naturale, nella lingua di chi chiama. Se la richiesta richiede un intervento umano, trasferisce la chiamata.
 - **Chat e WhatsApp**: gestisce le conversazioni sul sito web e su WhatsApp Business.
-- **Agenda**: fissa gli appuntamenti e li sincronizza in automatico sul calendario (Google Calendar, iCal), con i promemoria già pronti.
-- **Chiamate in uscita**: esegue da sola richiami, conferme e follow-up agli orari che scegli tu.
-- **Contatti**: registra in automatico ogni cliente da ogni canale — anche i numeri sconosciuti — con tutto lo storico delle conversazioni.
-- **Report e analisi**: ogni sera un riepilogo (chiamate gestite, appuntamenti fissati, clienti persi, richieste ricorrenti, orari di picco). Riassunto automatico di ogni chiamata, senza riascoltare nulla.
-- **Knowledge base**: impara a ogni conversazione e diventa più precisa ogni giorno.
+- **Agenda**: fissa gli appuntamenti, aggiorna il calendario (Google Calendar, iCal) e prepara i promemoria.
+- **Chiamate in uscita**: esegue richiami, conferme e follow-up agli orari che scegli.
+- **Contatti**: registra i clienti arrivati da ogni canale, compresi i numeri nuovi, e conserva lo storico delle conversazioni.
+- **Report e analisi**: prepara un riepilogo di chiamate, appuntamenti, richieste ricorrenti e orari di picco. Registra anche richiesta, esito e durata di ogni chiamata.
+- **Knowledge base**: usa nelle conversazioni le informazioni che aggiungi dalla dashboard.
 
 ## Per chi è
 
@@ -26,7 +26,7 @@ SofIA non è un semplice centralino: è un gestionale di appuntamenti che lavora
 
 ## Come si prova
 
-Prova gratuita di 3 minuti direttamente dal sito: si sceglie uno scenario e si fa una chiamata vera dal browser, parlando con SofIA. Nessun impegno, nessuna carta di credito. Configurazione base in pochi minuti.
+Puoi parlare con SofIA dal browser per tre minuti. Scegli uno scenario e avvia la chiamata senza inserire una carta di credito. La configurazione base richiede pochi minuti.
 
 ## Prezzi
 
@@ -34,9 +34,9 @@ Tre piani in abbonamento, prezzi IVA esclusa. Tutti includono numero dedicato, r
 
 **PROMO fino al 15 ottobre: il primo mese costa 85 € IVA inclusa e comprende 500 minuti di conversazione.** Dal secondo mese parte il piano scelto, ai prezzi qui sotto.
 
-- **Base — 250 €/mese** (200 €/mese con fatturazione trimestrale: 600 € ogni 3 mesi, 150 € in meno): 1.000 minuti di conversazione al mese, 1 numero di telefono, risposta attiva 24/7, CRM appuntamenti.
-- **Pro — 450 €/mese** (350 €/mese con fatturazione trimestrale: 1.050 € ogni 3 mesi, 300 € in meno): 2.500 minuti di conversazione al mese, fino a 2 numeri, report mensile, CRM appuntamenti. È il piano più scelto.
-- **Elite — 900 €/mese** (600 €/mese con fatturazione trimestrale: 1.800 € ogni 3 mesi, 900 € in meno): 6.000 minuti di conversazione al mese, fino a 4 numeri, setup personalizzato, integrazioni avanzate.
+- **Base: 250 €/mese** (200 €/mese con fatturazione trimestrale: 600 € ogni 3 mesi, 150 € in meno): 1.000 minuti di conversazione al mese, 1 numero di telefono, risposta attiva 24/7, CRM appuntamenti.
+- **Pro: 450 €/mese** (350 €/mese con fatturazione trimestrale: 1.050 € ogni 3 mesi, 300 € in meno): 2.500 minuti di conversazione al mese, fino a 2 numeri, report mensile, CRM appuntamenti. È il piano più scelto.
+- **Elite: 900 €/mese** (600 €/mese con fatturazione trimestrale: 1.800 € ogni 3 mesi, 900 € in meno): 6.000 minuti di conversazione al mese, fino a 4 numeri, setup personalizzato, integrazioni avanzate.
 
 Si passa a un piano superiore quando cresce il volume di chiamate. L'abbonamento decorre dal giorno dell'attivazione. Attivazione in tre passaggi: prova gratuita dal sito, configurazione di numero/agenda/istruzioni, SofIA in linea.
 
@@ -55,7 +55,7 @@ Google Calendar, WhatsApp Business, Calendar / iCal, Email, Sito web.
 ## Contatti
 
 - Sito: https://prontosofia.it
-- Produttore: Affinity Lab — https://www.affinitylab.it
+- Produttore: Affinity Lab, https://www.affinitylab.it
 - Email: info@affinitylab.it
 - Telefono: +39 328 865 8690
-- Sede: Via Lanzara, 33 — Nocera Inferiore (SA), Italia
+- Sede: Via Lanzara, 33, Nocera Inferiore (SA), Italia
